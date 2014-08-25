@@ -52,6 +52,12 @@ public class DBConnection {
         return sqlite3_last_insert_rowid(sqlite3Handle);
     }
 
+    public TableResult getTable(String sql) throws SqliteException {
+        checkHandleState();
+        return sqlite3_get_table(sqlite3Handle, sql);
+    }
+
+    private static native TableResult sqlite3_get_table(long handle, String sql) throws SqliteException;
     private static native long sqlite3_last_insert_rowid(long handle);
     private static native int sqlite3_changes(long handle);
     private static native void sqlite3_exec(long handle, String sql, SqlExecCallback callback) throws SqliteException;

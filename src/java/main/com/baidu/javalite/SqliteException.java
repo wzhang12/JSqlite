@@ -32,12 +32,12 @@ public class SqliteException extends Exception {
     }
 
     public SqliteException(String message, int errorCode) {
-        super(message.length() == 0 ? "Error code: " + errorCode : message + "\nError code: " + errorCode);
+        super(message.length() == 0 ? "Error code: " + errorCode : message + " [Error code: " + errorCode + "]");
         this.errorCode = errorCode;
     }
 
     public SqliteException(String message, Throwable cause, int errorCode) {
-        super(message.length() == 0 ? "Error code: " + errorCode : message + "\nError code: " + errorCode,
+        super(message.length() == 0 ? "Error code: " + errorCode : message + " [Error code: " + errorCode + "]",
                 cause);
         this.errorCode = errorCode;
     }
@@ -48,7 +48,7 @@ public class SqliteException extends Exception {
     }
 
     public SqliteException(String message, Throwable cause, boolean enableSuppression, boolean writableStackTrace, int errorCode) {
-        super(message.length() == 0 ? "Error code: " + errorCode : message + "\nError code: " + errorCode,
+        super(message.length() == 0 ? "Error code: " + errorCode : message + " [Error code: " + errorCode + "]",
                 cause, enableSuppression, writableStackTrace);
         this.errorCode = errorCode;
     }

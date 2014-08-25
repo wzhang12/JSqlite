@@ -16,8 +16,8 @@ public class DatabaseTester {
     public static void main(String[] args) throws SqliteException {
         Database database = new Database(new File("a.db"));
         DBConnection conn = database.open();
-//        conn.exec("CREATE TABLE crashs (id INTEGER primary key, name TEXT)");
-//        conn.exec("INSERT INTO crashs (id, name) values (1, 'Clark')");
+        conn.exec("CREATE TABLE crashs (id INTEGER primary key, name TEXT)");
+        conn.exec("INSERT INTO crashs (id, name) values (1, 'Clark')");
         conn.exec("select * from crashs;", new SqlExecCallback() {
             @Override
             public int callback(int ncols, String[] values, String[] headers) {

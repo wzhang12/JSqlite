@@ -15,6 +15,9 @@ public class DatabaseTester {
         DBConnection conn = database.open();
 //        conn.exec("CREATE TABLE crashs (id INTEGER primary key, name TEXT)");
 //        conn.exec("INSERT INTO crashs (id, name) values (1, 'Clark')");
+
+        // 测试 exec
+        System.out.println("测试 exec");
         conn.exec("select * from crashs;", new SqlExecCallback() {
             @Override
             public int callback(int ncols, String[] values, String[] headers) {
@@ -33,6 +36,8 @@ public class DatabaseTester {
             }
         });
 
+        // 测试 get_table
+        System.out.println("\n测试 get_table");
         TableResult result = conn.getTable("select * from crashs;");
         for (TableResult.Cell cell : result) {
             System.out.println(cell);
@@ -46,6 +51,24 @@ public class DatabaseTester {
                 System.out.print(j == colCount - 1 ? "\n" : "\t");
             }
         }
+
+        // 测试 prepare
+        System.out.println("\n测试 prepare");
+        PrepareStmt stmt = conn.prepare("select * from crashs;");
+        while (stmt.step()) {
+            final int count = stmt.getColumnCount(); // 列数
+            for (int i = 0; i < count; ++i) {
+                System.out.print(stmt.getColumnName(i));
+                System.out.print(i == count - 1 ? "\n" : "\t");
+            }
+
+            for (int i = 0; i < count; ++i) {
+                System.out.print(stmt.getColumnText(i));
+                System.out.print(i == count - 1 ? "\n" : "\t");
+            }
+        }
+        stmt.close();
+
         conn.close();
     }
 }

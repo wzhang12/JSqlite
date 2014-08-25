@@ -17,7 +17,7 @@ public class TableResult implements Iterable<TableResult.Cell> {
         } else {
             this.result = result;
         }
-        this.rowNums = rowNums;
+        this.rowNums = rowNums; // 第一行默认是 headers
         this.colNums = colNums;
     }
 
@@ -29,10 +29,19 @@ public class TableResult implements Iterable<TableResult.Cell> {
         return rowNums;
     }
 
+    public String getCellData(int row, int col) {
+        return result[row * colNums + col];
+    }
+
     public static class Cell {
         public String data;
         public int row;
         public int column;
+
+        @Override
+        public String toString() {
+            return String.format("[%d, %d]: %s", row, column, data);
+        }
     }
 
     @Override
@@ -54,6 +63,7 @@ public class TableResult implements Iterable<TableResult.Cell> {
             cell.data = result[index];
             cell.row = index / colNums;
             cell.column = index % colNums;
+            index++;
             return cell;
         }
 

@@ -129,7 +129,7 @@ jobject JNICALL Java_com_baidu_javalite_DBConnection_sqlite3_1get_1table(
         return 0;
     }
 
-    jobject rs = newTableResult(env, azResult, row, column);
+    jobject rs = newTableResult(env, azResult, row + 1, column);
     sqlite3_free_table(azResult);
 
     return rs;

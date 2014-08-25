@@ -20,9 +20,7 @@ void JNICALL Java_com_baidu_javalite_DBConnection_sqlite3_1close(JNIEnv *env,
     sqlite3* conn = (sqlite3*) handle;
     int rc = sqlite3_close(conn);
     if (rc != SQLITE_OK) {
-        char msg[512] = { 0 };
-        sprintf(msg, "error: %d", rc);
-        throwSqliteException(env, msg);
+        throwSqliteException2(env, sqlite3_errcode(conn), sqlite3_errmsg(conn));
     }
 }
 
@@ -76,9 +74,7 @@ void JNICALL Java_com_baidu_javalite_DBConnection_sqlite3_1exec(JNIEnv *env,
     (*env)->ReleaseStringUTFChars(env, sql, csql);
 
     if (rc != SQLITE_OK) {
-        char msg[512] = { 0 };
-        sprintf(msg, "error: %d", rc);
-        throwSqliteException(env, msg);
+    	throwSqliteException2(env, sqlite3_errcode(conn), sqlite3_errmsg(conn));
     }
 }
 
@@ -127,7 +123,9 @@ jobject JNICALL Java_com_baidu_javalite_DBConnection_sqlite3_1get_1table(
     (*env)->ReleaseStringUTFChars(env, sql, csql);
 
     if (rc != SQLITE_OK) {
-        throwSqliteException(env, errmsg);
+    	throwSqliteException2(env, sqlite3_errcode(conn), sqlite3_errmsg(conn));
+//        throwSqliteException(env, errmsg);
+    	sqlite3_free_table(azResult);
         return 0;
     }
 

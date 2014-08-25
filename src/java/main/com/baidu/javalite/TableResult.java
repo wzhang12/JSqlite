@@ -56,5 +56,10 @@ public class TableResult implements Iterable<TableResult.Cell> {
             cell.column = index % colNums;
             return cell;
         }
+
+        @Override
+        public void remove() {
+            throw new UnsupportedOperationException();
+        }
     }
 }

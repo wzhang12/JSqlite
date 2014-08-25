@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="JSqlite" default="help">
+    <property name="bin" location="bin"/>
+    <property name="bin.classes" location="${bin}/classes"/>
+    <property name="java.src" location="src/java/main"/>
+    <property name="jni.src" location="src/jni" />
+
+    <target name="-clean-classes" description="删除 class 文件">
+        <delete verbose="on"
+                dir="${bin.classes}"
+                failonerror="on"
+                includeemptydirs="on"
+                includes="**/*" />
+
+        <mkdir dir="${bin.classes}" />
+    </target>
+
+    <target name="-compile"
+            description="编译生成 class 文件"
+            depends="-clean-classes">
+        <javac target="1.6"
+               destdir="${bin.classes}"
+               srcdir="${java.src}"
+               failonerror="on"
+               encoding="UTF-8"
+               includeantruntime="off"
+               verbose="on">
+        </javac>
+    </target>
+
+    <target name="gen-header" depends="-compile" description="生成 C 头文件">
+        <javah verbose="on"
+               destdir="${jni.src}"
+               force="on"
+               class="com.baidu.javalite.Database"
+               classpath="${bin.classes}" />
+
+        <javah verbose="on"
+               destdir="${jni.src}"
+               force="on"
+               class="com.baidu.javalite.DBConnection"
+               classpath="${bin.classes}" />
+    </target>
+
+    <target name="help">
+        <echo>帮助</echo>
+    </target>
+</project>

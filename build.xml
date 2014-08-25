@@ -53,8 +53,9 @@
         <java dir="bin"
               jar="${build.jar}"
               failonerror="on"
-              jvmargs="-Djava.native.dir=."
-              fork="on"/>
+              fork="on">
+            <arg line="-Djava.native.dir=." />
+        </java>
     </target>
 
     <target name="help">

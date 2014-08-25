@@ -42,6 +42,12 @@
                force="on"
                class="com.baidu.javalite.DBConnection"
                classpath="${bin.classes}"/>
+
+        <javah verbose="on"
+               destdir="${jni.src}"
+               force="on"
+               class="com.baidu.javalite.PrepareStmt"
+               classpath="${bin.classes}"/>
     </target>
 
     <target name="build" depends="-compile" description="打包">

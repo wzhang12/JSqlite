@@ -9,6 +9,14 @@ extern "C" {
 #endif
 /*
  * Class:     com_baidu_javalite_DBConnection
+ * Method:    sqlite3_prepare_v2
+ * Signature: (JLjava/lang/String;)J
+ */
+JNIEXPORT jlong JNICALL Java_com_baidu_javalite_DBConnection_sqlite3_1prepare_1v2
+  (JNIEnv *, jclass, jlong, jstring);
+
+/*
+ * Class:     com_baidu_javalite_DBConnection
  * Method:    sqlite3_get_table
  * Signature: (JLjava/lang/String;)Lcom/baidu/javalite/TableResult;
  */

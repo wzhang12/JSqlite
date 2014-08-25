@@ -14,10 +14,6 @@ public class Database {
     private File dbFile;
 
     public Database(File dbFile) {
-        if (!dbFile.isFile()) {
-            throw new IllegalArgumentException(dbFile.getName() + " isn't a file!");
-        }
-
         this.dbFile = dbFile;
     }
 

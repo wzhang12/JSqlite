@@ -56,7 +56,7 @@
               jar="${build.jar}"
               failonerror="on"
               fork="on">
-            <arg line="-Djava.native.dir=." />
+            <arg line="-Djava.library.path=." />
         </java>
     </target>
 

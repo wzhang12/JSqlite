@@ -44,12 +44,14 @@
                classpath="${bin.classes}"/>
     </target>
 
-    <target name="run" depends="-compile" description="运行">
+    <target name="build" depends="-compile" description="打包">
         <jar destfile="${build.jar}"
              manifest="${java.src}/MANIFEST.MF">
             <fileset dir="${bin.classes}" includes="**/*.class"/>
         </jar>
+    </target>
 
+    <target name="run" depends="build" description="运行">
         <java dir="bin"
               jar="${build.jar}"
               failonerror="on"

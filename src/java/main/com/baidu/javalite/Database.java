@@ -7,6 +7,10 @@ import java.io.File;
  * Date: 14-8-25
  */
 public class Database {
+    static {
+        System.loadLibrary("JSqlite");
+    }
+
     private File dbFile;
 
     public Database(File dbFile) {

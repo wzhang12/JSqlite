@@ -3,16 +3,18 @@
     <property name="bin" location="bin"/>
     <property name="bin.classes" location="${bin}/classes"/>
     <property name="java.src" location="src/java/main"/>
-    <property name="jni.src" location="src/jni" />
+    <property name="jni.src" location="src/jni"/>
+
+    <property name="build.jar" location="${bin}/${ant.project.name}.jar"/>
 
     <target name="-clean-classes" description="删除 class 文件">
         <delete verbose="on"
                 dir="${bin.classes}"
                 failonerror="on"
                 includeemptydirs="on"
-                includes="**/*" />
+                includes="**/*"/>
 
-        <mkdir dir="${bin.classes}" />
+        <mkdir dir="${bin.classes}"/>
     </target>
 
     <target name="-compile"
@@ -33,13 +35,26 @@
                destdir="${jni.src}"
                force="on"
                class="com.baidu.javalite.Database"
-               classpath="${bin.classes}" />
+               classpath="${bin.classes}"/>
 
         <javah verbose="on"
                destdir="${jni.src}"
                force="on"
                class="com.baidu.javalite.DBConnection"
-               classpath="${bin.classes}" />
+               classpath="${bin.classes}"/>
+    </target>
+
+    <target name="run" depends="-compile" description="运行">
+        <jar destfile="${build.jar}"
+             manifest="${java.src}/MANIFEST.MF">
+            <fileset dir="${bin.classes}" includes="**/*.class"/>
+        </jar>
+
+        <java dir="bin"
+              jar="${build.jar}"
+              failonerror="on"
+              jvmargs="-Djava.native.dir=."
+              fork="on"/>
     </target>
 
     <target name="help">

@@ -73,7 +73,7 @@ void JNICALL Java_com_baidu_javalite_DBConnection_sqlite3_1exec(JNIEnv *env,
 
     int rc = sqlite3_exec(conn, csql, exec_callback, 0, &errMsg);
 
-    (*env)->ReleaseStringUTFChars(env, sql);
+    (*env)->ReleaseStringUTFChars(env, sql, csql);
 
     if (rc != SQLITE_OK) {
         char msg[512] = { 0 };

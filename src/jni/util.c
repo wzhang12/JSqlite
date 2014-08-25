@@ -55,7 +55,7 @@ void setJavaVM(JavaVM* vm) {
 
 JNIEnv* getEnv() {
     JNIEnv* rs;
-    (*g_vm)->GetEnv(g_vm, &rs, JNI_VERSION_1_6);
+    (*g_vm)->GetEnv(g_vm, (void**) &rs, JNI_VERSION_1_6);
     return rs;
 }
 

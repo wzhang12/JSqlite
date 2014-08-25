@@ -20,7 +20,7 @@ jlong JNICALL Java_com_baidu_javalite_Database_sqlite3_1open_1v2(JNIEnv *env,
 
     char* cZvfs = 0;
     if (zVfs != 0) {
-        cZvfs = (*env)->GetStringUTFChars(env, zVfs, 0);
+        cZvfs = (char*) (*env)->GetStringUTFChars(env, zVfs, 0);
     }
 
     int rc = sqlite3_open_v2(name, &handle, flags, cZvfs);

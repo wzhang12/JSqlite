@@ -69,6 +69,8 @@ public class DatabaseTester {
         }
         stmt.close();
 
+        conn.exec(".tables");
+
         conn.close();
     }
 }

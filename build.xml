@@ -53,7 +53,7 @@
     <target name="build" depends="-compile" description="打包">
         <jar destfile="${build.jar}"
              manifest="${java.src}/MANIFEST.MF">
-            <fileset dir="${bin.classes}" includes="**/*.class"/>
+            <fileset dir="${bin.classes}" includes="**/*.class" excludes="**/test/*"/>
         </jar>
     </target>
 

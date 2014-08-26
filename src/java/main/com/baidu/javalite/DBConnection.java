@@ -30,6 +30,15 @@ public class DBConnection {
         prepareStmtSet.remove(stmt);
     }
 
+    @Override
+    protected void finalize() throws Throwable {
+        try {
+            safeClose();
+        } finally {
+            super.finalize();
+        }
+    }
+
     public void close() throws SqliteException {
         if (isValid()) {
             sqlite3_close(sqlite3Handle);

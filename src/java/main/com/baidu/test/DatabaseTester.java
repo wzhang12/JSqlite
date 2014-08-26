@@ -82,8 +82,7 @@ public class DatabaseTester {
                 System.out.print(i == count - 1 ? "\n" : "\t");
             }
         }
-        stmt.close();
 
-        conn.close();
+        conn.safeClose();
     }
 }

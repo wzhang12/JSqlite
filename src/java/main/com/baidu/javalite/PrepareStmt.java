@@ -36,6 +36,14 @@ public class PrepareStmt {
         if (isValid()) {
             sqlite3_finalize(handle);
             handle = 0;
+            connection.removeStmt(this);
+        }
+    }
+
+    protected void _close() throws SqliteException {
+        if (isValid()) {
+            sqlite3_finalize(handle);
+            handle = 0;
         }
     }
 

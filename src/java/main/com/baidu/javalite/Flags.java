@@ -54,4 +54,30 @@ public final class Flags {
     public static final int SQLITE_OPEN_PRIVATECACHE = 0x00040000;
 
     public static final int SQLITE_OPEN_WAL = 0x00080000;
+
+    /**
+     * CAPI3REF: Fundamental Datatypes
+     * KEYWORDS: SQLITE_TEXT
+     * <p/>
+     * (Every value in SQLite has one of five fundamental datatypes:
+     * <ul>
+     * <li> 64-bit signed integer
+     * <li> 64-bit IEEE floating point number
+     * <li> string
+     * <li> BLOB
+     * <li> NULL
+     * </ul>)
+     * <p/>
+     * These constants are codes for each of those types.
+     * <p/>
+     * Note that the SQLITE_TEXT constant was also used in SQLite version 2
+     * for a completely different meaning.  Software that links against both
+     * SQLite version 2 and SQLite version 3 should use SQLITE3_TEXT, not
+     * SQLITE_TEXT.
+     */
+    public static final int SQLITE_INTEGER = 1;
+    public static final int SQLITE_FLOAT = 2;
+    public static final int SQLITE_TEXT = 3;
+    public static final int SQLITE_BLOB = 4;
+    public static final int SQLITE_NULL = 5;
 }

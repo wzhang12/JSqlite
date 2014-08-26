@@ -109,6 +109,48 @@ public class PrepareStmt {
         return sqlite3_column_type(handle, column);
     }
 
+    public void bindBlob(int column, byte[] value) throws SqliteException {
+        checkHandleState();
+        sqlite3_bind_blob(handle, column, value);
+    }
+
+    public void bindDouble(int column, double value) throws SqliteException {
+        checkHandleState();
+        sqlite3_bind_double(handle, column, value);
+    }
+
+    public void bindInt(int column, int value) throws SqliteException {
+        checkHandleState();
+        sqlite3_bind_int(handle, column, value);
+    }
+
+    public void bindInt64(int column, long value) throws SqliteException {
+        checkHandleState();
+        sqlite3_bind_int64(handle, column, value);
+    }
+
+    public void bindNull(int column) throws SqliteException {
+        checkHandleState();
+        sqlite3_bind_null(handle, column);
+    }
+
+    public void bindText(int column, String value) throws SqliteException {
+        checkHandleState();
+        sqlite3_bind_text(handle, column, value);
+    }
+
+    private static native void sqlite3_bind_text(long handle, int column, String value) throws SqliteException;
+
+    private static native void sqlite3_bind_null(long handle, int column) throws SqliteException;
+
+    private static native void sqlite3_bind_int64(long handle, int column, long value) throws SqliteException;
+
+    private static native void sqlite3_bind_int(long handle, int column, int value) throws SqliteException;
+
+    private static native void sqlite3_bind_double(long handle, int column, double value) throws SqliteException;
+
+    private static native void sqlite3_bind_blob(long handle, int column, byte[] blob) throws SqliteException;
+
     private static native int sqlite3_column_type(long handle, int column) throws SqliteException;
 
     private static native String sqlite3_column_text(long handle, int column) throws SqliteException;

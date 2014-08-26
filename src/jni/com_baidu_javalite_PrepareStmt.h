@@ -9,6 +9,62 @@ extern "C" {
 #endif
 /*
  * Class:     com_baidu_javalite_PrepareStmt
+ * Method:    sqlite3_sql
+ * Signature: (J)Ljava/lang/String;
+ */
+JNIEXPORT jstring JNICALL Java_com_baidu_javalite_PrepareStmt_sqlite3_1sql
+  (JNIEnv *, jclass, jlong);
+
+/*
+ * Class:     com_baidu_javalite_PrepareStmt
+ * Method:    sqlite3_stmt_readonly
+ * Signature: (J)Z
+ */
+JNIEXPORT jboolean JNICALL Java_com_baidu_javalite_PrepareStmt_sqlite3_1stmt_1readonly
+  (JNIEnv *, jclass, jlong);
+
+/*
+ * Class:     com_baidu_javalite_PrepareStmt
+ * Method:    sqlite3_stmt_busy
+ * Signature: (J)Z
+ */
+JNIEXPORT jboolean JNICALL Java_com_baidu_javalite_PrepareStmt_sqlite3_1stmt_1busy
+  (JNIEnv *, jclass, jlong);
+
+/*
+ * Class:     com_baidu_javalite_PrepareStmt
+ * Method:    sqlite3_bind_parameter_count
+ * Signature: (J)I
+ */
+JNIEXPORT jint JNICALL Java_com_baidu_javalite_PrepareStmt_sqlite3_1bind_1parameter_1count
+  (JNIEnv *, jclass, jlong);
+
+/*
+ * Class:     com_baidu_javalite_PrepareStmt
+ * Method:    sqlite3_bind_parameter_name
+ * Signature: (JI)Ljava/lang/String;
+ */
+JNIEXPORT jstring JNICALL Java_com_baidu_javalite_PrepareStmt_sqlite3_1bind_1parameter_1name
+  (JNIEnv *, jclass, jlong, jint);
+
+/*
+ * Class:     com_baidu_javalite_PrepareStmt
+ * Method:    sqlite3_bind_parameter_index
+ * Signature: (JLjava/lang/String;)I
+ */
+JNIEXPORT jint JNICALL Java_com_baidu_javalite_PrepareStmt_sqlite3_1bind_1parameter_1index
+  (JNIEnv *, jclass, jlong, jstring);
+
+/*
+ * Class:     com_baidu_javalite_PrepareStmt
+ * Method:    sqlite3_clear_bindings
+ * Signature: (J)V
+ */
+JNIEXPORT void JNICALL Java_com_baidu_javalite_PrepareStmt_sqlite3_1clear_1bindings
+  (JNIEnv *, jclass, jlong);
+
+/*
+ * Class:     com_baidu_javalite_PrepareStmt
  * Method:    sqlite3_bind_text
  * Signature: (JILjava/lang/String;)V
  */

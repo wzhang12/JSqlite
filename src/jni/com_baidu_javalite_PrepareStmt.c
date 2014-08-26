@@ -397,3 +397,115 @@ void JNICALL Java_com_baidu_javalite_PrepareStmt_sqlite3_1bind_1text(
         throwSqliteException2(env, sqlite3_errcode(conn), sqlite3_errmsg(conn));
     }
 }
+
+void JNICALL Java_com_baidu_javalite_PrepareStmt_sqlite3_1clear_1bindings(
+        JNIEnv *env, jclass cls, jlong handle) {
+    if (handle == 0) {
+        throwSqliteException(env, "handle is NULL");
+        return;
+    }
+
+    sqlite3_stmt* stmt = (sqlite3_stmt*) handle;
+
+    int rc = sqlite3_clear_bindings(stmt);
+
+    if (rc != SQLITE_OK) {
+        sqlite3* conn = sqlite3_db_handle(stmt);
+        throwSqliteException2(env, sqlite3_errcode(conn), sqlite3_errmsg(conn));
+    }
+}
+
+jint JNICALL Java_com_baidu_javalite_PrepareStmt_sqlite3_1bind_1parameter_1index(
+        JNIEnv *env, jclass cls, jlong handle, jstring zName) {
+    if (handle == 0) {
+        throwSqliteException(env, "handle is NULL");
+        return 0;
+    }
+
+    if (zName == 0) {
+        throwSqliteException(env, "zName is NULL");
+        return 0;
+    }
+
+    sqlite3_stmt* stmt = (sqlite3_stmt*) handle;
+
+    const char* cn = (*env)->GetStringUTFChars(env, zName, 0);
+
+    int rc = sqlite3_bind_parameter_index(stmt, cn);
+
+    (*env)->ReleaseStringUTFChars(env, zName, cn);
+
+    return rc;
+}
+
+jstring JNICALL Java_com_baidu_javalite_PrepareStmt_sqlite3_1bind_1parameter_1name(
+        JNIEnv *env, jclass cls, jlong handle, jint index) {
+    if (handle == 0) {
+        throwSqliteException(env, "handle is NULL");
+        return 0;
+    }
+
+    sqlite3_stmt* stmt = (sqlite3_stmt*) handle;
+
+    const char* name = sqlite3_bind_parameter_name(stmt, index);
+
+    if (name == 0) {
+        return (*env)->NewStringUTF(env, "");
+    } else {
+        return (*env)->NewStringUTF(env, name);
+    }
+}
+
+jint JNICALL Java_com_baidu_javalite_PrepareStmt_sqlite3_1bind_1parameter_1count(
+        JNIEnv *env, jclass cls, jlong handle) {
+    if (handle == 0) {
+        throwSqliteException(env, "handle is NULL");
+        return 0;
+    }
+
+    sqlite3_stmt* stmt = (sqlite3_stmt*) handle;
+
+    return sqlite3_bind_parameter_count(stmt);
+}
+
+jboolean JNICALL Java_com_baidu_javalite_PrepareStmt_sqlite3_1stmt_1busy(
+        JNIEnv *env, jclass cls, jlong handle) {
+    if (handle == 0) {
+        throwSqliteException(env, "handle is NULL");
+        return 0;
+    }
+
+    sqlite3_stmt* stmt = (sqlite3_stmt*) handle;
+
+    return sqlite3_stmt_busy(stmt) != 0;
+}
+
+jboolean JNICALL Java_com_baidu_javalite_PrepareStmt_sqlite3_1stmt_1readonly(
+        JNIEnv *env, jclass cls, jlong handle) {
+    if (handle == 0) {
+        throwSqliteException(env, "handle is NULL");
+        return 0;
+    }
+
+    sqlite3_stmt* stmt = (sqlite3_stmt*) handle;
+
+    return sqlite3_stmt_readonly(stmt) != 0;
+}
+
+jstring JNICALL Java_com_baidu_javalite_PrepareStmt_sqlite3_1sql(JNIEnv *env,
+        jclass cls, jlong handle) {
+    if (handle == 0) {
+        throwSqliteException(env, "handle is NULL");
+        return 0;
+    }
+
+    sqlite3_stmt* stmt = (sqlite3_stmt*) handle;
+
+    const char* csql = sqlite3_sql(stmt);
+
+    if (csql == 0) {
+        return (*env)->NewStringUTF(env, "");
+    } else {
+        return (*env)->NewStringUTF(env, csql);
+    }
+}

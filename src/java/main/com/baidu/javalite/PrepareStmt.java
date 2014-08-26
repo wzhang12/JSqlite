@@ -139,6 +139,55 @@ public class PrepareStmt {
         sqlite3_bind_text(handle, column, value);
     }
 
+    public void clearBinding() throws SqliteException {
+        checkHandleState();
+        sqlite3_clear_bindings(handle);
+    }
+
+    public int getBindParameterIndex(String name) throws SqliteException {
+        checkHandleState();
+        return sqlite3_bind_parameter_index(handle, name);
+    }
+
+    public String getBindParameterName(int index) throws SqliteException {
+        checkHandleState();
+        return sqlite3_bind_parameter_name(handle, index);
+    }
+
+    public int getBindParameterCount() throws SqliteException {
+        checkHandleState();
+        return sqlite3_bind_parameter_count(handle);
+    }
+
+    public boolean isBusy() throws SqliteException {
+        checkHandleState();
+        return sqlite3_stmt_busy(handle);
+    }
+
+    public boolean isReadOnly() throws SqliteException {
+        checkHandleState();
+        return sqlite3_stmt_readonly(handle);
+    }
+
+    public String getSql() throws SqliteException {
+        checkHandleState();
+        return sqlite3_sql(handle);
+    }
+
+    private static native String sqlite3_sql(long handle) throws SqliteException;
+
+    private static native boolean sqlite3_stmt_readonly(long handle) throws SqliteException;
+
+    private static native boolean sqlite3_stmt_busy(long handle) throws SqliteException;
+
+    private static native int sqlite3_bind_parameter_count(long handle) throws SqliteException;
+
+    private static native String sqlite3_bind_parameter_name(long handle, int index) throws SqliteException;
+
+    private static native int sqlite3_bind_parameter_index(long handle, String zName) throws SqliteException;
+
+    private static native void sqlite3_clear_bindings(long handle) throws SqliteException;
+
     private static native void sqlite3_bind_text(long handle, int column, String value) throws SqliteException;
 
     private static native void sqlite3_bind_null(long handle, int column) throws SqliteException;

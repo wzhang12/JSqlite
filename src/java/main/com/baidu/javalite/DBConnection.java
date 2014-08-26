@@ -7,7 +7,7 @@ import java.util.Set;
  * Created with IntelliJ IDEA.
  * Date: 14-8-25
  */
-public class DBConnection {
+public class DBConnection implements Closeable {
     private long sqlite3Handle;
     private Set<PrepareStmt> prepareStmtSet = new HashSet<PrepareStmt>();
 
@@ -39,6 +39,7 @@ public class DBConnection {
         }
     }
 
+    @Override
     public void close() throws SqliteException {
         if (isValid()) {
             sqlite3_close(sqlite3Handle);
@@ -93,6 +94,26 @@ public class DBConnection {
         PrepareStmt prepareStmt = new PrepareStmt(this, sqlite3_prepare_v2(sqlite3Handle, sql));
         prepareStmtSet.add(prepareStmt);
         return prepareStmt;
+    }
+
+    public void beginTransaction() throws SqliteException {
+        exec("begin;");
+    }
+
+    public void endTransaction() throws SqliteException {
+        exec("commit;");
+    }
+
+    public void rollback() throws SqliteException {
+        exec("rollback;");
+    }
+
+    public void savepoint(String point) throws SqliteException {
+        exec(String.format("savepoint %s;", point));
+    }
+
+    public void rollbackTo(String point) throws SqliteException {
+        exec(String.format("rollback to %s;", point));
     }
 
     private static native long sqlite3_prepare_v2(long handle, String sql) throws SqliteException;

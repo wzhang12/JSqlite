@@ -17,6 +17,10 @@ public class Database {
         this.dbFile = dbFile;
     }
 
+    public Database(String filepath) {
+        this.dbFile = new File(filepath);
+    }
+
     public DBConnection open(int flags, String zVfs) throws SqliteException {
         long handle = sqlite3_open_v2(dbFile.getAbsolutePath(), flags, zVfs);
         return new DBConnection(handle);

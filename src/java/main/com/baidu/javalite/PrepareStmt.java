@@ -3,7 +3,7 @@ package com.baidu.javalite;
 /**
  * Created by clark on 14-8-25.
  */
-public class PrepareStmt {
+public class PrepareStmt implements Closeable {
     private long handle;
     private DBConnection connection;
 
@@ -32,6 +32,7 @@ public class PrepareStmt {
         return sqlite3_step(handle);
     }
 
+    @Override
     public void close() throws SqliteException {
         _close();
         if (isValid()) {
@@ -117,6 +118,11 @@ public class PrepareStmt {
     }
 
     public void bindBlob(int column, byte[] value) throws SqliteException {
+        if (value == null) {
+            bindNull(column);
+            return;
+        }
+
         checkHandleState();
         sqlite3_bind_blob(handle, column, value);
     }
@@ -142,6 +148,11 @@ public class PrepareStmt {
     }
 
     public void bindText(int column, String value) throws SqliteException {
+        if (value == null) {
+            bindNull(column);
+            return;
+        }
+
         checkHandleState();
         sqlite3_bind_text(handle, column, value);
     }

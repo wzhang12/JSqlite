@@ -50,6 +50,18 @@ public class Database {
         sqlite3_shutdown();
     }
 
+    public static String getLibraryVersion() {
+        return sqlite3_libversion();
+    }
+
+    public static String getLibrarySourceId() {
+        return sqlite3_sourceid();
+    }
+
+    public static int getLibraryVersionNumber() {
+        return sqlite3_libversion_number();
+    }
+
     private static native long sqlite3_open_v2(String filename, int flags, String zVfs) throws SqliteException;
 
     private static native boolean sqlite3_threadsafe();
@@ -59,4 +71,10 @@ public class Database {
     private static native void sqlite3_initialize() throws SqliteException;
 
     private static native void sqlite3_shutdown() throws SqliteException;
+
+    private static native String sqlite3_libversion();
+
+    private static native String sqlite3_sourceid();
+
+    private static native int sqlite3_libversion_number();
 }

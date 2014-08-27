@@ -67,3 +67,30 @@ void JNICALL Java_com_baidu_javalite_Database_sqlite3_1shutdown(JNIEnv *env,
         throwSqliteException2(env, rc, sqlite3_errstr(rc));
     }
 }
+
+jstring JNICALL Java_com_baidu_javalite_Database_sqlite3_1libversion(
+        JNIEnv *env, jclass cls) {
+    const char* ver = sqlite3_libversion();
+
+    if (ver == 0) {
+        return (*env)->NewStringUTF(env, "");
+    } else {
+        return (*env)->NewStringUTF(env, ver);
+    }
+}
+
+jstring JNICALL Java_com_baidu_javalite_Database_sqlite3_1sourceid(JNIEnv *env,
+        jclass cls) {
+    const char* ver = sqlite3_sourceid();
+
+    if (ver == 0) {
+        return (*env)->NewStringUTF(env, "");
+    } else {
+        return (*env)->NewStringUTF(env, ver);
+    }
+}
+
+jint JNICALL Java_com_baidu_javalite_Database_sqlite3_1libversion_1number(
+        JNIEnv *env, jclass cls) {
+    return sqlite3_libversion_number();
+}

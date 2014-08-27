@@ -47,6 +47,30 @@ JNIEXPORT void JNICALL Java_com_baidu_javalite_Database_sqlite3_1initialize
 JNIEXPORT void JNICALL Java_com_baidu_javalite_Database_sqlite3_1shutdown
   (JNIEnv *, jclass);
 
+/*
+ * Class:     com_baidu_javalite_Database
+ * Method:    sqlite3_libversion
+ * Signature: ()Ljava/lang/String;
+ */
+JNIEXPORT jstring JNICALL Java_com_baidu_javalite_Database_sqlite3_1libversion
+  (JNIEnv *, jclass);
+
+/*
+ * Class:     com_baidu_javalite_Database
+ * Method:    sqlite3_sourceid
+ * Signature: ()Ljava/lang/String;
+ */
+JNIEXPORT jstring JNICALL Java_com_baidu_javalite_Database_sqlite3_1sourceid
+  (JNIEnv *, jclass);
+
+/*
+ * Class:     com_baidu_javalite_Database
+ * Method:    sqlite3_libversion_number
+ * Signature: ()I
+ */
+JNIEXPORT jint JNICALL Java_com_baidu_javalite_Database_sqlite3_1libversion_1number
+  (JNIEnv *, jclass);
+
 #ifdef __cplusplus
 }
 #endif

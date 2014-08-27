@@ -87,6 +87,10 @@ public class DatabaseTester {
 
         System.out.println(Database.isCompiledThreadsafe());
 
+        System.out.println(Database.getLibraryVersion());
+        System.out.println(Database.getLibrarySourceId());
+        System.out.println(Database.getLibraryVersionNumber());
+
         conn.close();
     }
 

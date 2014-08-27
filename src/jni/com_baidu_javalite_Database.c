@@ -48,7 +48,7 @@ void JNICALL Java_com_baidu_javalite_Database_sqlite3_1threadmode_1config(
         JNIEnv *env, jclass cls, jint option) {
     int rc = sqlite3_config(option);
     if (rc != SQLITE_OK) {
-        throwSqliteException3(env, rc);
+        throwSqliteException2(env, rc, sqlite3_errstr(rc));
     }
 }
 
@@ -56,7 +56,7 @@ void JNICALL Java_com_baidu_javalite_Database_sqlite3_1initialize(JNIEnv *env,
         jclass cls) {
     int rc = sqlite3_initialize();
     if (rc != SQLITE_OK) {
-        throwSqliteException3(env, rc);
+        throwSqliteException2(env, rc, sqlite3_errstr(rc));
     }
 }
 
@@ -64,6 +64,6 @@ void JNICALL Java_com_baidu_javalite_Database_sqlite3_1shutdown(JNIEnv *env,
         jclass cls) {
     int rc = sqlite3_shutdown();
     if (rc != SQLITE_OK) {
-        throwSqliteException3(env, rc);
+        throwSqliteException2(env, rc, sqlite3_errstr(rc));
     }
 }

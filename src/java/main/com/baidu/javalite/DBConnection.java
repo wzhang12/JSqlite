@@ -57,6 +57,11 @@ public class DBConnection implements Closeable {
         return sqlite3_changes(sqlite3Handle);
     }
 
+    public int getTotalRowChanges() throws SqliteException {
+        checkHandleState();
+        return sqlite3_total_changes(sqlite3Handle);
+    }
+
     public long getLastInsertRowid() throws SqliteException {
         checkHandleState();
         return sqlite3_last_insert_rowid(sqlite3Handle);
@@ -84,6 +89,8 @@ public class DBConnection implements Closeable {
     private static native long sqlite3_last_insert_rowid(long handle);
 
     private static native int sqlite3_changes(long handle);
+
+    private static native int sqlite3_total_changes(long handle);
 
     private static native void sqlite3_exec(long handle, String sql, SqlExecCallback callback) throws SqliteException;
 

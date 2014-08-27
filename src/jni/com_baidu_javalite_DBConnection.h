@@ -41,6 +41,14 @@ JNIEXPORT jint JNICALL Java_com_baidu_javalite_DBConnection_sqlite3_1changes
 
 /*
  * Class:     com_baidu_javalite_DBConnection
+ * Method:    sqlite3_total_changes
+ * Signature: (J)I
+ */
+JNIEXPORT jint JNICALL Java_com_baidu_javalite_DBConnection_sqlite3_1total_1changes
+  (JNIEnv *, jclass, jlong);
+
+/*
+ * Class:     com_baidu_javalite_DBConnection
  * Method:    sqlite3_exec
  * Signature: (JLjava/lang/String;Lcom/baidu/javalite/SqlExecCallback;)V
  */

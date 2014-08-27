@@ -42,10 +42,21 @@ public class Database {
         sqlite3_threadmode_config(option);
     }
 
+    public static void initializeLibrary() throws SqliteException {
+        sqlite3_initialize();
+    }
+
+    public static synchronized void shutdownLibrary() throws SqliteException {
+        sqlite3_shutdown();
+    }
+
     private static native long sqlite3_open_v2(String filename, int flags, String zVfs) throws SqliteException;
 
     private static native boolean sqlite3_threadsafe();
 
     private static native void sqlite3_threadmode_config(int option) throws SqliteException;
 
+    private static native void sqlite3_initialize() throws SqliteException;
+
+    private static native void sqlite3_shutdown() throws SqliteException;
 }

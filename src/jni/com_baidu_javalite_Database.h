@@ -31,6 +31,22 @@ JNIEXPORT jboolean JNICALL Java_com_baidu_javalite_Database_sqlite3_1threadsafe
 JNIEXPORT void JNICALL Java_com_baidu_javalite_Database_sqlite3_1threadmode_1config
   (JNIEnv *, jclass, jint);
 
+/*
+ * Class:     com_baidu_javalite_Database
+ * Method:    sqlite3_initialize
+ * Signature: ()V
+ */
+JNIEXPORT void JNICALL Java_com_baidu_javalite_Database_sqlite3_1initialize
+  (JNIEnv *, jclass);
+
+/*
+ * Class:     com_baidu_javalite_Database
+ * Method:    sqlite3_shutdown
+ * Signature: ()V
+ */
+JNIEXPORT void JNICALL Java_com_baidu_javalite_Database_sqlite3_1shutdown
+  (JNIEnv *, jclass);
+
 #ifdef __cplusplus
 }
 #endif

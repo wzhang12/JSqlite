@@ -87,7 +87,7 @@ public class DatabaseTester {
 
         System.out.println(Database.isCompiledThreadsafe());
 
-        conn.safeClose();
+        conn.close();
     }
 
     private static boolean makesureTableExist(DBConnection connection, String tbname) throws SqliteException {

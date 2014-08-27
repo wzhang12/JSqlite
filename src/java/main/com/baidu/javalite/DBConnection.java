@@ -1,15 +1,11 @@
 package com.baidu.javalite;
 
-import java.util.HashSet;
-import java.util.Set;
-
 /**
  * Created with IntelliJ IDEA.
  * Date: 14-8-25
  */
 public class DBConnection implements Closeable {
     private long sqlite3Handle;
-    private Set<PrepareStmt> prepareStmtSet = new HashSet<PrepareStmt>();
 
     protected DBConnection(long handle) throws SqliteException {
         if (handle == 0) {
@@ -26,14 +22,10 @@ public class DBConnection implements Closeable {
         if (!isValid()) throw new SqliteException("Native handle already invalid");
     }
 
-    protected void removeStmt(PrepareStmt stmt) {
-        prepareStmtSet.remove(stmt);
-    }
-
     @Override
     protected void finalize() throws Throwable {
         try {
-            safeClose();
+            close();
         } finally {
             super.finalize();
         }
@@ -45,20 +37,6 @@ public class DBConnection implements Closeable {
             sqlite3_close(sqlite3Handle);
             sqlite3Handle = 0;
         }
-    }
-
-    public void closeAllStmt() throws SqliteException {
-        if (isValid()) {
-            for (PrepareStmt stmt : prepareStmtSet) {
-                stmt._close();
-            }
-            prepareStmtSet.clear();
-        }
-    }
-
-    public void safeClose() throws SqliteException {
-        closeAllStmt();
-        close();
     }
 
     public boolean isValid() {
@@ -92,7 +70,6 @@ public class DBConnection implements Closeable {
     public PrepareStmt prepare(String sql) throws SqliteException {
         checkHandleState();
         PrepareStmt prepareStmt = new PrepareStmt(this, sqlite3_prepare_v2(sqlite3Handle, sql));
-        prepareStmtSet.add(prepareStmt);
         return prepareStmt;
     }
 

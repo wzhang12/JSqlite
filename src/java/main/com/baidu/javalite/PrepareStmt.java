@@ -34,13 +34,6 @@ public class PrepareStmt implements Closeable {
 
     @Override
     public void close() throws SqliteException {
-        _close();
-        if (isValid()) {
-            connection.removeStmt(this);
-        }
-    }
-
-    protected void _close() throws SqliteException {
         if (isValid()) {
             sqlite3_finalize(handle);
             handle = 0;

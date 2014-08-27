@@ -45,6 +45,10 @@ jint throwSqliteException2(JNIEnv* env, int errorCode, const char* errorMsg) {
 	return rc;
 }
 
+jint throwSqliteException3(JNIEnv* env, int errorCode) {
+    return throwSqliteException2(env, errorCode, 0);
+}
+
 static jmethodID mid_getSqlExecCallback;
 
 jmethodID getSqlExecCallback(JNIEnv* env) {

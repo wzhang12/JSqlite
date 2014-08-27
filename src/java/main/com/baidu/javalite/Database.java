@@ -38,7 +38,14 @@ public class Database {
         return sqlite3_threadsafe();
     }
 
+    public static synchronized void threadmodeConfig(int option) throws SqliteException {
+        sqlite3_threadmode_config(option);
+    }
+
     private static native long sqlite3_open_v2(String filename, int flags, String zVfs) throws SqliteException;
 
     private static native boolean sqlite3_threadsafe();
+
+    private static native void sqlite3_threadmode_config(int option) throws SqliteException;
+
 }

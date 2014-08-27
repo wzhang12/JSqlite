@@ -23,6 +23,14 @@ JNIEXPORT jlong JNICALL Java_com_baidu_javalite_Database_sqlite3_1open_1v2
 JNIEXPORT jboolean JNICALL Java_com_baidu_javalite_Database_sqlite3_1threadsafe
   (JNIEnv *, jclass);
 
+/*
+ * Class:     com_baidu_javalite_Database
+ * Method:    sqlite3_threadmode_config
+ * Signature: (I)V
+ */
+JNIEXPORT void JNICALL Java_com_baidu_javalite_Database_sqlite3_1threadmode_1config
+  (JNIEnv *, jclass, jint);
+
 #ifdef __cplusplus
 }
 #endif

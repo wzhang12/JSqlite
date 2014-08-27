@@ -14,6 +14,8 @@ jint throwSqliteException(JNIEnv* env, const char* msg);
 
 jint throwSqliteException2(JNIEnv* env, int errorCode, const char* errorMsg);
 
+jint throwSqliteException3(JNIEnv* env, int errorCode);
+
 jmethodID getSqlExecCallback(JNIEnv* env);
 
 jobjectArray createStringArray(JNIEnv* env, char** array, int len);

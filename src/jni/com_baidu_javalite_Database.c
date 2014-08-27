@@ -26,7 +26,8 @@ jlong JNICALL Java_com_baidu_javalite_Database_sqlite3_1open_1v2(JNIEnv *env,
     int rc = sqlite3_open_v2(name, &handle, flags, cZvfs);
 
     if (rc != SQLITE_OK) {
-        throwSqliteException2(env, sqlite3_errcode(handle), sqlite3_errmsg(handle));
+        throwSqliteException2(env, sqlite3_errcode(handle),
+                sqlite3_errmsg(handle));
         sqlite3_close(handle);
         handle = 0;
     }
@@ -38,7 +39,15 @@ jlong JNICALL Java_com_baidu_javalite_Database_sqlite3_1open_1v2(JNIEnv *env,
     return (jlong) handle;
 }
 
-jboolean JNICALL Java_com_baidu_javalite_Database_sqlite3_1threadsafe
-  (JNIEnv *env, jclass cls) {
+jboolean JNICALL Java_com_baidu_javalite_Database_sqlite3_1threadsafe(
+        JNIEnv *env, jclass cls) {
     return sqlite3_threadsafe() != 0;
+}
+
+void JNICALL Java_com_baidu_javalite_Database_sqlite3_1threadmode_1config(
+        JNIEnv *env, jclass cls, jint option) {
+    int rc = sqlite3_config(option);
+    if (rc != SQLITE_OK) {
+        throwSqliteException3(env, rc);
+    }
 }

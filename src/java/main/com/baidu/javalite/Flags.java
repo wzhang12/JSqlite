@@ -80,4 +80,11 @@ public final class Flags {
     public static final int SQLITE_TEXT = 3;
     public static final int SQLITE_BLOB = 4;
     public static final int SQLITE_NULL = 5;
+
+    /**
+     * {@link com.baidu.javalite.Database#threadmodeConfig(int)} 的参数选项
+     */
+    public static final int SQLITE_CONFIG_SINGLETHREAD = 1;
+    public static final int SQLITE_CONFIG_MULTITHREAD = 2;
+    public static final int SQLITE_CONFIG_SERIALIZED = 3;
 }

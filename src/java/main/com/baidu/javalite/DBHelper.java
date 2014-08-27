@@ -20,4 +20,10 @@ public final class DBHelper {
         }
     }
 
+    public static void checkValidable(Validable validable) throws SqliteException {
+        if (validable == null || !validable.isValid()) {
+            throw new SqliteException("Native handle has been invalid");
+        }
+    }
+
 }

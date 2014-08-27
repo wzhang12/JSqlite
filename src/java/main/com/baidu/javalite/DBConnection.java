@@ -4,7 +4,7 @@ package com.baidu.javalite;
  * Created with IntelliJ IDEA.
  * Date: 14-8-25
  */
-public class DBConnection implements Closeable {
+public class DBConnection implements Closeable, Validable {
     private long sqlite3Handle;
 
     protected DBConnection(long handle) throws SqliteException {
@@ -16,10 +16,6 @@ public class DBConnection implements Closeable {
 
     protected long getNativeHandle() {
         return sqlite3Handle;
-    }
-
-    protected void checkHandleState() throws SqliteException {
-        if (!isValid()) throw new SqliteException("Native handle already invalid");
     }
 
     @Override
@@ -39,12 +35,13 @@ public class DBConnection implements Closeable {
         }
     }
 
+    @Override
     public boolean isValid() {
         return sqlite3Handle != 0;
     }
 
     public void exec(String sql, SqlExecCallback callback) throws SqliteException {
-        checkHandleState();
+        DBHelper.checkValidable(this);
         sqlite3_exec(sqlite3Handle, sql, callback);
     }
 
@@ -53,27 +50,27 @@ public class DBConnection implements Closeable {
     }
 
     public int getRowChanges() throws SqliteException {
-        checkHandleState();
+        DBHelper.checkValidable(this);
         return sqlite3_changes(sqlite3Handle);
     }
 
     public int getTotalRowChanges() throws SqliteException {
-        checkHandleState();
+        DBHelper.checkValidable(this);
         return sqlite3_total_changes(sqlite3Handle);
     }
 
     public long getLastInsertRowid() throws SqliteException {
-        checkHandleState();
+        DBHelper.checkValidable(this);
         return sqlite3_last_insert_rowid(sqlite3Handle);
     }
 
     public TableResult getTable(String sql) throws SqliteException {
-        checkHandleState();
+        DBHelper.checkValidable(this);
         return sqlite3_get_table(sqlite3Handle, sql);
     }
 
     public PrepareStmt prepare(String sql) throws SqliteException {
-        checkHandleState();
+        DBHelper.checkValidable(this);
         PrepareStmt prepareStmt = new PrepareStmt(this, sqlite3_prepare_v2(sqlite3Handle, sql));
         return prepareStmt;
     }
@@ -86,11 +83,11 @@ public class DBConnection implements Closeable {
 
     private static native TableResult sqlite3_get_table(long handle, String sql) throws SqliteException;
 
-    private static native long sqlite3_last_insert_rowid(long handle);
+    private static native long sqlite3_last_insert_rowid(long handle) throws SqliteException;
 
-    private static native int sqlite3_changes(long handle);
+    private static native int sqlite3_changes(long handle) throws SqliteException;
 
-    private static native int sqlite3_total_changes(long handle);
+    private static native int sqlite3_total_changes(long handle) throws SqliteException;
 
     private static native void sqlite3_exec(long handle, String sql, SqlExecCallback callback) throws SqliteException;
 

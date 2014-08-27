@@ -3,7 +3,7 @@ package com.baidu.javalite;
 /**
  * Created by clark on 14-8-25.
  */
-public class PrepareStmt implements Closeable {
+public class PrepareStmt implements Closeable, Validable {
     private long handle;
     private DBConnection connection;
 
@@ -15,12 +15,9 @@ public class PrepareStmt implements Closeable {
         this.handle = handle;
     }
 
+    @Override
     public boolean isValid() {
         return handle != 0;
-    }
-
-    protected void checkHandleState() throws SqliteException {
-        if (!isValid()) throw new SqliteException("Native handle already invalid");
     }
 
     public DBConnection getConnection() {
@@ -28,7 +25,7 @@ public class PrepareStmt implements Closeable {
     }
 
     public boolean step() throws SqliteException {
-        checkHandleState();
+        DBHelper.checkValidable(this);
         return sqlite3_step(handle);
     }
 
@@ -41,147 +38,145 @@ public class PrepareStmt implements Closeable {
     }
 
     public void reset() throws SqliteException {
-        checkHandleState();
+        DBHelper.checkValidable(this);
         sqlite3_reset(handle);
     }
 
     public int getColumnCount() throws SqliteException {
-        checkHandleState();
+        DBHelper.checkValidable(this);
         return sqlite3_column_count(handle);
     }
 
     public String getColumnName(int column) throws SqliteException {
-        checkHandleState();
+        DBHelper.checkValidable(this);
         return sqlite3_column_name(handle, column);
     }
 
     public String getColumnDatabaseName(int column) throws SqliteException {
-        checkHandleState();
+        DBHelper.checkValidable(this);
         return sqlite3_column_database_name(handle, column);
     }
 
     public String getColumnTableName(int column) throws SqliteException {
-        checkHandleState();
+        DBHelper.checkValidable(this);
         return sqlite3_column_table_name(handle, column);
     }
 
     public String getColumnOriginName(int column) throws SqliteException {
-        checkHandleState();
+        DBHelper.checkValidable(this);
         return sqlite3_column_origin_name(handle, column);
     }
 
     public String getColumnDecltype(int column) throws SqliteException {
-        checkHandleState();
+        DBHelper.checkValidable(this);
         return sqlite3_column_decltype(handle, column);
     }
 
     public int getDataCount() throws SqliteException {
-        checkHandleState();
+        DBHelper.checkValidable(this);
         return sqlite3_data_count(handle);
     }
 
     public byte[] getColumnBlob(int column) throws SqliteException {
-        checkHandleState();
+        DBHelper.checkValidable(this);
         return sqlite3_column_blob(handle, column);
     }
 
     public double getColumnDouble(int column) throws SqliteException {
-        checkHandleState();
+        DBHelper.checkValidable(this);
         return sqlite3_column_double(handle, column);
     }
 
     public int getColumnInt(int column) throws SqliteException {
-        checkHandleState();
+        DBHelper.checkValidable(this);
         return sqlite3_column_int(handle, column);
     }
 
     public long getColumnInt64(int column) throws SqliteException {
-        checkHandleState();
+        DBHelper.checkValidable(this);
         return sqlite3_column_int64(handle, column);
     }
 
     public String getColumnText(int column) throws SqliteException {
-        checkHandleState();
+        DBHelper.checkValidable(this);
         return sqlite3_column_text(handle, column);
     }
 
     public int getColumnType(int column) throws SqliteException {
-        checkHandleState();
+        DBHelper.checkValidable(this);
         return sqlite3_column_type(handle, column);
     }
 
     public void bindBlob(int column, byte[] value) throws SqliteException {
         if (value == null) {
             bindNull(column);
-            return;
+        } else {
+            DBHelper.checkValidable(this);
+            sqlite3_bind_blob(handle, column, value);
         }
-
-        checkHandleState();
-        sqlite3_bind_blob(handle, column, value);
     }
 
     public void bindDouble(int column, double value) throws SqliteException {
-        checkHandleState();
+        DBHelper.checkValidable(this);
         sqlite3_bind_double(handle, column, value);
     }
 
     public void bindInt(int column, int value) throws SqliteException {
-        checkHandleState();
+        DBHelper.checkValidable(this);
         sqlite3_bind_int(handle, column, value);
     }
 
     public void bindInt64(int column, long value) throws SqliteException {
-        checkHandleState();
+        DBHelper.checkValidable(this);
         sqlite3_bind_int64(handle, column, value);
     }
 
     public void bindNull(int column) throws SqliteException {
-        checkHandleState();
+        DBHelper.checkValidable(this);
         sqlite3_bind_null(handle, column);
     }
 
     public void bindText(int column, String value) throws SqliteException {
         if (value == null) {
             bindNull(column);
-            return;
+        } else {
+            DBHelper.checkValidable(this);
+            sqlite3_bind_text(handle, column, value);
         }
-
-        checkHandleState();
-        sqlite3_bind_text(handle, column, value);
     }
 
     public void clearBinding() throws SqliteException {
-        checkHandleState();
+        DBHelper.checkValidable(this);
         sqlite3_clear_bindings(handle);
     }
 
     public int getBindParameterIndex(String name) throws SqliteException {
-        checkHandleState();
+        DBHelper.checkValidable(this);
         return sqlite3_bind_parameter_index(handle, name);
     }
 
     public String getBindParameterName(int index) throws SqliteException {
-        checkHandleState();
+        DBHelper.checkValidable(this);
         return sqlite3_bind_parameter_name(handle, index);
     }
 
     public int getBindParameterCount() throws SqliteException {
-        checkHandleState();
+        DBHelper.checkValidable(this);
         return sqlite3_bind_parameter_count(handle);
     }
 
     public boolean isBusy() throws SqliteException {
-        checkHandleState();
+        DBHelper.checkValidable(this);
         return sqlite3_stmt_busy(handle);
     }
 
     public boolean isReadOnly() throws SqliteException {
-        checkHandleState();
+        DBHelper.checkValidable(this);
         return sqlite3_stmt_readonly(handle);
     }
 
     public String getSql() throws SqliteException {
-        checkHandleState();
+        DBHelper.checkValidable(this);
         return sqlite3_sql(handle);
     }
 

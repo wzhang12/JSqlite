@@ -96,24 +96,8 @@ public class DBConnection implements Closeable {
         return prepareStmt;
     }
 
-    public void beginTransaction() throws SqliteException {
-        exec("begin;");
-    }
-
-    public void endTransaction() throws SqliteException {
-        exec("commit;");
-    }
-
-    public void rollback() throws SqliteException {
-        exec("rollback;");
-    }
-
-    public void savepoint(String point) throws SqliteException {
-        exec(String.format("savepoint %s;", point));
-    }
-
-    public void rollbackTo(String point) throws SqliteException {
-        exec(String.format("rollback to %s;", point));
+    public Transaction newTransaction() {
+        return new Transaction(this);
     }
 
     private static native long sqlite3_prepare_v2(long handle, String sql) throws SqliteException;

@@ -85,6 +85,8 @@ public class DatabaseTester {
 
         makesureTableExist(conn, "a");
 
+        System.out.println(Database.isCompiledThreadsafe());
+
         conn.safeClose();
     }
 

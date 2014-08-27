@@ -51,14 +51,20 @@
     </target>
 
     <target name="build" depends="-compile" description="打包">
-        <jar destfile="${build.jar}"
-             manifest="${java.src}/MANIFEST.MF">
+        <jar destfile="${build.jar}">
             <fileset dir="${bin.classes}" includes="**/*.class" excludes="**/test/*"/>
         </jar>
     </target>
 
-    <target name="run" depends="build" description="运行">
-        <java dir="bin"
+    <target name="-internal-build" depends="-compile">
+        <jar destfile="${build.jar}"
+             manifest="${java.src}/MANIFEST.MF">
+            <fileset dir="${bin.classes}" includes="**/*.class"/>
+        </jar>
+    </target>
+
+    <target name="run" depends="-internal-build" description="运行">
+        <java dir="${basedir}"
               jar="${build.jar}"
               failonerror="on"
               fork="on">

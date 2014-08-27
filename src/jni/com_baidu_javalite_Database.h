@@ -15,6 +15,14 @@ extern "C" {
 JNIEXPORT jlong JNICALL Java_com_baidu_javalite_Database_sqlite3_1open_1v2
   (JNIEnv *, jclass, jstring, jint, jstring);
 
+/*
+ * Class:     com_baidu_javalite_Database
+ * Method:    sqlite3_threadsafe
+ * Signature: ()Z
+ */
+JNIEXPORT jboolean JNICALL Java_com_baidu_javalite_Database_sqlite3_1threadsafe
+  (JNIEnv *, jclass);
+
 #ifdef __cplusplus
 }
 #endif

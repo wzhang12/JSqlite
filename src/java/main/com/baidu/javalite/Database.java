@@ -34,5 +34,11 @@ public class Database {
         return open(Flags.SQLITE_OPEN_READWRITE | Flags.SQLITE_OPEN_CREATE);
     }
 
+    public static boolean isCompiledThreadsafe() {
+        return sqlite3_threadsafe();
+    }
+
     private static native long sqlite3_open_v2(String filename, int flags, String zVfs) throws SqliteException;
+
+    private static native boolean sqlite3_threadsafe();
 }

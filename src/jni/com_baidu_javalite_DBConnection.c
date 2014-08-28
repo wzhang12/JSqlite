@@ -57,8 +57,8 @@ void JNICALL Java_com_baidu_javalite_DBConnection_sqlite3_1exec(JNIEnv *env,
     }
 
     sqlite3* conn = (sqlite3*) handle;
-    char* errMsg;
     const char* csql = (*env)->GetStringUTFChars(env, sql, 0);
+    int rc;
 
     if (g_exec_callback != 0) {
         (*env)->DeleteGlobalRef(env, g_exec_callback);
@@ -67,9 +67,10 @@ void JNICALL Java_com_baidu_javalite_DBConnection_sqlite3_1exec(JNIEnv *env,
 
     if (callback != 0) {
         g_exec_callback = (*env)->NewGlobalRef(env, callback);
+        rc = sqlite3_exec(conn, csql, exec_callback, 0, 0);
+    } else {
+        rc = sqlite3_exec(conn, csql, 0, 0, 0);
     }
-
-    int rc = sqlite3_exec(conn, csql, exec_callback, 0, &errMsg);
 
     (*env)->ReleaseStringUTFChars(env, sql, csql);
 
@@ -172,4 +173,41 @@ jlong JNICALL Java_com_baidu_javalite_DBConnection_sqlite3_1prepare_1v2(
     }
 
     return (jlong) stmt;
+}
+
+static jobject g_busy_handler;
+
+static int my_busy_handler(void* data, int times) {
+    if (g_busy_handler == 0) {
+        return 0;
+    } else {
+        return callBusyHandlerCallback(getEnv(), g_busy_handler, times);
+    }
+}
+
+void JNICALL Java_com_baidu_javalite_DBConnection_sqlite3_1busy_1handler(
+        JNIEnv *env, jclass cls, jlong handle, jobject jHandler) {
+    if (handle == 0) {
+        throwSqliteException(env, "handle is NULL");
+        return;
+    }
+
+    sqlite3* conn = (sqlite3*) handle;
+    int rc;
+
+    if (g_busy_handler != 0) {
+        (*env)->DeleteGlobalRef(env, g_busy_handler);
+        g_busy_handler = 0;
+    }
+
+    if (jHandler == 0) {
+        rc = sqlite3_busy_handler(conn, 0, 0);
+    } else {
+        g_busy_handler = (*env)->NewGlobalRef(env, jHandler);
+        rc = sqlite3_busy_handler(conn, my_busy_handler, 0);
+    }
+
+    if (rc != SQLITE_OK) {
+        throwSqliteException2(env, sqlite3_errcode(conn), sqlite3_errmsg(conn));
+    }
 }

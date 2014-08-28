@@ -79,6 +79,11 @@ public class DBConnection implements Closeable, Validable {
         return new Transaction(this);
     }
 
+    public void setBusyHandler(BusyHandler handler) throws SqliteException {
+        DBHelper.checkValidable(this);
+        sqlite3_busy_handler(sqlite3Handle, handler);
+    }
+
     private static native long sqlite3_prepare_v2(long handle, String sql) throws SqliteException;
 
     private static native TableResult sqlite3_get_table(long handle, String sql) throws SqliteException;
@@ -92,4 +97,6 @@ public class DBConnection implements Closeable, Validable {
     private static native void sqlite3_exec(long handle, String sql, SqlExecCallback callback) throws SqliteException;
 
     private static native void sqlite3_close(long handle) throws SqliteException;
+
+    private static native void sqlite3_busy_handler(long handle, BusyHandler handler) throws SqliteException;
 }

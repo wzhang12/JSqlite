@@ -63,6 +63,14 @@ JNIEXPORT void JNICALL Java_com_baidu_javalite_DBConnection_sqlite3_1exec
 JNIEXPORT void JNICALL Java_com_baidu_javalite_DBConnection_sqlite3_1close
   (JNIEnv *, jclass, jlong);
 
+/*
+ * Class:     com_baidu_javalite_DBConnection
+ * Method:    sqlite3_busy_handler
+ * Signature: (JLcom/baidu/javalite/BusyHandler;)V
+ */
+JNIEXPORT void JNICALL Java_com_baidu_javalite_DBConnection_sqlite3_1busy_1handler
+  (JNIEnv *, jclass, jlong, jobject);
+
 #ifdef __cplusplus
 }
 #endif

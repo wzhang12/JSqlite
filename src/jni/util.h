@@ -28,4 +28,8 @@ jmethodID getTableResultInit(JNIEnv* env);
 
 jobject newTableResult(JNIEnv* env, char** result, int row, int col);
 
+jmethodID getBusyHandlerCallback(JNIEnv* env);
+
+jint callBusyHandlerCallback(JNIEnv* env, jobject obj, int times);
+
 #endif /* UTIL_H_ */

@@ -177,7 +177,7 @@ jlong JNICALL Java_com_baidu_javalite_DBConnection_sqlite3_1prepare_1v2(
 
 static jobject g_busy_handler;
 
-static int my_busy_handler(void* data, int times) {
+static int jni_busy_handler(void* data, int times) {
     if (g_busy_handler == 0) {
         return 0;
     } else {
@@ -204,7 +204,7 @@ void JNICALL Java_com_baidu_javalite_DBConnection_sqlite3_1busy_1handler(
         rc = sqlite3_busy_handler(conn, 0, 0);
     } else {
         g_busy_handler = (*env)->NewGlobalRef(env, jHandler);
-        rc = sqlite3_busy_handler(conn, my_busy_handler, 0);
+        rc = sqlite3_busy_handler(conn, jni_busy_handler, 0);
     }
 
     if (rc != SQLITE_OK) {
@@ -272,13 +272,15 @@ void JNICALL Java_com_baidu_javalite_DBConnection_sqlite3_1commit_1hook(
             jArg = (*env)->NewGlobalRef(env, arg);
         }
 
-        sqlite3_commit_hook(conn, jni_commit_hook, (void*) jArg);
+        g_commit_hook = (*env)->NewGlobalRef(env, hook);
+
+        sqlite3_commit_hook(conn, jni_commit_hook, jArg);
     }
 }
 
 static jobject g_rollback_hook;
 
-static void rollback_hook(void* arg) {
+static void jni_rollback_hook(void* arg) {
     if (g_rollback_hook == 0) {
         return;
     }
@@ -319,6 +321,8 @@ void JNICALL Java_com_baidu_javalite_DBConnection_sqlite3_1rollback_1hook(
             jArg = (*env)->NewGlobalRef(env, arg);
         }
 
-        sqlite3_rollback_hook(conn, rollback_hook, jArg);
+        g_rollback_hook = (*env)->NewGlobalRef(env, hook);
+
+        sqlite3_rollback_hook(conn, jni_rollback_hook, jArg);
     }
 }

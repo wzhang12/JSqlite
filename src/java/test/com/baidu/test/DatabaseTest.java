@@ -1,5 +1,8 @@
 package com.baidu.test;
 
+import com.baidu.javalite.DBConnection;
+import com.baidu.javalite.Database;
+import org.junit.Assert;
 import org.junit.Test;
 
 /**
@@ -9,8 +12,12 @@ import org.junit.Test;
 public class DatabaseTest {
 
     @Test
-    public void open() throws Throwable {
-        System.out.println("Hello JUnit4!");
+    public void testOpenClose() throws Throwable {
+        Database database = new Database("resource/test/testOpenClose.dbt");
+        DBConnection conn = database.open();
+        Assert.assertTrue(conn.isValid());
+        conn.close();
+        Assert.assertTrue(!conn.isValid());
     }
 
 }

@@ -14,8 +14,7 @@ static jmethodID getMidSqliteExceptionInit(JNIEnv* env) {
 }
 
 jint throwSqliteException(JNIEnv* env, const char* msg) {
-    jclass excls = (*env)->FindClass(env,
-            "com/baidu/javalite/SqliteException");
+    jclass excls = (*env)->FindClass(env, "com/baidu/javalite/SqliteException");
     jint rc;
     if (msg != 0) {
         rc = (*env)->ThrowNew(env, excls, msg);
@@ -27,8 +26,7 @@ jint throwSqliteException(JNIEnv* env, const char* msg) {
 }
 
 jint throwSqliteException2(JNIEnv* env, int errorCode, const char* errorMsg) {
-    jclass excls = (*env)->FindClass(env,
-            "com/baidu/javalite/SqliteException");
+    jclass excls = (*env)->FindClass(env, "com/baidu/javalite/SqliteException");
     jmethodID mid = getMidSqliteExceptionInit(env);
     jstring jErrorMsg;
     if (errorMsg != 0) {
@@ -82,7 +80,7 @@ void setJavaVM(JavaVM* vm) {
     g_vm = vm;
 }
 
-JNIEnv* getEnv() {
+JNIEnv* getEnv(void) {
     JNIEnv* rs;
     (*g_vm)->GetEnv(g_vm, (void**) &rs, JNI_VERSION_1_6);
     return rs;
@@ -117,7 +115,8 @@ static jmethodID mid_BusyHandlerCallback;
 jmethodID getBusyHandlerCallback(JNIEnv* env) {
     if (mid_BusyHandlerCallback == 0) {
         jclass cls = (*env)->FindClass(env, "com/baidu/javalite/BusyHandler");
-        mid_BusyHandlerCallback = (*env)->GetMethodID(env, cls, "handle", "(I)I");
+        mid_BusyHandlerCallback = (*env)->GetMethodID(env, cls, "handle",
+                "(I)I");
         (*env)->DeleteLocalRef(env, cls);
     }
 
@@ -128,3 +127,36 @@ jint callBusyHandlerCallback(JNIEnv* env, jobject obj, int times) {
     return (*env)->CallIntMethod(env, obj, getBusyHandlerCallback(env), times);
 }
 
+static jmethodID mid_CommitHookCallback;
+
+jmethodID getCommitHookCallback(JNIEnv* env) {
+    if (mid_CommitHookCallback == 0) {
+        jclass cls = (*env)->FindClass(env, "com/baidu/javalite/CommitHook");
+        mid_CommitHookCallback = (*env)->GetMethodID(env, cls, "callback",
+                "(Ljava/lang/Object;)I");
+        (*env)->DeleteLocalRef(env, cls);
+    }
+
+    return mid_CommitHookCallback;
+}
+
+jint callCommitHookCallback(JNIEnv* env, jobject obj, jobject arg) {
+    return (*env)->CallIntMethod(env, obj, getCommitHookCallback(env), arg);
+}
+
+static jmethodID mid_RollbackHookCallback;
+
+jmethodID getRollbackHookCallback(JNIEnv* env) {
+    if (mid_RollbackHookCallback == 0) {
+        jclass cls = (*env)->FindClass(env, "com/baidu/javalite/RollbackHook");
+        mid_RollbackHookCallback = (*env)->GetMethodID(env, cls, "callback",
+                "(Ljava/lang/Object;)V");
+        (*env)->DeleteLocalRef(env, cls);
+    }
+
+    return mid_RollbackHookCallback;
+}
+
+void callRollbackHookCallback(JNIEnv* env, jobject obj, jobject arg) {
+    (*env)->CallVoidMethod(env, obj, getRollbackHookCallback(env), arg);
+}

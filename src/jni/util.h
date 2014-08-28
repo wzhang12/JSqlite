@@ -22,7 +22,7 @@ jobjectArray createStringArray(JNIEnv* env, char** array, int len);
 
 void setJavaVM(JavaVM* vm);
 
-JNIEnv* getEnv();
+JNIEnv* getEnv(void);
 
 jmethodID getTableResultInit(JNIEnv* env);
 
@@ -31,5 +31,13 @@ jobject newTableResult(JNIEnv* env, char** result, int row, int col);
 jmethodID getBusyHandlerCallback(JNIEnv* env);
 
 jint callBusyHandlerCallback(JNIEnv* env, jobject obj, int times);
+
+jmethodID getCommitHookCallback(JNIEnv* env);
+
+jint callCommitHookCallback(JNIEnv* env, jobject obj, jobject arg);
+
+jmethodID getRollbackHookCallback(JNIEnv* env);
+
+void callRollbackHookCallback(JNIEnv* env, jobject obj, jobject arg);
 
 #endif /* UTIL_H_ */

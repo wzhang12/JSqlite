@@ -226,3 +226,99 @@ void JNICALL Java_com_baidu_javalite_DBConnection_sqlite3_1busy_1timeout(
         throwSqliteException2(env, sqlite3_errcode(conn), sqlite3_errmsg(conn));
     }
 }
+
+static jobject g_commit_hook;
+
+static int jni_commit_hook(void* arg) {
+    if (g_commit_hook == 0) {
+        return 0;
+    }
+
+    jobject jArg;
+    JNIEnv* env = getEnv();
+    int rs;
+
+    if (arg != 0) {
+        jArg = (jobject) arg;
+    } else {
+        jArg = 0;
+    }
+
+    rs = callCommitHookCallback(env, g_commit_hook, jArg);
+
+    (*env)->DeleteGlobalRef(env, jArg);
+    return rs;
+}
+
+void JNICALL Java_com_baidu_javalite_DBConnection_sqlite3_1commit_1hook(
+        JNIEnv *env, jclass cls, jlong handle, jobject hook, jobject arg) {
+    if (handle == 0) {
+        throwSqliteException(env, "handle is NULL");
+        return;
+    }
+
+    sqlite3* conn = (sqlite3*) handle;
+
+    if (g_commit_hook != 0) {
+        (*env)->DeleteGlobalRef(env, g_commit_hook);
+        g_commit_hook = 0;
+    }
+
+    if (hook == 0) {
+        sqlite3_commit_hook(conn, 0, 0);
+    } else {
+        jobject jArg = 0;
+        if (arg != 0) {
+            jArg = (*env)->NewGlobalRef(env, arg);
+        }
+
+        sqlite3_commit_hook(conn, jni_commit_hook, (void*) jArg);
+    }
+}
+
+static jobject g_rollback_hook;
+
+static void rollback_hook(void* arg) {
+    if (g_rollback_hook == 0) {
+        return;
+    }
+
+    jobject jArg;
+    JNIEnv* env = getEnv();
+
+    if (arg != 0) {
+        jArg = (jobject) arg;
+    } else {
+        jArg = 0;
+    }
+
+    callRollbackHookCallback(env, g_rollback_hook, jArg);
+
+    (*env)->DeleteGlobalRef(env, jArg);
+}
+
+void JNICALL Java_com_baidu_javalite_DBConnection_sqlite3_1rollback_1hook(
+        JNIEnv *env, jclass cls, jlong handle, jobject hook, jobject arg) {
+    if (handle == 0) {
+        throwSqliteException(env, "handle is NULL");
+        return;
+    }
+
+    sqlite3* conn = (sqlite3*) handle;
+
+    if (g_rollback_hook != 0) {
+        (*env)->DeleteGlobalRef(env, g_rollback_hook);
+        g_rollback_hook = 0;
+    }
+
+    if (hook == 0) {
+        sqlite3_rollback_hook(conn, 0, 0);
+    } else {
+        jobject jArg = 0;
+        if (arg != 0) {
+            jArg = (*env)->NewGlobalRef(env, arg);
+        }
+
+        sqlite3_rollback_hook(conn, rollback_hook, jArg);
+    }
+}

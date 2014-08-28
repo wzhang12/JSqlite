@@ -53,7 +53,7 @@ public class DBConnectionTest {
     }
 
     @Test
-    public void tetsMultiSqlExec() {
+    public void testMultiSqlExec() {
         count = 0;
         String sql = "SELECT count(*) FROM sqlite_master where type='table' AND name='test_tb';" +
                 "DROP TABLE IF EXISTS test_tb;" +

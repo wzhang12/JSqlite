@@ -211,3 +211,18 @@ void JNICALL Java_com_baidu_javalite_DBConnection_sqlite3_1busy_1handler(
         throwSqliteException2(env, sqlite3_errcode(conn), sqlite3_errmsg(conn));
     }
 }
+
+void JNICALL Java_com_baidu_javalite_DBConnection_sqlite3_1busy_1timeout(
+        JNIEnv *env, jclass cls, jlong handle, jint ms) {
+    if (handle == 0) {
+        throwSqliteException(env, "handle is NULL");
+        return;
+    }
+
+    sqlite3* conn = (sqlite3*) handle;
+    int rc = sqlite3_busy_timeout(conn, ms);
+
+    if (rc != SQLITE_OK) {
+        throwSqliteException2(env, sqlite3_errcode(conn), sqlite3_errmsg(conn));
+    }
+}

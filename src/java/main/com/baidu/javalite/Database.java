@@ -21,7 +21,7 @@ public class Database {
         this.dbFile = new File(filepath);
     }
 
-    public DBConnection open(int flags, String zVfs) throws SqliteException {
+    private DBConnection open(int flags, String zVfs) throws SqliteException {
         long handle = sqlite3_open_v2(dbFile.getAbsolutePath(), flags, zVfs);
         return new DBConnection(handle);
     }

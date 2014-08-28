@@ -8,7 +8,7 @@ import java.io.File;
  * Created with IntelliJ IDEA.
  * Date: 14-8-25
  */
-public class DatabaseTester {
+public class DatabaseT {
 
     public static void main(String[] args) throws SqliteException {
         Database database = new Database(new File("a.db"));

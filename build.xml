@@ -63,6 +63,12 @@
                force="on"
                class="com.baidu.javalite.Backup"
                classpath="${bin.classes}"/>
+
+        <javah verbose="on"
+               destdir="${jni.src}"
+               force="on"
+               class="com.baidu.javalite.Blob"
+               classpath="${bin.classes}"/>
     </target>
 
     <target name="build" depends="-compile" description="打包">

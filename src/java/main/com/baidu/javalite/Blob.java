@@ -8,6 +8,7 @@ import java.io.OutputStream;
  */
 public class Blob implements Closeable, Validable {
     private long handle;
+    private final int flags;
 
     protected Blob(DBConnection connection,
                    String dbName,
@@ -31,6 +32,7 @@ public class Blob implements Closeable, Validable {
             throw new SqliteException("There must be a column name.");
         }
 
+        this.flags = flags;
         handle = sqlite3_blob_open(connection.getNativeHandle(),
                 dbName, tbName, colName, rowId, flags);
     }
@@ -48,32 +50,43 @@ public class Blob implements Closeable, Validable {
         }
     }
 
-    public void reopen(int newRowId) throws SqliteException {
+    public void reopen(long newRowId) throws SqliteException {
         DBHelper.checkValidable(this);
         sqlite3_blob_reopen(handle, newRowId);
     }
 
-    public InputStream newInputStream() {
+    public boolean isReadWriteBlob() {
+        return flags != 0;
+    }
+
+    public boolean isOnlyReadBlob() {
+        return flags == 0;
+    }
+
+    public InputStream newInputStream() throws SqliteException {
         return new BlobInputStream(this);
     }
 
-    public OutputStream newOutputStream() {
+    public OutputStream newOutputStream() throws SqliteException {
+        if (isOnlyReadBlob()) {
+            throw new SqliteException("It's a only read blob!");
+        }
         return new BlobOutputStream(this);
     }
 
-    protected int remains() throws SqliteException {
+    public int size() throws SqliteException {
         DBHelper.checkValidable(this);
         return sqlite3_blob_bytes(handle);
     }
 
-    protected void read(byte[] buf, int offset, int length) throws SqliteException {
+    protected void read(byte[] buf, int offset, int length, int bOffset) throws SqliteException {
         DBHelper.checkValidable(this);
-        sqlite3_blob_read(handle, buf, offset, length);
+        sqlite3_blob_read(handle, buf, offset, length, bOffset);
     }
 
-    protected void write(byte[] buf, int offset, int length) throws SqliteException {
+    protected void write(byte[] buf, int offset, int length, int bOffset) throws SqliteException {
         DBHelper.checkValidable(this);
-        sqlite3_blob_write(handle, buf, offset, length);
+        sqlite3_blob_write(handle, buf, offset, length, bOffset);
     }
 
     private static native long sqlite3_blob_open(long connHandle,
@@ -90,8 +103,8 @@ public class Blob implements Closeable, Validable {
     private static native int sqlite3_blob_bytes(long handle) throws SqliteException;
 
     private static native void sqlite3_blob_read(long handle, byte[] buf,
-                                                 int offset, int length) throws SqliteException;
+                                                 int offset, int length, int blobOffset) throws SqliteException;
 
     private static native void sqlite3_blob_write(long handle, byte[] buf,
-                                                  int offset, int length) throws SqliteException;
+                                                  int offset, int length, int blobOffset) throws SqliteException;
 }

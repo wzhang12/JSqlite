@@ -42,18 +42,18 @@ JNIEXPORT jint JNICALL Java_com_baidu_javalite_Blob_sqlite3_1blob_1bytes
 /*
  * Class:     com_baidu_javalite_Blob
  * Method:    sqlite3_blob_read
- * Signature: (J[BII)V
+ * Signature: (J[BIII)V
  */
 JNIEXPORT void JNICALL Java_com_baidu_javalite_Blob_sqlite3_1blob_1read
-  (JNIEnv *, jclass, jlong, jbyteArray, jint, jint);
+  (JNIEnv *, jclass, jlong, jbyteArray, jint, jint, jint);
 
 /*
  * Class:     com_baidu_javalite_Blob
  * Method:    sqlite3_blob_write
- * Signature: (J[BII)V
+ * Signature: (J[BIII)V
  */
 JNIEXPORT void JNICALL Java_com_baidu_javalite_Blob_sqlite3_1blob_1write
-  (JNIEnv *, jclass, jlong, jbyteArray, jint, jint);
+  (JNIEnv *, jclass, jlong, jbyteArray, jint, jint, jint);
 
 #ifdef __cplusplus
 }

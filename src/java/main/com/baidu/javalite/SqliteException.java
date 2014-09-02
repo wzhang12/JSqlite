@@ -1,11 +1,13 @@
 package com.baidu.javalite;
 
+import java.io.IOException;
+
 /**
  * Created with IntelliJ IDEA.
  * Date: 14-8-25
  */
-public class SqliteException extends Exception {
-    private int errorCode;
+public class SqliteException extends IOException {
+    private int errorCode = -255;     // 自定义错误
 
     public SqliteException() {
     }
@@ -20,10 +22,6 @@ public class SqliteException extends Exception {
 
     public SqliteException(Throwable cause) {
         super(cause);
-    }
-
-    public SqliteException(String message, Throwable cause, boolean enableSuppression, boolean writableStackTrace) {
-        super(message, cause, enableSuppression, writableStackTrace);
     }
 
     public SqliteException(int errorCode) {
@@ -44,12 +42,6 @@ public class SqliteException extends Exception {
 
     public SqliteException(Throwable cause, int errorCode) {
         super("Error code: " + errorCode, cause);
-        this.errorCode = errorCode;
-    }
-
-    public SqliteException(String message, Throwable cause, boolean enableSuppression, boolean writableStackTrace, int errorCode) {
-        super(message.length() == 0 ? "Error code: " + errorCode : message + " [Error code: " + errorCode + "]",
-                cause, enableSuppression, writableStackTrace);
         this.errorCode = errorCode;
     }
 

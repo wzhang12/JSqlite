@@ -99,6 +99,20 @@ public class DBConnection implements Closeable, Validable {
         sqlite3_rollback_hook(sqlite3Handle, hook, arg);
     }
 
+    public Blob getReadWriteBlob(String dbName,
+                                 String tbName,
+                                 String colName,
+                                 long rowId) throws SqliteException {
+        return new Blob(this, dbName, tbName, colName, rowId, 1);
+    }
+
+    public Blob getOnlyReadBlob(String dbName,
+                                String tbName,
+                                String colName,
+                                long rowId) throws SqliteException {
+        return new Blob(this, dbName, tbName, colName, rowId, 0);
+    }
+
     private static native long sqlite3_prepare_v2(long handle, String sql) throws SqliteException;
 
     private static native TableResult sqlite3_get_table(long handle, String sql) throws SqliteException;

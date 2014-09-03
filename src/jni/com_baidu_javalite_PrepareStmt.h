@@ -239,6 +239,14 @@ JNIEXPORT void JNICALL Java_com_baidu_javalite_PrepareStmt_sqlite3_1finalize
 JNIEXPORT void JNICALL Java_com_baidu_javalite_PrepareStmt_sqlite3_1reset
   (JNIEnv *, jclass, jlong);
 
+/*
+ * Class:     com_baidu_javalite_PrepareStmt
+ * Method:    sqlite3_bind_zeroblob
+ * Signature: (JII)V
+ */
+JNIEXPORT void JNICALL Java_com_baidu_javalite_PrepareStmt_sqlite3_1bind_1zeroblob
+  (JNIEnv *, jclass, jlong, jint, jint);
+
 #ifdef __cplusplus
 }
 #endif

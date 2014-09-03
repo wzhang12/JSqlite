@@ -509,3 +509,20 @@ jstring JNICALL Java_com_baidu_javalite_PrepareStmt_sqlite3_1sql(JNIEnv *env,
         return (*env)->NewStringUTF(env, csql);
     }
 }
+
+void JNICALL Java_com_baidu_javalite_PrepareStmt_sqlite3_1bind_1zeroblob(
+        JNIEnv *env, jclass cls, jlong handle, jint column, jint bytes) {
+    if (handle == 0) {
+        throwSqliteException(env, "handle is NULL");
+        return;
+    }
+
+    sqlite3_stmt* stmt = (sqlite3_stmt*) handle;
+
+    int rc = sqlite3_bind_zeroblob(stmt, column, bytes);
+
+    if (rc != SQLITE_OK) {
+        sqlite3* conn = sqlite3_db_handle(stmt);
+        throwSqliteException2(env, sqlite3_errcode(conn), sqlite3_errmsg(conn));
+    }
+}

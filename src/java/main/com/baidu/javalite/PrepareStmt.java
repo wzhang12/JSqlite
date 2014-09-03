@@ -145,6 +145,11 @@ public class PrepareStmt implements Closeable, Validable {
         }
     }
 
+    public void bindZeroBlob(int column, int bytes) throws SqliteException {
+        DBHelper.checkValidable(this);
+        sqlite3_bind_zeroblob(handle, column, bytes);
+    }
+
     public void clearBinding() throws SqliteException {
         DBHelper.checkValidable(this);
         sqlite3_clear_bindings(handle);
@@ -237,4 +242,6 @@ public class PrepareStmt implements Closeable, Validable {
     private static native void sqlite3_finalize(long handle) throws SqliteException;
 
     private static native void sqlite3_reset(long handle) throws SqliteException;
+
+    private static native void sqlite3_bind_zeroblob(long handle, int column, int bytes) throws SqliteException;
 }

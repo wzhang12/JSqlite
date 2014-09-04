@@ -40,4 +40,12 @@ jmethodID getRollbackHookCallback(JNIEnv* env);
 
 void callRollbackHookCallback(JNIEnv* env, jobject obj, jobject arg);
 
+typedef struct {
+	// 回调对象
+	jobject callback;
+
+	// app 对象
+	jobject app;
+} func_data;
+
 #endif /* UTIL_H_ */

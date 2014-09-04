@@ -49,6 +49,7 @@
             <class name="com.baidu.javalite.PrepareStmt"/>
             <class name="com.baidu.javalite.Backup"/>
             <class name="com.baidu.javalite.Blob"/>
+            <class name="com.baidu.javalite.Context"/>
         </javah>
     </target>
 

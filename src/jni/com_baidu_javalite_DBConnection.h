@@ -95,6 +95,14 @@ JNIEXPORT void JNICALL Java_com_baidu_javalite_DBConnection_sqlite3_1commit_1hoo
 JNIEXPORT void JNICALL Java_com_baidu_javalite_DBConnection_sqlite3_1rollback_1hook
   (JNIEnv *, jclass, jlong, jobject, jobject);
 
+/*
+ * Class:     com_baidu_javalite_DBConnection
+ * Method:    sqlite3_create_function_v2
+ * Signature: (JLjava/lang/String;ILjava/lang/Object;Lcom/baidu/javalite/Function;)V
+ */
+JNIEXPORT void JNICALL Java_com_baidu_javalite_DBConnection_sqlite3_1create_1function_1v2
+  (JNIEnv *, jclass, jlong, jstring, jint, jobject, jobject);
+
 #ifdef __cplusplus
 }
 #endif

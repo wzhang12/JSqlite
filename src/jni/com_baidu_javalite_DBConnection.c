@@ -346,15 +346,26 @@ static void _function_destroy_callback(void* data) {
 }
 
 static void _xFunc_callback(sqlite3_context* ctx, int n, sqlite3_value** values) {
-	
+	JNIEnv* env = getEnv();
+	func_data* data = (func_data*) sqlite3_user_data(ctx);
+	jobjectArray array = newJavaliteValueArray(env, n, values);
+	callScalarFunctionFuncMethod(env, data->callback,
+			newJavaliteContext(env, (jlong) ctx), array);
 }
 
 static void _xStep_callback(sqlite3_context* ctx, int n, sqlite3_value** values) {
-
+	JNIEnv* env = getEnv();
+	func_data* data = (func_data*) sqlite3_user_data(ctx);
+	jobjectArray array = newJavaliteValueArray(env, n, values);
+	callAggregateFunctionStepMethod(env, data->callback,
+			newJavaliteContext(env, (jlong) ctx), array);
 }
 
 static void _xFinal_callback(sqlite3_context* ctx) {
-
+	JNIEnv* env = getEnv();
+	func_data* data = (func_data*) sqlite3_user_data(ctx);
+	callAggregateFunctionFinalMethod(env, data->callback,
+			newJavaliteContext(env, (jlong) ctx));
 }
 
 void JNICALL Java_com_baidu_javalite_DBConnection_sqlite3_1create_1function_1v2(

@@ -9,6 +9,7 @@
 #define UTIL_H_
 
 #include <jni.h>
+#include <sqlite3.h>
 
 jint throwSqliteException(JNIEnv* env, const char* msg);
 
@@ -47,5 +48,17 @@ typedef struct {
 	// app 对象
 	jobject app;
 } func_data;
+
+jobject newJavaliteValue(JNIEnv* env, jlong handle);
+
+jobjectArray newJavaliteValueArray(JNIEnv* env, int n, sqlite3_value** values);
+
+void callScalarFunctionFuncMethod(JNIEnv* env, jobject target, jobject ctx, jobjectArray values);
+
+void callAggregateFunctionStepMethod(JNIEnv* env, jobject target, jobject ctx, jobjectArray values);
+
+void callAggregateFunctionFinalMethod(JNIEnv* env, jobject target, jobject ctx);
+
+jobject newJavaliteContext(JNIEnv* env, jlong handle);
 
 #endif /* UTIL_H_ */

@@ -3,160 +3,273 @@
 static jmethodID mid_SqliteExceptionInit;
 
 static jmethodID getMidSqliteExceptionInit(JNIEnv* env) {
-    if (mid_SqliteExceptionInit == 0) {
-        jclass excls = (*env)->FindClass(env,
-                "com/baidu/javalite/SqliteException");
-        mid_SqliteExceptionInit = (*env)->GetMethodID(env, excls, "<init>",
-                "(Ljava/lang/String;I)V");
-        (*env)->DeleteLocalRef(env, excls);
-    }
-    return mid_SqliteExceptionInit;
+	if (mid_SqliteExceptionInit == 0) {
+		jclass excls = (*env)->FindClass(env,
+				"com/baidu/javalite/SqliteException");
+		mid_SqliteExceptionInit = (*env)->GetMethodID(env, excls, "<init>",
+				"(Ljava/lang/String;I)V");
+		(*env)->DeleteLocalRef(env, excls);
+	}
+	return mid_SqliteExceptionInit;
 }
 
 jint throwSqliteException(JNIEnv* env, const char* msg) {
-    jclass excls = (*env)->FindClass(env, "com/baidu/javalite/SqliteException");
-    jint rc;
-    if (msg != 0) {
-        rc = (*env)->ThrowNew(env, excls, msg);
-    } else {
-        rc = (*env)->ThrowNew(env, excls, "");
-    }
-    (*env)->DeleteLocalRef(env, excls);
-    return rc;
+	jclass excls = (*env)->FindClass(env, "com/baidu/javalite/SqliteException");
+	jint rc;
+	if (msg != 0) {
+		rc = (*env)->ThrowNew(env, excls, msg);
+	} else {
+		rc = (*env)->ThrowNew(env, excls, "");
+	}
+	(*env)->DeleteLocalRef(env, excls);
+	return rc;
 }
 
 jint throwSqliteException2(JNIEnv* env, int errorCode, const char* errorMsg) {
-    jclass excls = (*env)->FindClass(env, "com/baidu/javalite/SqliteException");
-    jmethodID mid = getMidSqliteExceptionInit(env);
-    jstring jErrorMsg;
-    if (errorMsg != 0) {
-        jErrorMsg = (*env)->NewStringUTF(env, errorMsg);
-    } else {
-        jErrorMsg = (*env)->NewStringUTF(env, "");
-    }
-    jthrowable thr = (*env)->NewObject(env, excls, mid, jErrorMsg, errorCode);
-    jint rc = (*env)->Throw(env, thr);
+	jclass excls = (*env)->FindClass(env, "com/baidu/javalite/SqliteException");
+	jmethodID mid = getMidSqliteExceptionInit(env);
+	jstring jErrorMsg;
+	if (errorMsg != 0) {
+		jErrorMsg = (*env)->NewStringUTF(env, errorMsg);
+	} else {
+		jErrorMsg = (*env)->NewStringUTF(env, "");
+	}
+	jthrowable thr = (*env)->NewObject(env, excls, mid, jErrorMsg, errorCode);
+	jint rc = (*env)->Throw(env, thr);
 
-    (*env)->DeleteLocalRef(env, excls);
-    (*env)->DeleteLocalRef(env, jErrorMsg);
-    (*env)->DeleteLocalRef(env, thr);
-    return rc;
+	(*env)->DeleteLocalRef(env, excls);
+	(*env)->DeleteLocalRef(env, jErrorMsg);
+	(*env)->DeleteLocalRef(env, thr);
+	return rc;
 }
 
 jint throwSqliteException3(JNIEnv* env, int errorCode) {
-    return throwSqliteException2(env, errorCode, 0);
+	return throwSqliteException2(env, errorCode, 0);
 }
 
 static jmethodID mid_getSqlExecCallback;
 
 jmethodID getSqlExecCallback(JNIEnv* env) {
-    if (mid_getSqlExecCallback == 0) {
-        jclass cls = (*env)->FindClass(env,
-                "com/baidu/javalite/SqlExecCallback");
-        mid_getSqlExecCallback = (*env)->GetMethodID(env, cls, "callback",
-                "(I[Ljava/lang/String;[Ljava/lang/String;)I");
-        (*env)->DeleteLocalRef(env, cls);
-    }
-    return mid_getSqlExecCallback;
+	if (mid_getSqlExecCallback == 0) {
+		jclass cls = (*env)->FindClass(env,
+				"com/baidu/javalite/SqlExecCallback");
+		mid_getSqlExecCallback = (*env)->GetMethodID(env, cls, "callback",
+				"(I[Ljava/lang/String;[Ljava/lang/String;)I");
+		(*env)->DeleteLocalRef(env, cls);
+	}
+	return mid_getSqlExecCallback;
 }
 
 jobjectArray createStringArray(JNIEnv* env, char** array, int len) {
-    jclass cls = (*env)->FindClass(env, "java/lang/String");
-    jobjectArray rs = (*env)->NewObjectArray(env, len, cls, 0);
-    jstring s;
-    for (int i = 0; i < len; ++i) {
-        s = (*env)->NewStringUTF(env, array[i]);
-        (*env)->SetObjectArrayElement(env, rs, i, s);
-        (*env)->DeleteLocalRef(env, s);
-    }
+	jclass cls = (*env)->FindClass(env, "java/lang/String");
+	jobjectArray rs = (*env)->NewObjectArray(env, len, cls, 0);
+	jstring s;
+	for (int i = 0; i < len; ++i) {
+		s = (*env)->NewStringUTF(env, array[i]);
+		(*env)->SetObjectArrayElement(env, rs, i, s);
+		(*env)->DeleteLocalRef(env, s);
+	}
 
-    (*env)->DeleteLocalRef(env, cls);
-    return rs;
+	(*env)->DeleteLocalRef(env, cls);
+	return rs;
 }
 
 static JavaVM* g_vm;
 
 void setJavaVM(JavaVM* vm) {
-    g_vm = vm;
+	g_vm = vm;
 }
 
 JNIEnv* getEnv(void) {
-    JNIEnv* rs;
-    (*g_vm)->GetEnv(g_vm, (void**) &rs, JNI_VERSION_1_6);
-    return rs;
+	JNIEnv* rs;
+	(*g_vm)->GetEnv(g_vm, (void**) &rs, JNI_VERSION_1_6);
+	return rs;
 }
 
 static jmethodID mid_TableResultInit;
 
 jmethodID getTableResultInit(JNIEnv* env) {
-    if (mid_TableResultInit == 0) {
-        jclass cls = (*env)->FindClass(env, "com/baidu/javalite/TableResult");
-        mid_TableResultInit = (*env)->GetMethodID(env, cls, "<init>",
-                "([Ljava/lang/String;II)V");
-        (*env)->DeleteLocalRef(env, cls);
-    }
+	if (mid_TableResultInit == 0) {
+		jclass cls = (*env)->FindClass(env, "com/baidu/javalite/TableResult");
+		mid_TableResultInit = (*env)->GetMethodID(env, cls, "<init>",
+				"([Ljava/lang/String;II)V");
+		(*env)->DeleteLocalRef(env, cls);
+	}
 
-    return mid_TableResultInit;
+	return mid_TableResultInit;
 }
 
 jobject newTableResult(JNIEnv* env, char** result, int row, int col) {
-    jobjectArray jresult = createStringArray(env, result, row * col);
-    jclass cls = (*env)->FindClass(env, "com/baidu/javalite/TableResult");
-    jobject rs = (*env)->NewObject(env, cls, getTableResultInit(env), jresult,
-            row, col);
+	jobjectArray jresult = createStringArray(env, result, row * col);
+	jclass cls = (*env)->FindClass(env, "com/baidu/javalite/TableResult");
+	jobject rs = (*env)->NewObject(env, cls, getTableResultInit(env), jresult,
+			row, col);
 
-    (*env)->DeleteLocalRef(env, jresult);
-    (*env)->DeleteLocalRef(env, cls);
-    return rs;
+	(*env)->DeleteLocalRef(env, jresult);
+	(*env)->DeleteLocalRef(env, cls);
+	return rs;
 }
 
 static jmethodID mid_BusyHandlerCallback;
 
 jmethodID getBusyHandlerCallback(JNIEnv* env) {
-    if (mid_BusyHandlerCallback == 0) {
-        jclass cls = (*env)->FindClass(env, "com/baidu/javalite/BusyHandler");
-        mid_BusyHandlerCallback = (*env)->GetMethodID(env, cls, "handle",
-                "(I)I");
-        (*env)->DeleteLocalRef(env, cls);
-    }
+	if (mid_BusyHandlerCallback == 0) {
+		jclass cls = (*env)->FindClass(env, "com/baidu/javalite/BusyHandler");
+		mid_BusyHandlerCallback = (*env)->GetMethodID(env, cls, "handle",
+				"(I)I");
+		(*env)->DeleteLocalRef(env, cls);
+	}
 
-    return mid_BusyHandlerCallback;
+	return mid_BusyHandlerCallback;
 }
 
 jint callBusyHandlerCallback(JNIEnv* env, jobject obj, int times) {
-    return (*env)->CallIntMethod(env, obj, getBusyHandlerCallback(env), times);
+	return (*env)->CallIntMethod(env, obj, getBusyHandlerCallback(env), times);
 }
 
 static jmethodID mid_CommitHookCallback;
 
 jmethodID getCommitHookCallback(JNIEnv* env) {
-    if (mid_CommitHookCallback == 0) {
-        jclass cls = (*env)->FindClass(env, "com/baidu/javalite/CommitHook");
-        mid_CommitHookCallback = (*env)->GetMethodID(env, cls, "callback",
-                "(Ljava/lang/Object;)I");
-        (*env)->DeleteLocalRef(env, cls);
-    }
+	if (mid_CommitHookCallback == 0) {
+		jclass cls = (*env)->FindClass(env, "com/baidu/javalite/CommitHook");
+		mid_CommitHookCallback = (*env)->GetMethodID(env, cls, "callback",
+				"(Ljava/lang/Object;)I");
+		(*env)->DeleteLocalRef(env, cls);
+	}
 
-    return mid_CommitHookCallback;
+	return mid_CommitHookCallback;
 }
 
 jint callCommitHookCallback(JNIEnv* env, jobject obj, jobject arg) {
-    return (*env)->CallIntMethod(env, obj, getCommitHookCallback(env), arg);
+	return (*env)->CallIntMethod(env, obj, getCommitHookCallback(env), arg);
 }
 
 static jmethodID mid_RollbackHookCallback;
 
 jmethodID getRollbackHookCallback(JNIEnv* env) {
-    if (mid_RollbackHookCallback == 0) {
-        jclass cls = (*env)->FindClass(env, "com/baidu/javalite/RollbackHook");
-        mid_RollbackHookCallback = (*env)->GetMethodID(env, cls, "callback",
-                "(Ljava/lang/Object;)V");
-        (*env)->DeleteLocalRef(env, cls);
-    }
+	if (mid_RollbackHookCallback == 0) {
+		jclass cls = (*env)->FindClass(env, "com/baidu/javalite/RollbackHook");
+		mid_RollbackHookCallback = (*env)->GetMethodID(env, cls, "callback",
+				"(Ljava/lang/Object;)V");
+		(*env)->DeleteLocalRef(env, cls);
+	}
 
-    return mid_RollbackHookCallback;
+	return mid_RollbackHookCallback;
 }
 
 void callRollbackHookCallback(JNIEnv* env, jobject obj, jobject arg) {
-    (*env)->CallVoidMethod(env, obj, getRollbackHookCallback(env), arg);
+	(*env)->CallVoidMethod(env, obj, getRollbackHookCallback(env), arg);
+}
+
+static jmethodID mid_javalite_init;
+
+static jmethodID getJavaliteInit(JNIEnv* env) {
+	if (mid_javalite_init == 0) {
+		jclass cls = (*env)->FindClass(env, "com/baidu/javalite/Value");
+		mid_javalite_init = (*env)->GetMethodID(env, cls, "<init>", "(J)V");
+		(*env)->DeleteLocalRef(env, cls);
+	}
+
+	return mid_javalite_init;
+}
+
+jobject newJavaliteValue(JNIEnv* env, jlong handle) {
+	jclass cls = (*env)->FindClass(env, "com/baidu/javalite/Value");
+	jobject rs = (*env)->NewObject(env, cls, getJavaliteInit(env), handle);
+	(*env)->DeleteLocalRef(env, cls);
+	return rs;
+}
+
+jobjectArray newJavaliteValueArray(JNIEnv* env, int n, sqlite3_value** values) {
+	jclass cls = (*env)->FindClass(env, "com/baidu/javalite/Value");
+	jobjectArray rs = (*env)->NewObjectArray(env, n, cls, 0);
+
+	if (rs == 0) {
+		(*env)->DeleteLocalRef(env, cls);
+		return 0;
+	}
+
+	for (int i = 0; i < n; ++i) {
+		(*env)->SetObjectArrayElement(env, rs, i,
+				newJavaliteValue(env, (jlong) values[i]));
+	}
+	(*env)->DeleteLocalRef(env, cls);
+	return rs;
+}
+
+static jmethodID mid_ScalarFunction_func;
+
+static jmethodID getScalarFunctionFuncMid(JNIEnv* env) {
+	if (mid_ScalarFunction_func == 0) {
+		jclass cls = (*env)->FindClass(env,
+				"com/baidu/javalite/ScalarFunction");
+		mid_ScalarFunction_func = (*env)->GetMethodID(env, cls, "xFunc",
+				"(Lcom/baidu/javalite/Context;[Lcom/baidu/javalite/Value;)V");
+		(*env)->DeleteLocalRef(env, cls);
+	}
+
+	return mid_ScalarFunction_func;
+}
+
+void callScalarFunctionFuncMethod(JNIEnv* env, jobject target, jobject ctx,
+		jobjectArray values) {
+	(*env)->CallVoidMethod(env, target, getScalarFunctionFuncMid(env), ctx,
+			values);
+}
+
+static jmethodID mid_AggregateFunction_step;
+
+static jmethodID getAggregateFunctionStepId(JNIEnv* env) {
+	if (mid_ScalarFunction_func == 0) {
+		jclass cls = (*env)->FindClass(env,
+				"com/baidu/javalite/AggregateFunction");
+		mid_AggregateFunction_step = (*env)->GetMethodID(env, cls, "xStep",
+				"(Lcom/baidu/javalite/Context;[Lcom/baidu/javalite/Value;)V");
+		(*env)->DeleteLocalRef(env, cls);
+	}
+
+	return mid_AggregateFunction_step;
+}
+
+void callAggregateFunctionStepMethod(JNIEnv* env, jobject target, jobject ctx,
+		jobjectArray values) {
+	(*env)->CallVoidMethod(env, target, getAggregateFunctionStepId(env), ctx,
+			values);
+}
+
+static jmethodID mid_AggregateFunction_final;
+
+static jmethodID getAggregateFunctionFinalId(JNIEnv* env) {
+	if (mid_ScalarFunction_func == 0) {
+		jclass cls = (*env)->FindClass(env,
+				"com/baidu/javalite/AggregateFunction");
+		mid_AggregateFunction_final = (*env)->GetMethodID(env, cls, "xFinal",
+				"(Lcom/baidu/javalite/Context;)V");
+		(*env)->DeleteLocalRef(env, cls);
+	}
+
+	return mid_AggregateFunction_final;
+}
+
+void callAggregateFunctionFinalMethod(JNIEnv* env, jobject target, jobject ctx) {
+	(*env)->CallVoidMethod(env, target, getAggregateFunctionFinalId(env), ctx);
+}
+
+static jmethodID mid_context_init;
+
+static jmethodID getContextInitId(JNIEnv* env) {
+	if (mid_context_init == 0) {
+		jclass cls = (*env)->FindClass(env, "com/baidu/javalite/Context");
+		mid_context_init = (*env)->GetMethodID(env, cls, "<init>", "(J)V");
+		(*env)->DeleteLocalRef(env, cls);
+	}
+	
+	return mid_context_init;
+}
+
+jobject newJavaliteContext(JNIEnv* env, jlong handle) {
+	jclass cls = (*env)->FindClass(env, "com/baidu/javalite/Context");
+	jobject rs = (*env)->NewObject(env, cls, getContextInitId(env), handle);
+	(*env)->DeleteLocalRef(env, cls);
+	return rs;
 }

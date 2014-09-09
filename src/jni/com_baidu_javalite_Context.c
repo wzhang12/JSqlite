@@ -107,3 +107,148 @@ void JNICALL Java_com_baidu_javalite_Context_sqlite3_1aggregate_1context_1free(
 		*((jobject*) rs) = 0;
 	}
 }
+
+void JNICALL Java_com_baidu_javalite_Context_sqlite3_1result_1double(
+		JNIEnv *env, jclass cls, jlong handle, jdouble value) {
+	if (handle == 0) {
+		throwSqliteException(env, "Native handle is NULL!");
+		return;
+	}
+
+	sqlite3_context* ctx = (sqlite3_context*) handle;
+	sqlite3_result_double(ctx, value);
+}
+
+void JNICALL Java_com_baidu_javalite_Context_sqlite3_1result_1int(JNIEnv *env,
+		jclass cls, jlong handle, jint value) {
+	if (handle == 0) {
+		throwSqliteException(env, "Native handle is NULL!");
+		return;
+	}
+
+	sqlite3_context* ctx = (sqlite3_context*) handle;
+	sqlite3_result_int(ctx, value);
+}
+
+void JNICALL Java_com_baidu_javalite_Context_sqlite3_1result_1int64(JNIEnv *env,
+		jclass cls, jlong handle, jlong value) {
+	if (handle == 0) {
+		throwSqliteException(env, "Native handle is NULL!");
+		return;
+	}
+
+	sqlite3_context* ctx = (sqlite3_context*) handle;
+	sqlite3_result_int64(ctx, value);
+}
+
+void JNICALL Java_com_baidu_javalite_Context_sqlite3_1result_1null(JNIEnv *env,
+		jclass cls, jlong handle) {
+	if (handle == 0) {
+		throwSqliteException(env, "Native handle is NULL!");
+		return;
+	}
+
+	sqlite3_context* ctx = (sqlite3_context*) handle;
+	sqlite3_result_null(ctx);
+}
+
+static jstring _internal_result_txt;
+
+static void _internal_free_result_text(void* txt) {
+	if (_internal_result_txt != 0) {
+		JNIEnv* env = getEnv();
+		(*env)->ReleaseStringUTFChars(env, _internal_result_txt,
+				(const char*) txt);
+		(*env)->DeleteGlobalRef(env, _internal_result_txt);
+		_internal_result_txt = 0;
+	}
+}
+
+void JNICALL Java_com_baidu_javalite_Context_sqlite3_1result_1text(JNIEnv *env,
+		jclass cls, jlong handle, jstring value) {
+	if (handle == 0) {
+		throwSqliteException(env, "Native handle is NULL!");
+		return;
+	}
+
+	sqlite3_context* ctx = (sqlite3_context*) handle;
+
+	if (value == 0) {
+		sqlite3_result_null(ctx);
+	} else {
+		if (_internal_result_txt != 0) {
+			(*env)->DeleteGlobalRef(env, _internal_result_txt);
+			_internal_result_txt = 0;
+		}
+
+		_internal_result_txt = (*env)->NewGlobalRef(env, value);
+		const char* txt = (*env)->GetStringUTFChars(env, _internal_result_txt, 0);
+		sqlite3_result_text(ctx, txt, -1, _internal_free_result_text);
+	}
+}
+
+static jbyteArray _internal_result_blob;
+
+static void _internal_free_result_blob(void* blob) {
+	if (_internal_result_blob != 0) {
+		JNIEnv* env = getEnv();
+		(*env)->ReleaseByteArrayElements(env, _internal_result_blob,
+				(jbyte*) blob, JNI_ABORT);
+		(*env)->DeleteGlobalRef(env, _internal_result_blob);
+		_internal_result_blob = 0;
+	}
+}
+
+void JNICALL Java_com_baidu_javalite_Context_sqlite3_1result_1blob(JNIEnv *env,
+		jclass cls, jlong handle, jbyteArray value) {
+	if (handle == 0) {
+		throwSqliteException(env, "Native handle is NULL!");
+		return;
+	}
+
+	sqlite3_context* ctx = (sqlite3_context*) handle;
+
+	if (value == 0) {
+		sqlite3_result_null(ctx);
+	} else {
+		if (_internal_result_blob != 0) {
+			(*env)->DeleteGlobalRef(env, _internal_result_blob);
+			_internal_result_blob = 0;
+		}
+
+		_internal_result_blob = (*env)->NewGlobalRef(env, value);
+		jbyte* elems = (*env)->GetByteArrayElements(env, _internal_result_blob,
+				0);
+		int len = (*env)->GetArrayLength(env, _internal_result_blob);
+		sqlite3_result_blob(ctx, (const void*) elems, len,
+				_internal_free_result_blob);
+	}
+}
+
+void JNICALL Java_com_baidu_javalite_Context_sqlite3_1result_1zeroblob(
+		JNIEnv *env, jclass cls, jlong handle, jint size) {
+	if (handle == 0) {
+		throwSqliteException(env, "Native handle is NULL!");
+		return;
+	}
+
+	sqlite3_context* ctx = (sqlite3_context*) handle;
+	sqlite3_result_zeroblob(ctx, size);
+}
+
+void JNICALL Java_com_baidu_javalite_Context_sqlite3_1result_1value(JNIEnv *env,
+		jclass cls, jlong handle, jlong valueHandle) {
+	if (handle == 0) {
+		throwSqliteException(env, "Native handle is NULL!");
+		return;
+	}
+
+	if (valueHandle == 0) {
+		throwSqliteException(env, "Native sqlite3_value handle is NULL!");
+		return;
+	}
+
+	sqlite3_context* ctx = (sqlite3_context*) handle;
+	sqlite3_value* vl = (sqlite3_value*) valueHandle;
+	sqlite3_result_value(ctx, vl);
+}

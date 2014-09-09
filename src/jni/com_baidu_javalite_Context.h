@@ -47,6 +47,70 @@ JNIEXPORT jobject JNICALL Java_com_baidu_javalite_Context_sqlite3_1aggregate_1co
 JNIEXPORT void JNICALL Java_com_baidu_javalite_Context_sqlite3_1aggregate_1context_1free
   (JNIEnv *, jclass, jlong);
 
+/*
+ * Class:     com_baidu_javalite_Context
+ * Method:    sqlite3_result_double
+ * Signature: (JD)V
+ */
+JNIEXPORT void JNICALL Java_com_baidu_javalite_Context_sqlite3_1result_1double
+  (JNIEnv *, jclass, jlong, jdouble);
+
+/*
+ * Class:     com_baidu_javalite_Context
+ * Method:    sqlite3_result_int
+ * Signature: (JI)V
+ */
+JNIEXPORT void JNICALL Java_com_baidu_javalite_Context_sqlite3_1result_1int
+  (JNIEnv *, jclass, jlong, jint);
+
+/*
+ * Class:     com_baidu_javalite_Context
+ * Method:    sqlite3_result_int64
+ * Signature: (JJ)V
+ */
+JNIEXPORT void JNICALL Java_com_baidu_javalite_Context_sqlite3_1result_1int64
+  (JNIEnv *, jclass, jlong, jlong);
+
+/*
+ * Class:     com_baidu_javalite_Context
+ * Method:    sqlite3_result_null
+ * Signature: (J)V
+ */
+JNIEXPORT void JNICALL Java_com_baidu_javalite_Context_sqlite3_1result_1null
+  (JNIEnv *, jclass, jlong);
+
+/*
+ * Class:     com_baidu_javalite_Context
+ * Method:    sqlite3_result_text
+ * Signature: (JLjava/lang/String;)V
+ */
+JNIEXPORT void JNICALL Java_com_baidu_javalite_Context_sqlite3_1result_1text
+  (JNIEnv *, jclass, jlong, jstring);
+
+/*
+ * Class:     com_baidu_javalite_Context
+ * Method:    sqlite3_result_blob
+ * Signature: (J[B)V
+ */
+JNIEXPORT void JNICALL Java_com_baidu_javalite_Context_sqlite3_1result_1blob
+  (JNIEnv *, jclass, jlong, jbyteArray);
+
+/*
+ * Class:     com_baidu_javalite_Context
+ * Method:    sqlite3_result_zeroblob
+ * Signature: (JI)V
+ */
+JNIEXPORT void JNICALL Java_com_baidu_javalite_Context_sqlite3_1result_1zeroblob
+  (JNIEnv *, jclass, jlong, jint);
+
+/*
+ * Class:     com_baidu_javalite_Context
+ * Method:    sqlite3_result_value
+ * Signature: (JJ)V
+ */
+JNIEXPORT void JNICALL Java_com_baidu_javalite_Context_sqlite3_1result_1value
+  (JNIEnv *, jclass, jlong, jlong);
+
 #ifdef __cplusplus
 }
 #endif

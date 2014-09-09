@@ -44,4 +44,20 @@ public class Context implements Closeable {
     private static native Object sqlite3_aggregate_context(long handle) throws SqliteException;
 
     private static native void sqlite3_aggregate_context_free(long handle) throws SqliteException;
+
+    private static native void sqlite3_result_double(long handle, double value) throws SqliteException;
+
+    private static native void sqlite3_result_int(long handle, int value) throws SqliteException;
+
+    private static native void sqlite3_result_int64(long handle, long value) throws SqliteException;
+
+    private static native void sqlite3_result_null(long handle) throws SqliteException;
+
+    private static native void sqlite3_result_text(long handle, String value) throws SqliteException;
+
+    private static native void sqlite3_result_blob(long handle, byte[] value) throws SqliteException;
+
+    private static native void sqlite3_result_zeroblob(long handle, int size) throws SqliteException;
+
+    private static native void sqlite3_result_value(long handle, long valueHandle) throws SqliteException;
 }

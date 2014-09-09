@@ -10,6 +10,10 @@ public class Value {
         this.handle = handle;
     }
 
+    protected long getHandle() {
+        return handle;
+    }
+
     public int getType() throws SqliteException {
         return sqlite3_value_type(handle);
     }

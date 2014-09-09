@@ -35,6 +35,38 @@ public class Context implements Closeable {
         }
     }
 
+    public void setResultDouble(double rs) throws SqliteException {
+        sqlite3_result_double(handle, rs);
+    }
+
+    public void setResultInt(int rs) throws SqliteException {
+        sqlite3_result_int(handle, rs);
+    }
+
+    public void setResultInt64(long rs) throws SqliteException {
+        sqlite3_result_int64(handle, rs);
+    }
+
+    public void setResultNull() throws SqliteException {
+        sqlite3_result_null(handle);
+    }
+
+    public void setResultText(String rs) throws SqliteException {
+        sqlite3_result_text(handle, rs);
+    }
+
+    public void setResultBlob(byte[] rs) throws SqliteException {
+        sqlite3_result_blob(handle, rs);
+    }
+
+    public void setResultZeroBlob(int size) throws SqliteException {
+        sqlite3_result_zeroblob(handle, size);
+    }
+
+    public void setResultValue(Value rs) throws SqliteException {
+        sqlite3_result_value(handle, rs.getHandle());
+    }
+
     private static native Object sqlite3_user_data(long handle) throws SqliteException;
 
     private static native long sqlite3_context_db_handle(long handle) throws SqliteException;

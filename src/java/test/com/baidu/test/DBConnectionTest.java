@@ -1,9 +1,6 @@
 package com.baidu.test;
 
-import com.baidu.javalite.DBConnection;
-import com.baidu.javalite.Database;
-import com.baidu.javalite.SqlExecCallback;
-import com.baidu.javalite.SqliteException;
+import com.baidu.javalite.*;
 import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
@@ -72,6 +69,49 @@ public class DBConnectionTest {
         } catch (SqliteException e) {
             Assert.assertTrue("测试执行多条 sql 语句失败！" +
                     "\n" + e, false);
+        }
+    }
+
+    @Test
+    public void testCreateFunction() {
+        try {
+            conn.createFunction("test", 0, null, new ScalarFunction() {
+                @Override
+                public void xFunc(Context context, Value[] values) {
+                    System.out.println("len of Value[]is " + values.length);
+                    for (Value v : values) {
+                        try {
+                            System.out.println(v.getType());
+                        } catch (SqliteException e) {
+                            e.printStackTrace();
+                        }
+                    }
+
+                    try {
+                        context.setResultText("Hello World!!!");
+                    } catch (SqliteException e) {
+                        e.printStackTrace();
+                    }
+                }
+            });
+
+            conn.exec("select test(*), * from sqlite_master;", new SqlExecCallback() {
+                @Override
+                public int callback(int ncols, String[] values, String[] headers) {
+                    for (String h : headers) {
+                        System.out.println(h);
+                    }
+                    System.out.println();
+
+                    for (String v : values) {
+                        System.out.println(v);
+                    }
+                    System.out.println();
+                    return 0;
+                }
+            });
+        } catch (SqliteException e) {
+            Assert.assertTrue("测试创建函数失败!", false);
         }
     }
 }

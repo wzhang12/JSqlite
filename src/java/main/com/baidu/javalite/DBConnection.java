@@ -5,17 +5,17 @@ package com.baidu.javalite;
  * Date: 14-8-25
  */
 public class DBConnection implements Closeable, Validable {
-    private long sqlite3Handle;
+    private long handle;
 
     protected DBConnection(long handle) throws SqliteException {
         if (handle == 0) {
             throw new SqliteException("Native handle is NULL!");
         }
-        sqlite3Handle = handle;
+        this.handle = handle;
     }
 
     protected long getNativeHandle() {
-        return sqlite3Handle;
+        return handle;
     }
 
     @Override
@@ -30,19 +30,19 @@ public class DBConnection implements Closeable, Validable {
     @Override
     public void close() throws SqliteException {
         if (isValid()) {
-            sqlite3_close(sqlite3Handle);
-            sqlite3Handle = 0;
+            sqlite3_close(handle);
+            handle = 0;
         }
     }
 
     @Override
     public boolean isValid() {
-        return sqlite3Handle != 0;
+        return handle != 0;
     }
 
     public void exec(String sql, SqlExecCallback callback) throws SqliteException {
         DBHelper.checkValidable(this);
-        sqlite3_exec(sqlite3Handle, sql, callback);
+        sqlite3_exec(handle, sql, callback);
     }
 
     public void exec(String sql) throws SqliteException {
@@ -51,27 +51,27 @@ public class DBConnection implements Closeable, Validable {
 
     public int getRowChanges() throws SqliteException {
         DBHelper.checkValidable(this);
-        return sqlite3_changes(sqlite3Handle);
+        return sqlite3_changes(handle);
     }
 
     public int getTotalRowChanges() throws SqliteException {
         DBHelper.checkValidable(this);
-        return sqlite3_total_changes(sqlite3Handle);
+        return sqlite3_total_changes(handle);
     }
 
     public long getLastInsertRowid() throws SqliteException {
         DBHelper.checkValidable(this);
-        return sqlite3_last_insert_rowid(sqlite3Handle);
+        return sqlite3_last_insert_rowid(handle);
     }
 
     public TableResult getTable(String sql) throws SqliteException {
         DBHelper.checkValidable(this);
-        return sqlite3_get_table(sqlite3Handle, sql);
+        return sqlite3_get_table(handle, sql);
     }
 
     public PrepareStmt prepare(String sql) throws SqliteException {
         DBHelper.checkValidable(this);
-        PrepareStmt prepareStmt = new PrepareStmt(this, sqlite3_prepare_v2(sqlite3Handle, sql));
+        PrepareStmt prepareStmt = new PrepareStmt(this, sqlite3_prepare_v2(handle, sql));
         return prepareStmt;
     }
 
@@ -81,22 +81,22 @@ public class DBConnection implements Closeable, Validable {
 
     public void setBusyHandler(BusyHandler handler) throws SqliteException {
         DBHelper.checkValidable(this);
-        sqlite3_busy_handler(sqlite3Handle, handler);
+        sqlite3_busy_handler(handle, handler);
     }
 
     public void setBusyTimeout(int ms) throws SqliteException {
         DBHelper.checkValidable(this);
-        sqlite3_busy_timeout(sqlite3Handle, ms);
+        sqlite3_busy_timeout(handle, ms);
     }
 
     public void setCommitHook(CommitHook hook, Object arg) throws SqliteException {
         DBHelper.checkValidable(this);
-        sqlite3_commit_hook(sqlite3Handle, hook, arg);
+        sqlite3_commit_hook(handle, hook, arg);
     }
 
     public void setRollbackHook(RollbackHook hook, Object arg) throws SqliteException {
         DBHelper.checkValidable(this);
-        sqlite3_rollback_hook(sqlite3Handle, hook, arg);
+        sqlite3_rollback_hook(handle, hook, arg);
     }
 
     public Blob getReadWriteBlob(String dbName,
@@ -106,7 +106,7 @@ public class DBConnection implements Closeable, Validable {
         return new Blob(this, dbName, tbName, colName, rowId, 1);
     }
 
-    public Blob getOnlyReadBlob(String dbName,
+    public Blob getReadOnlyBlob(String dbName,
                                 String tbName,
                                 String colName,
                                 long rowId) throws SqliteException {
@@ -115,7 +115,7 @@ public class DBConnection implements Closeable, Validable {
 
     public void createFunction(String funcName, int nArgs, Object app, ScalarFunction callbacks) throws SqliteException {
         DBHelper.checkValidable(this);
-        sqlite3_create_function_v2(sqlite3Handle, funcName, nArgs, app, callbacks);
+        sqlite3_create_function_v2(handle, funcName, nArgs, app, callbacks);
     }
 
     private static native long sqlite3_prepare_v2(long handle, String sql) throws SqliteException;

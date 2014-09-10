@@ -116,9 +116,21 @@ public class PrepareStmt implements Closeable, Validable {
         }
     }
 
+    public void bindBlob(String name, byte[] value) throws SqliteException {
+        DBHelper.checkValidable(this);
+        int index = sqlite3_bind_parameter_index(handle, name);
+        bindBlob(index, value);
+    }
+
     public void bindDouble(int column, double value) throws SqliteException {
         DBHelper.checkValidable(this);
         sqlite3_bind_double(handle, column, value);
+    }
+
+    public void bindDouble(String name, double value) throws SqliteException {
+        DBHelper.checkValidable(this);
+        int index = sqlite3_bind_parameter_index(handle, name);
+        bindDouble(index, value);
     }
 
     public void bindInt(int column, int value) throws SqliteException {
@@ -126,14 +138,32 @@ public class PrepareStmt implements Closeable, Validable {
         sqlite3_bind_int(handle, column, value);
     }
 
+    public void bindInt(String name, int value) throws SqliteException {
+        DBHelper.checkValidable(this);
+        int index = sqlite3_bind_parameter_index(handle, name);
+        bindInt(index, value);
+    }
+
     public void bindInt64(int column, long value) throws SqliteException {
         DBHelper.checkValidable(this);
         sqlite3_bind_int64(handle, column, value);
     }
 
+    public void bindInt64(String name, long value) throws SqliteException {
+        DBHelper.checkValidable(this);
+        int index = sqlite3_bind_parameter_index(handle, name);
+        bindInt64(index, value);
+    }
+
     public void bindNull(int column) throws SqliteException {
         DBHelper.checkValidable(this);
         sqlite3_bind_null(handle, column);
+    }
+
+    public void bindNull(String name) throws SqliteException {
+        DBHelper.checkValidable(this);
+        int index = sqlite3_bind_parameter_index(handle, name);
+        sqlite3_bind_null(handle, index);
     }
 
     public void bindText(int column, String value) throws SqliteException {
@@ -145,9 +175,21 @@ public class PrepareStmt implements Closeable, Validable {
         }
     }
 
+    public void bindText(String name, String value) throws SqliteException {
+        DBHelper.checkValidable(this);
+        int index = sqlite3_bind_parameter_index(handle, name);
+        bindText(index, value);
+    }
+
     public void bindZeroBlob(int column, int bytes) throws SqliteException {
         DBHelper.checkValidable(this);
         sqlite3_bind_zeroblob(handle, column, bytes);
+    }
+
+    public void bindZeroBlob(String name, int bytes) throws SqliteException {
+        DBHelper.checkValidable(this);
+        int index = sqlite3_bind_parameter_index(handle, name);
+        bindZeroBlob(index, bytes);
     }
 
     public void clearBinding() throws SqliteException {

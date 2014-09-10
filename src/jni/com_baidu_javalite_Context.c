@@ -152,18 +152,6 @@ void JNICALL Java_com_baidu_javalite_Context_sqlite3_1result_1null(JNIEnv *env,
 	sqlite3_result_null(ctx);
 }
 
-static jstring _internal_result_txt;
-
-static void _internal_free_result_text(void* txt) {
-	if (_internal_result_txt != 0) {
-		JNIEnv* env = getEnv();
-		(*env)->ReleaseStringUTFChars(env, _internal_result_txt,
-				(const char*) txt);
-		(*env)->DeleteGlobalRef(env, _internal_result_txt);
-		_internal_result_txt = 0;
-	}
-}
-
 void JNICALL Java_com_baidu_javalite_Context_sqlite3_1result_1text(JNIEnv *env,
 		jclass cls, jlong handle, jstring value) {
 	if (handle == 0) {
@@ -176,26 +164,9 @@ void JNICALL Java_com_baidu_javalite_Context_sqlite3_1result_1text(JNIEnv *env,
 	if (value == 0) {
 		sqlite3_result_null(ctx);
 	} else {
-		if (_internal_result_txt != 0) {
-			(*env)->DeleteGlobalRef(env, _internal_result_txt);
-			_internal_result_txt = 0;
-		}
-
-		_internal_result_txt = (*env)->NewGlobalRef(env, value);
-		const char* txt = (*env)->GetStringUTFChars(env, _internal_result_txt, 0);
-		sqlite3_result_text(ctx, txt, -1, _internal_free_result_text);
-	}
-}
-
-static jbyteArray _internal_result_blob;
-
-static void _internal_free_result_blob(void* blob) {
-	if (_internal_result_blob != 0) {
-		JNIEnv* env = getEnv();
-		(*env)->ReleaseByteArrayElements(env, _internal_result_blob,
-				(jbyte*) blob, JNI_ABORT);
-		(*env)->DeleteGlobalRef(env, _internal_result_blob);
-		_internal_result_blob = 0;
+		const char* txt = (*env)->GetStringUTFChars(env, value, 0);
+		sqlite3_result_text(ctx, txt, -1, SQLITE_TRANSIENT);
+		(*env)->ReleaseStringUTFChars(env, value, txt);
 	}
 }
 
@@ -211,17 +182,10 @@ void JNICALL Java_com_baidu_javalite_Context_sqlite3_1result_1blob(JNIEnv *env,
 	if (value == 0) {
 		sqlite3_result_null(ctx);
 	} else {
-		if (_internal_result_blob != 0) {
-			(*env)->DeleteGlobalRef(env, _internal_result_blob);
-			_internal_result_blob = 0;
-		}
-
-		_internal_result_blob = (*env)->NewGlobalRef(env, value);
-		jbyte* elems = (*env)->GetByteArrayElements(env, _internal_result_blob,
-				0);
-		int len = (*env)->GetArrayLength(env, _internal_result_blob);
-		sqlite3_result_blob(ctx, (const void*) elems, len,
-				_internal_free_result_blob);
+		jbyte* elems = (*env)->GetByteArrayElements(env, value, 0);
+		int len = (*env)->GetArrayLength(env, value);
+		sqlite3_result_blob(ctx, (const void*) elems, len, SQLITE_TRANSIENT);
+		(*env)->ReleaseByteArrayElements(env, value, elems, JNI_ABORT);
 	}
 }
 

@@ -23,6 +23,7 @@
             description="编译生成 class 文件"
             depends="-clean-classes">
         <javac target="1.6"
+               source="1.6"
                destdir="${bin.classes}"
                srcdir="${java.src}"
                failonerror="on"

@@ -216,3 +216,57 @@ void JNICALL Java_com_baidu_javalite_Context_sqlite3_1result_1value(JNIEnv *env,
 	sqlite3_value* vl = (sqlite3_value*) valueHandle;
 	sqlite3_result_value(ctx, vl);
 }
+
+void JNICALL Java_com_baidu_javalite_Context_sqlite3_1result_1error(JNIEnv *env,
+		jclass cls, jlong handle, jstring msg, jint code) {
+	if (handle == 0) {
+		throwSqliteException(env, "Native handle is NULL!");
+		return;
+	}
+
+	sqlite3_context* ctx = (sqlite3_context*) handle;
+
+	if (msg == 0) {
+		sqlite3_result_error_code(ctx, code);
+	} else {
+		const char* cmsg = (*env)->GetStringUTFChars(env, msg, 0);
+		sqlite3_result_error(ctx, cmsg, code);
+		(*env)->ReleaseStringUTFChars(env, msg, cmsg);
+	}
+}
+
+void JNICALL Java_com_baidu_javalite_Context_sqlite3_1result_1error_1toobig(
+		JNIEnv *env, jclass cls, jlong handle) {
+	if (handle == 0) {
+		throwSqliteException(env, "Native handle is NULL!");
+		return;
+	}
+
+	sqlite3_context* ctx = (sqlite3_context*) handle;
+
+	sqlite3_result_error_toobig(ctx);
+}
+
+void JNICALL Java_com_baidu_javalite_Context_sqlite3_1result_1error_1nomem(
+		JNIEnv *env, jclass cls, jlong handle) {
+	if (handle == 0) {
+		throwSqliteException(env, "Native handle is NULL!");
+		return;
+	}
+
+	sqlite3_context* ctx = (sqlite3_context*) handle;
+
+	sqlite3_result_error_nomem(ctx);
+}
+
+void JNICALL Java_com_baidu_javalite_Context_sqlite3_1result_1error_1code(
+		JNIEnv *env, jclass cls, jlong handle, jint code) {
+	if (handle == 0) {
+		throwSqliteException(env, "Native handle is NULL!");
+		return;
+	}
+
+	sqlite3_context* ctx = (sqlite3_context*) handle;
+
+	sqlite3_result_error_code(ctx, code);
+}

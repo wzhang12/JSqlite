@@ -111,6 +111,38 @@ JNIEXPORT void JNICALL Java_com_baidu_javalite_Context_sqlite3_1result_1zeroblob
 JNIEXPORT void JNICALL Java_com_baidu_javalite_Context_sqlite3_1result_1value
   (JNIEnv *, jclass, jlong, jlong);
 
+/*
+ * Class:     com_baidu_javalite_Context
+ * Method:    sqlite3_result_error
+ * Signature: (JLjava/lang/String;I)V
+ */
+JNIEXPORT void JNICALL Java_com_baidu_javalite_Context_sqlite3_1result_1error
+  (JNIEnv *, jclass, jlong, jstring, jint);
+
+/*
+ * Class:     com_baidu_javalite_Context
+ * Method:    sqlite3_result_error_toobig
+ * Signature: (J)V
+ */
+JNIEXPORT void JNICALL Java_com_baidu_javalite_Context_sqlite3_1result_1error_1toobig
+  (JNIEnv *, jclass, jlong);
+
+/*
+ * Class:     com_baidu_javalite_Context
+ * Method:    sqlite3_result_error_nomem
+ * Signature: (J)V
+ */
+JNIEXPORT void JNICALL Java_com_baidu_javalite_Context_sqlite3_1result_1error_1nomem
+  (JNIEnv *, jclass, jlong);
+
+/*
+ * Class:     com_baidu_javalite_Context
+ * Method:    sqlite3_result_error_code
+ * Signature: (JI)V
+ */
+JNIEXPORT void JNICALL Java_com_baidu_javalite_Context_sqlite3_1result_1error_1code
+  (JNIEnv *, jclass, jlong, jint);
+
 #ifdef __cplusplus
 }
 #endif

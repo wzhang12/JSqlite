@@ -67,6 +67,22 @@ public class Context implements Closeable {
         sqlite3_result_value(handle, rs.getHandle());
     }
 
+    public void setResultError(String msg, int code) throws SqliteException {
+        sqlite3_result_error(handle, msg, code);
+    }
+
+    public void setResultErrorTooBig() throws SqliteException {
+        sqlite3_result_error_toobig(handle);
+    }
+
+    public void setResultErrorNoMem() throws SqliteException {
+        sqlite3_result_error_nomem(handle);
+    }
+
+    public void setResultErrorCode(int code) throws SqliteException {
+        sqlite3_result_error_code(handle, code);
+    }
+
     private static native Object sqlite3_user_data(long handle) throws SqliteException;
 
     private static native long sqlite3_context_db_handle(long handle) throws SqliteException;
@@ -92,4 +108,12 @@ public class Context implements Closeable {
     private static native void sqlite3_result_zeroblob(long handle, int size) throws SqliteException;
 
     private static native void sqlite3_result_value(long handle, long valueHandle) throws SqliteException;
+
+    private static native void sqlite3_result_error(long handle, String msg, int code) throws SqliteException;
+
+    private static native void sqlite3_result_error_toobig(long handle) throws SqliteException;
+
+    private static native void sqlite3_result_error_nomem(long handle) throws SqliteException;
+
+    private static native void sqlite3_result_error_code(long handle, int code) throws SqliteException;
 }

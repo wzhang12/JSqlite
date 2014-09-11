@@ -118,6 +118,11 @@ public class DBConnection implements Closeable, Validable {
         sqlite3_create_function_v2(handle, funcName, nArgs, app, callbacks);
     }
 
+    public int releaseDbMemory() throws SqliteException {
+        DBHelper.checkValidable(this);
+        return sqlite3_db_release_memory(handle);
+    }
+
     private static native long sqlite3_prepare_v2(long handle, String sql) throws SqliteException;
 
     private static native TableResult sqlite3_get_table(long handle, String sql) throws SqliteException;
@@ -141,4 +146,6 @@ public class DBConnection implements Closeable, Validable {
     private static native void sqlite3_rollback_hook(long handle, RollbackHook hook, Object arg) throws SqliteException;
 
     private static native void sqlite3_create_function_v2(long handle, String funcName, int nArgs, Object app, ScalarFunction callbacks) throws SqliteException;
+
+    private static native int sqlite3_db_release_memory(long handle) throws SqliteException;
 }

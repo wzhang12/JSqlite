@@ -103,6 +103,14 @@ JNIEXPORT void JNICALL Java_com_baidu_javalite_DBConnection_sqlite3_1rollback_1h
 JNIEXPORT void JNICALL Java_com_baidu_javalite_DBConnection_sqlite3_1create_1function_1v2
   (JNIEnv *, jclass, jlong, jstring, jint, jobject, jobject);
 
+/*
+ * Class:     com_baidu_javalite_DBConnection
+ * Method:    sqlite3_db_release_memory
+ * Signature: (J)I
+ */
+JNIEXPORT jint JNICALL Java_com_baidu_javalite_DBConnection_sqlite3_1db_1release_1memory
+  (JNIEnv *, jclass, jlong);
+
 #ifdef __cplusplus
 }
 #endif

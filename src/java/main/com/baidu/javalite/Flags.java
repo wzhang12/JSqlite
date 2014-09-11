@@ -91,16 +91,27 @@ public final class Flags {
     /**
      * <pre>
      *      #define SQLITE_LIMIT_LENGTH                    0
-            #define SQLITE_LIMIT_SQL_LENGTH                1
-            #define SQLITE_LIMIT_COLUMN                    2
-            #define SQLITE_LIMIT_EXPR_DEPTH                3
-            #define SQLITE_LIMIT_COMPOUND_SELECT           4
-            #define SQLITE_LIMIT_VDBE_OP                   5
-            #define SQLITE_LIMIT_FUNCTION_ARG              6
-            #define SQLITE_LIMIT_ATTACHED                  7
-            #define SQLITE_LIMIT_LIKE_PATTERN_LENGTH       8
-            #define SQLITE_LIMIT_VARIABLE_NUMBER           9
-            #define SQLITE_LIMIT_TRIGGER_DEPTH            10
+     *          The maximum size of any string or BLOB or table row, in bytes.
+     *      #define SQLITE_LIMIT_SQL_LENGTH                1
+     *          The maximum length of an SQL statement, in bytes.
+     *      #define SQLITE_LIMIT_COLUMN                    2
+     *          The maximum number of columns in a table definition or in the result set of a SELECT or the maximum number of columns in an index or in an ORDER BY or GROUP BY clause.
+     *      #define SQLITE_LIMIT_EXPR_DEPTH                3
+     *          The maximum depth of the parse tree on any expression.
+     *      #define SQLITE_LIMIT_COMPOUND_SELECT           4
+     *          The maximum number of terms in a compound SELECT statement.
+     *      #define SQLITE_LIMIT_VDBE_OP                   5
+     *          The maximum number of instructions in a virtual machine program used to implement an SQL statement. This limit is not currently enforced, though that might be added in some future release of SQLite.
+     *      #define SQLITE_LIMIT_FUNCTION_ARG              6
+     *          The maximum number of arguments on a function.
+     *      #define SQLITE_LIMIT_ATTACHED                  7
+     *          The maximum number of attached databases.
+     *      #define SQLITE_LIMIT_LIKE_PATTERN_LENGTH       8
+     *          The maximum length of the pattern argument to the LIKE or GLOB operators.
+     *      #define SQLITE_LIMIT_VARIABLE_NUMBER           9
+     *          The maximum index number of any parameter in an SQL statement.
+     *      #define SQLITE_LIMIT_TRIGGER_DEPTH            10
+     *          The maximum depth of recursion for triggers.
      * </pre>
      */
     public static final int SQLITE_LIMIT_LENGTH = 0;

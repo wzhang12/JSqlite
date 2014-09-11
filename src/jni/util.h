@@ -61,4 +61,10 @@ void callAggregateFunctionFinalMethod(JNIEnv* env, jobject target, jobject ctx);
 
 jobject newJavaliteContext(JNIEnv* env, jlong handle);
 
+jobject newDBConnection(JNIEnv* env, jlong handle);
+
+void callTraceListenerCallback(JNIEnv* env, jobject listener, jobject conn, jstring msg);
+
+void callProfileListenerCallback(JNIEnv* env, jobject listener, jobject conn, jstring msg, jlong nano);
+
 #endif /* UTIL_H_ */

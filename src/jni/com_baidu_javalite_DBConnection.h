@@ -127,6 +127,22 @@ JNIEXPORT jint JNICALL Java_com_baidu_javalite_DBConnection_sqlite3_1limit
 JNIEXPORT jlong JNICALL Java_com_baidu_javalite_DBConnection_sqlite3_1next_1stmt
   (JNIEnv *, jclass, jlong, jlong);
 
+/*
+ * Class:     com_baidu_javalite_DBConnection
+ * Method:    sqlite3_trace
+ * Signature: (JLcom/baidu/javalite/TraceListener;)V
+ */
+JNIEXPORT void JNICALL Java_com_baidu_javalite_DBConnection_sqlite3_1trace
+  (JNIEnv *, jclass, jlong, jobject);
+
+/*
+ * Class:     com_baidu_javalite_DBConnection
+ * Method:    sqlite3_profile
+ * Signature: (JLcom/baidu/javalite/ProfileListener;)V
+ */
+JNIEXPORT void JNICALL Java_com_baidu_javalite_DBConnection_sqlite3_1profile
+  (JNIEnv *, jclass, jlong, jobject);
+
 #ifdef __cplusplus
 }
 #endif

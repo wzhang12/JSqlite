@@ -263,7 +263,7 @@ static jmethodID getContextInitId(JNIEnv* env) {
 		mid_context_init = (*env)->GetMethodID(env, cls, "<init>", "(J)V");
 		(*env)->DeleteLocalRef(env, cls);
 	}
-	
+
 	return mid_context_init;
 }
 
@@ -272,4 +272,62 @@ jobject newJavaliteContext(JNIEnv* env, jlong handle) {
 	jobject rs = (*env)->NewObject(env, cls, getContextInitId(env), handle);
 	(*env)->DeleteLocalRef(env, cls);
 	return rs;
+}
+
+static jmethodID mid_DBConnection_init;
+
+static jmethodID getDBConnectionInitId(JNIEnv* env) {
+	if (mid_DBConnection_init == 0) {
+		jclass cls = (*env)->FindClass(env, "com/baidu/javalite/DBConnection");
+		mid_DBConnection_init = (*env)->GetMethodID(env, cls, "<init>", "(J)V");
+		(*env)->DeleteLocalRef(env, cls);
+	}
+
+	return mid_DBConnection_init;
+}
+
+jobject newDBConnection(JNIEnv* env, jlong handle) {
+	jclass cls = (*env)->FindClass(env, "com/baidu/javalite/DBConnection");
+	jobject rs = (*env)->NewObject(env, cls, getDBConnectionInitId(env),
+			handle);
+	(*env)->DeleteLocalRef(env, cls);
+	return rs;
+}
+
+static jmethodID mid_TraceListener_callback;
+
+static jmethodID getTraceListenerCallbackId(JNIEnv* env) {
+	if (mid_TraceListener_callback == 0) {
+		jclass cls = (*env)->FindClass(env, "com/baidu/javalite/TraceListener");
+		mid_TraceListener_callback = (*env)->GetMethodID(env, cls, "trace",
+				"(Lcom/baidu/javalite/DBConnection;Ljava/lang/String;)V");
+		(*env)->DeleteLocalRef(env, cls);
+	}
+
+	return mid_TraceListener_callback;
+}
+
+void callTraceListenerCallback(JNIEnv* env, jobject listener, jobject conn,
+		jstring msg) {
+	(*env)->CallVoidMethod(env, listener, getTraceListenerCallbackId(env), conn,
+			msg);
+}
+
+static jmethodID mid_ProfileListener_callback;
+
+static jmethodID getProfileListenerCallbackId(JNIEnv* env) {
+	if (mid_ProfileListener_callback == 0) {
+		jclass cls = (*env)->FindClass(env, "");
+		mid_ProfileListener_callback = (*env)->GetMethodID(env, cls, "profile",
+				"(Lcom/baidu/javalite/DBConnection;Ljava/lang/String;J)V");
+		(*env)->DeleteLocalRef(env, cls);
+	}
+
+	return mid_ProfileListener_callback;
+}
+
+void callProfileListenerCallback(JNIEnv* env, jobject listener, jobject conn,
+		jstring msg, jlong nano) {
+	(*env)->CallVoidMethod(env, listener, getProfileListenerCallbackId(env),
+			conn, msg, nano);
 }

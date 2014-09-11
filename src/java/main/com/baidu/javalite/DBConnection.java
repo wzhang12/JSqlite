@@ -138,6 +138,16 @@ public class DBConnection implements Closeable, Validable {
         return new PrepareStmt(this, newStmtHandle);
     }
 
+    public void setOnTraceListener(TraceListener listener) throws SqliteException {
+        DBHelper.checkValidable(this);
+        sqlite3_trace(handle, listener);
+    }
+
+    public void setOnProfileListener(ProfileListener listener) throws SqliteException {
+        DBHelper.checkValidable(this);
+        sqlite3_profile(handle, listener);
+    }
+
     private static native long sqlite3_prepare_v2(long handle, String sql) throws SqliteException;
 
     private static native TableResult sqlite3_get_table(long handle, String sql) throws SqliteException;
@@ -167,4 +177,8 @@ public class DBConnection implements Closeable, Validable {
     private static native int sqlite3_limit(long handle, int id, int newVal) throws SqliteException;
 
     private static native long sqlite3_next_stmt(long conn, long stmt) throws SqliteException;
+
+    private static native void sqlite3_trace(long conn, TraceListener listener) throws SqliteException;
+
+    private static native void sqlite3_profile(long conn, ProfileListener listener) throws SqliteException;
 }

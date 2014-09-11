@@ -317,7 +317,7 @@ static jmethodID mid_ProfileListener_callback;
 
 static jmethodID getProfileListenerCallbackId(JNIEnv* env) {
 	if (mid_ProfileListener_callback == 0) {
-		jclass cls = (*env)->FindClass(env, "");
+		jclass cls = (*env)->FindClass(env, "com/baidu/javalite/ProfileListener");
 		mid_ProfileListener_callback = (*env)->GetMethodID(env, cls, "profile",
 				"(Lcom/baidu/javalite/DBConnection;Ljava/lang/String;J)V");
 		(*env)->DeleteLocalRef(env, cls);

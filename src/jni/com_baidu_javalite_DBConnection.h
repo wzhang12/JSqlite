@@ -119,6 +119,14 @@ JNIEXPORT jint JNICALL Java_com_baidu_javalite_DBConnection_sqlite3_1db_1release
 JNIEXPORT jint JNICALL Java_com_baidu_javalite_DBConnection_sqlite3_1limit
   (JNIEnv *, jclass, jlong, jint, jint);
 
+/*
+ * Class:     com_baidu_javalite_DBConnection
+ * Method:    sqlite3_next_stmt
+ * Signature: (JJ)J
+ */
+JNIEXPORT jlong JNICALL Java_com_baidu_javalite_DBConnection_sqlite3_1next_1stmt
+  (JNIEnv *, jclass, jlong, jlong);
+
 #ifdef __cplusplus
 }
 #endif

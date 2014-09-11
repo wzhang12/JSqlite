@@ -71,8 +71,7 @@ public class DBConnection implements Closeable, Validable {
 
     public PrepareStmt prepare(String sql) throws SqliteException {
         DBHelper.checkValidable(this);
-        PrepareStmt prepareStmt = new PrepareStmt(this, sqlite3_prepare_v2(handle, sql));
-        return prepareStmt;
+        return new PrepareStmt(this, sqlite3_prepare_v2(handle, sql));
     }
 
     public Transaction newTransaction() {
@@ -128,6 +127,17 @@ public class DBConnection implements Closeable, Validable {
         return sqlite3_limit(handle, id, newVal);
     }
 
+    public PrepareStmt nextStmt(PrepareStmt old) throws SqliteException {
+        DBHelper.checkValidable(this);
+        long newStmtHandle;
+        if (old != null && old.isValid()) {
+            newStmtHandle = sqlite3_next_stmt(handle, old.getHandle());
+        } else {
+            newStmtHandle = sqlite3_next_stmt(handle, 0);
+        }
+        return new PrepareStmt(this, newStmtHandle);
+    }
+
     private static native long sqlite3_prepare_v2(long handle, String sql) throws SqliteException;
 
     private static native TableResult sqlite3_get_table(long handle, String sql) throws SqliteException;
@@ -155,4 +165,6 @@ public class DBConnection implements Closeable, Validable {
     private static native int sqlite3_db_release_memory(long handle) throws SqliteException;
 
     private static native int sqlite3_limit(long handle, int id, int newVal) throws SqliteException;
+
+    private static native long sqlite3_next_stmt(long conn, long stmt) throws SqliteException;
 }

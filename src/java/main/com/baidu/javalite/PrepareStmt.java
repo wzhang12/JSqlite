@@ -15,6 +15,10 @@ public class PrepareStmt implements Closeable, Validable {
         this.handle = handle;
     }
 
+    protected long getHandle() {
+        return handle;
+    }
+
     @Override
     public boolean isValid() {
         return handle != 0;

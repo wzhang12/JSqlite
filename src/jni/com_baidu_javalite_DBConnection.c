@@ -440,3 +440,20 @@ jint JNICALL Java_com_baidu_javalite_DBConnection_sqlite3_1limit(JNIEnv *env,
 
 	return sqlite3_limit(conn, id, newVal);
 }
+
+jlong JNICALL Java_com_baidu_javalite_DBConnection_sqlite3_1next_1stmt(
+		JNIEnv *env, jclass cls, jlong handle, jlong stmtHandle) {
+	if (handle == 0) {
+		throwSqliteException(env, "handle is NULL");
+		return 0;
+	}
+
+	sqlite3* conn = (sqlite3*) handle;
+
+	if (stmtHandle == 0) {
+		return (jlong) sqlite3_next_stmt(conn, 0);
+	} else {
+		sqlite3_stmt* stmt = (sqlite3_stmt*) stmtHandle;
+		return (jlong) sqlite3_next_stmt(conn, stmt);
+	}
+}

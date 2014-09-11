@@ -6,6 +6,6 @@ package com.baidu.javalite;
  */
 public interface CommitHook {
 
-    public int callback(Object arg);
+    public int callback(DBConnection conn);
 
 }

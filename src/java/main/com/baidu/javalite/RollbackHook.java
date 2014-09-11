@@ -6,6 +6,6 @@ package com.baidu.javalite;
  */
 public interface RollbackHook {
 
-    public void callback(Object arg);
+    public void callback(DBConnection conn);
 
 }

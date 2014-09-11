@@ -133,15 +133,15 @@ jmethodID getCommitHookCallback(JNIEnv* env) {
 	if (mid_CommitHookCallback == 0) {
 		jclass cls = (*env)->FindClass(env, "com/baidu/javalite/CommitHook");
 		mid_CommitHookCallback = (*env)->GetMethodID(env, cls, "callback",
-				"(Ljava/lang/Object;)I");
+				"(Lcom/baidu/javalite/DBConnection;)I");
 		(*env)->DeleteLocalRef(env, cls);
 	}
 
 	return mid_CommitHookCallback;
 }
 
-jint callCommitHookCallback(JNIEnv* env, jobject obj, jobject arg) {
-	return (*env)->CallIntMethod(env, obj, getCommitHookCallback(env), arg);
+jint callCommitHookCallback(JNIEnv* env, jobject obj, jobject conn) {
+	return (*env)->CallIntMethod(env, obj, getCommitHookCallback(env), conn);
 }
 
 static jmethodID mid_RollbackHookCallback;
@@ -150,15 +150,15 @@ jmethodID getRollbackHookCallback(JNIEnv* env) {
 	if (mid_RollbackHookCallback == 0) {
 		jclass cls = (*env)->FindClass(env, "com/baidu/javalite/RollbackHook");
 		mid_RollbackHookCallback = (*env)->GetMethodID(env, cls, "callback",
-				"(Ljava/lang/Object;)V");
+				"(Lcom/baidu/javalite/DBConnection;)V");
 		(*env)->DeleteLocalRef(env, cls);
 	}
 
 	return mid_RollbackHookCallback;
 }
 
-void callRollbackHookCallback(JNIEnv* env, jobject obj, jobject arg) {
-	(*env)->CallVoidMethod(env, obj, getRollbackHookCallback(env), arg);
+void callRollbackHookCallback(JNIEnv* env, jobject obj, jobject conn) {
+	(*env)->CallVoidMethod(env, obj, getRollbackHookCallback(env), conn);
 }
 
 static jmethodID mid_javalite_init;

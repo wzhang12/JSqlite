@@ -82,18 +82,18 @@ JNIEXPORT void JNICALL Java_com_baidu_javalite_DBConnection_sqlite3_1busy_1timeo
 /*
  * Class:     com_baidu_javalite_DBConnection
  * Method:    sqlite3_commit_hook
- * Signature: (JLcom/baidu/javalite/CommitHook;Ljava/lang/Object;)V
+ * Signature: (JLcom/baidu/javalite/CommitHook;)V
  */
 JNIEXPORT void JNICALL Java_com_baidu_javalite_DBConnection_sqlite3_1commit_1hook
-  (JNIEnv *, jclass, jlong, jobject, jobject);
+  (JNIEnv *, jclass, jlong, jobject);
 
 /*
  * Class:     com_baidu_javalite_DBConnection
  * Method:    sqlite3_rollback_hook
- * Signature: (JLcom/baidu/javalite/RollbackHook;Ljava/lang/Object;)V
+ * Signature: (JLcom/baidu/javalite/RollbackHook;)V
  */
 JNIEXPORT void JNICALL Java_com_baidu_javalite_DBConnection_sqlite3_1rollback_1hook
-  (JNIEnv *, jclass, jlong, jobject, jobject);
+  (JNIEnv *, jclass, jlong, jobject);
 
 /*
  * Class:     com_baidu_javalite_DBConnection

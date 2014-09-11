@@ -35,11 +35,11 @@ jint callBusyHandlerCallback(JNIEnv* env, jobject obj, int times);
 
 jmethodID getCommitHookCallback(JNIEnv* env);
 
-jint callCommitHookCallback(JNIEnv* env, jobject obj, jobject arg);
+jint callCommitHookCallback(JNIEnv* env, jobject obj, jobject conn);
 
 jmethodID getRollbackHookCallback(JNIEnv* env);
 
-void callRollbackHookCallback(JNIEnv* env, jobject obj, jobject arg);
+void callRollbackHookCallback(JNIEnv* env, jobject obj, jobject conn);
 
 typedef struct {
 	// 回调对象

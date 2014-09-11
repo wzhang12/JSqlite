@@ -272,29 +272,23 @@ void JNICALL Java_com_baidu_javalite_DBConnection_sqlite3_1busy_1timeout(
 	}
 }
 
-static int jni_commit_hook(void* arg) {
+static int jni_commit_hook(void* conn) {
 	if (g_commit_hook == 0) {
 		return 0;
 	}
 
-	jobject jArg;
 	JNIEnv* env = getEnv();
 	int rs;
+	jobject jConn = newDBConnection(env, (jlong) conn);
 
-	if (arg != 0) {
-		jArg = (jobject) arg;
-	} else {
-		jArg = 0;
-	}
+	rs = callCommitHookCallback(env, g_commit_hook, jConn);
 
-	rs = callCommitHookCallback(env, g_commit_hook, jArg);
-
-	(*env)->DeleteGlobalRef(env, jArg);
+	(*env)->DeleteGlobalRef(env, jConn);
 	return rs;
 }
 
 void JNICALL Java_com_baidu_javalite_DBConnection_sqlite3_1commit_1hook(
-		JNIEnv *env, jclass cls, jlong handle, jobject hook, jobject arg) {
+		JNIEnv *env, jclass cls, jlong handle, jobject hook) {
 	if (handle == 0) {
 		throwSqliteException(env, "handle is NULL");
 		return;
@@ -310,38 +304,26 @@ void JNICALL Java_com_baidu_javalite_DBConnection_sqlite3_1commit_1hook(
 	if (hook == 0) {
 		sqlite3_commit_hook(conn, 0, 0);
 	} else {
-		jobject jArg = 0;
-		if (arg != 0) {
-			jArg = (*env)->NewGlobalRef(env, arg);
-		}
-
 		g_commit_hook = (*env)->NewGlobalRef(env, hook);
-
-		sqlite3_commit_hook(conn, jni_commit_hook, jArg);
+		sqlite3_commit_hook(conn, jni_commit_hook, conn);
 	}
 }
 
-static void jni_rollback_hook(void* arg) {
+static void jni_rollback_hook(void* conn) {
 	if (g_rollback_hook == 0) {
 		return;
 	}
 
-	jobject jArg;
 	JNIEnv* env = getEnv();
+	jobject jConn = newDBConnection(env, (jlong) conn);
 
-	if (arg != 0) {
-		jArg = (jobject) arg;
-	} else {
-		jArg = 0;
-	}
+	callRollbackHookCallback(env, g_rollback_hook, jConn);
 
-	callRollbackHookCallback(env, g_rollback_hook, jArg);
-
-	(*env)->DeleteGlobalRef(env, jArg);
+	(*env)->DeleteGlobalRef(env, jConn);
 }
 
 void JNICALL Java_com_baidu_javalite_DBConnection_sqlite3_1rollback_1hook(
-		JNIEnv *env, jclass cls, jlong handle, jobject hook, jobject arg) {
+		JNIEnv *env, jclass cls, jlong handle, jobject hook) {
 	if (handle == 0) {
 		throwSqliteException(env, "handle is NULL");
 		return;
@@ -357,14 +339,8 @@ void JNICALL Java_com_baidu_javalite_DBConnection_sqlite3_1rollback_1hook(
 	if (hook == 0) {
 		sqlite3_rollback_hook(conn, 0, 0);
 	} else {
-		jobject jArg = 0;
-		if (arg != 0) {
-			jArg = (*env)->NewGlobalRef(env, arg);
-		}
-
 		g_rollback_hook = (*env)->NewGlobalRef(env, hook);
-
-		sqlite3_rollback_hook(conn, jni_rollback_hook, jArg);
+		sqlite3_rollback_hook(conn, jni_rollback_hook, conn);
 	}
 }
 

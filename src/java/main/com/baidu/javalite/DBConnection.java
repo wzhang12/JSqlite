@@ -88,14 +88,14 @@ public class DBConnection implements Closeable, Validable {
         sqlite3_busy_timeout(handle, ms);
     }
 
-    public void setCommitHook(CommitHook hook, Object arg) throws SqliteException {
+    public void setCommitHook(CommitHook hook) throws SqliteException {
         DBHelper.checkValidable(this);
-        sqlite3_commit_hook(handle, hook, arg);
+        sqlite3_commit_hook(handle, hook);
     }
 
-    public void setRollbackHook(RollbackHook hook, Object arg) throws SqliteException {
+    public void setRollbackHook(RollbackHook hook) throws SqliteException {
         DBHelper.checkValidable(this);
-        sqlite3_rollback_hook(handle, hook, arg);
+        sqlite3_rollback_hook(handle, hook);
     }
 
     public Blob getReadWriteBlob(String dbName,
@@ -166,9 +166,9 @@ public class DBConnection implements Closeable, Validable {
 
     private static native void sqlite3_busy_timeout(long handle, int ms) throws SqliteException;
 
-    private static native void sqlite3_commit_hook(long handle, CommitHook hook, Object arg) throws SqliteException;
+    private static native void sqlite3_commit_hook(long handle, CommitHook hook) throws SqliteException;
 
-    private static native void sqlite3_rollback_hook(long handle, RollbackHook hook, Object arg) throws SqliteException;
+    private static native void sqlite3_rollback_hook(long handle, RollbackHook hook) throws SqliteException;
 
     private static native void sqlite3_create_function_v2(long handle, String funcName, int nArgs, Object app, ScalarFunction callbacks) throws SqliteException;
 

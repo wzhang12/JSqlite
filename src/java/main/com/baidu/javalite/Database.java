@@ -62,6 +62,10 @@ public class Database {
         return sqlite3_libversion_number();
     }
 
+    public static boolean isSqlComplete(String sql) throws SqliteException {
+        return sqlite3_complete(sql);
+    }
+
     private static native long sqlite3_open_v2(String filename, int flags, String zVfs) throws SqliteException;
 
     private static native boolean sqlite3_threadsafe();
@@ -77,4 +81,6 @@ public class Database {
     private static native String sqlite3_sourceid();
 
     private static native int sqlite3_libversion_number();
+
+    private static native boolean sqlite3_complete(String sql) throws SqliteException;
 }

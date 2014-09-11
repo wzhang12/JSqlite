@@ -71,6 +71,14 @@ JNIEXPORT jstring JNICALL Java_com_baidu_javalite_Database_sqlite3_1sourceid
 JNIEXPORT jint JNICALL Java_com_baidu_javalite_Database_sqlite3_1libversion_1number
   (JNIEnv *, jclass);
 
+/*
+ * Class:     com_baidu_javalite_Database
+ * Method:    sqlite3_complete
+ * Signature: (Ljava/lang/String;)Z
+ */
+JNIEXPORT jboolean JNICALL Java_com_baidu_javalite_Database_sqlite3_1complete
+  (JNIEnv *, jclass, jstring);
+
 #ifdef __cplusplus
 }
 #endif

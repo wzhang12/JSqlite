@@ -114,4 +114,15 @@ public class DBConnectionTest {
             Assert.assertTrue("测试创建函数失败!", false);
         }
     }
+
+    @Test
+    public void testLimit() {
+        try {
+            System.out.println("BLOB or TEXT MAX length is " + conn.limit(Flags.SQLITE_LIMIT_LENGTH, -1) + " bytes");;
+            System.out.println("SELECT MAX column is " + conn.limit(Flags.SQLITE_LIMIT_COLUMN, -1));
+            System.out.println("SQL MAX length is " + conn.limit(Flags.SQLITE_LIMIT_SQL_LENGTH, -1) + " bytes");
+        } catch (SqliteException e) {
+            Assert.assertTrue("测试 limit 函数失败!", false);
+        }
+    }
 }

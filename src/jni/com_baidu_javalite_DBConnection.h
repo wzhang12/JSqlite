@@ -111,6 +111,14 @@ JNIEXPORT void JNICALL Java_com_baidu_javalite_DBConnection_sqlite3_1create_1fun
 JNIEXPORT jint JNICALL Java_com_baidu_javalite_DBConnection_sqlite3_1db_1release_1memory
   (JNIEnv *, jclass, jlong);
 
+/*
+ * Class:     com_baidu_javalite_DBConnection
+ * Method:    sqlite3_limit
+ * Signature: (JII)I
+ */
+JNIEXPORT jint JNICALL Java_com_baidu_javalite_DBConnection_sqlite3_1limit
+  (JNIEnv *, jclass, jlong, jint, jint);
+
 #ifdef __cplusplus
 }
 #endif

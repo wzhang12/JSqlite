@@ -87,4 +87,31 @@ public final class Flags {
     public static final int SQLITE_CONFIG_SINGLETHREAD = 1;
     public static final int SQLITE_CONFIG_MULTITHREAD = 2;
     public static final int SQLITE_CONFIG_SERIALIZED = 3;
+
+    /**
+     * <pre>
+     *      #define SQLITE_LIMIT_LENGTH                    0
+            #define SQLITE_LIMIT_SQL_LENGTH                1
+            #define SQLITE_LIMIT_COLUMN                    2
+            #define SQLITE_LIMIT_EXPR_DEPTH                3
+            #define SQLITE_LIMIT_COMPOUND_SELECT           4
+            #define SQLITE_LIMIT_VDBE_OP                   5
+            #define SQLITE_LIMIT_FUNCTION_ARG              6
+            #define SQLITE_LIMIT_ATTACHED                  7
+            #define SQLITE_LIMIT_LIKE_PATTERN_LENGTH       8
+            #define SQLITE_LIMIT_VARIABLE_NUMBER           9
+            #define SQLITE_LIMIT_TRIGGER_DEPTH            10
+     * </pre>
+     */
+    public static final int SQLITE_LIMIT_LENGTH = 0;
+    public static final int SQLITE_LIMIT_SQL_LENGTH = 1;
+    public static final int SQLITE_LIMIT_COLUMN = 2;
+    public static final int SQLITE_LIMIT_EXPR_DEPTH = 3;
+    public static final int SQLITE_LIMIT_COMPOUND_SELECT = 4;
+    public static final int SQLITE_LIMIT_VDBE_OP = 5;
+    public static final int SQLITE_LIMIT_FUNCTION_ARG = 6;
+    public static final int SQLITE_LIMIT_ATTACHED = 7;
+    public static final int SQLITE_LIMIT_LIKE_PATTERN_LENGTH = 8;
+    public static final int SQLITE_LIMIT_VARIABLE_NUMBER = 9;
+    public static final int SQLITE_LIMIT_TRIGGER_DEPTH = 10;
 }

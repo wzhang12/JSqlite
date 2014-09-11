@@ -428,3 +428,15 @@ jint JNICALL Java_com_baidu_javalite_DBConnection_sqlite3_1db_1release_1memory(
 
 	return sqlite3_db_release_memory(conn);
 }
+
+jint JNICALL Java_com_baidu_javalite_DBConnection_sqlite3_1limit(JNIEnv *env,
+		jclass cls, jlong handle, jint id, jint newVal) {
+	if (handle == 0) {
+		throwSqliteException(env, "handle is NULL");
+		return 0;
+	}
+
+	sqlite3* conn = (sqlite3*) handle;
+
+	return sqlite3_limit(conn, id, newVal);
+}

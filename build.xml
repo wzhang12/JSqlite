@@ -76,6 +76,8 @@
                     <include name="**/*Test*.java"/>
                 </fileset>
             </batchtest>
+
+            <jvmarg line="-Djava.library.path=."/>
         </junit>
     </target>
 

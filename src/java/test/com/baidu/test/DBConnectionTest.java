@@ -125,4 +125,45 @@ public class DBConnectionTest {
             Assert.assertTrue("测试 limit 函数失败!", false);
         }
     }
+
+    @Test
+    public void testRollbackHook() {
+        try {
+            conn.setRollbackHook(new RollbackHook() {
+                @Override
+                public void callback(DBConnection conn) {
+                    System.out.println(conn);
+                    System.out.println("success to rollback!");
+                }
+            });
+
+            Transaction transaction = conn.newTransaction();
+            transaction.begin();
+            conn.exec("INSERT OR REPLACE INTO test_tb (id, name) values (10, 'Clark');");
+            transaction.rollback();
+        } catch (SqliteException e) {
+            Assert.assertTrue("测试 setRollbackHook 函数失败!", false);
+        }
+    }
+
+    @Test
+    public void testCommitHook() {
+        try {
+            conn.setCommitHook(new CommitHook() {
+                @Override
+                public int callback(DBConnection conn) {
+                    System.out.println(conn);
+                    System.out.println("success to commit!");
+                    return 0;
+                }
+            });
+
+            Transaction transaction = conn.newTransaction();
+            transaction.begin();
+            conn.exec("INSERT OR REPLACE INTO test_tb (id, name) values (10, 'Clark');");
+            transaction.commit();
+        } catch (SqliteException e) {
+            Assert.assertTrue("测试 setRollbackHook 函数失败!", false);
+        }
+    }
 }

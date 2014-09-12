@@ -44,17 +44,23 @@ public class BlobOutputStream extends OutputStream {
 
     @Override
     public void flush() throws IOException {
-        if (offset > 0) {
-            blob.write(buffer, 0, offset, nativeOffset);
-            nativeOffset += offset;
-            offset = 0;
+        try {
+            if (offset > 0) {
+                blob.write(buffer, 0, offset, nativeOffset);
+                nativeOffset += offset;
+                offset = 0;
+            }
+        } finally {
+            super.flush();
         }
-        super.flush();
     }
 
     @Override
     public void close() throws IOException {
-        flush();
-        super.close();
+        try {
+            flush();
+        } finally {
+            super.close();
+        }
     }
 }

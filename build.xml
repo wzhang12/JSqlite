@@ -22,14 +22,13 @@
     <target name="-compile"
             description="编译生成 class 文件"
             depends="-clean-classes">
-        <javac target="1.6"
-               source="1.6"
+        <javac source="1.6"
                destdir="${bin.classes}"
                srcdir="${java.src}"
                failonerror="on"
                encoding="UTF-8"
                includeantruntime="off"
-               verbose="on">
+               verbose="off">
             <src>
                 <pathelement location="${java.src}"/>
                 <pathelement location="${java.test.src}"/>

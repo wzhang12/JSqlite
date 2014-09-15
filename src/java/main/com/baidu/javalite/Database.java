@@ -8,7 +8,7 @@ import java.io.File;
  */
 public class Database {
     static {
-        System.loadLibrary("JSqlite");
+        NativeRuntime.getInstance().load();
     }
 
     private File dbFile;

@@ -4,6 +4,10 @@ package com.baidu.javalite;
  * Created by clark on 14-9-4.
  */
 public class Context implements Closeable {
+    static {
+        NativeRuntime.getInstance().load();
+    }
+
     private long handle;
     private boolean isAggregateContextFreed;
 

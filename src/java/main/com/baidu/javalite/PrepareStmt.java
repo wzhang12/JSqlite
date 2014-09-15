@@ -4,6 +4,10 @@ package com.baidu.javalite;
  * Created by clark on 14-8-25.
  */
 public class PrepareStmt implements Closeable, Validable {
+    static {
+        NativeRuntime.getInstance().load();
+    }
+
     private long handle;
     private DBConnection connection;
 

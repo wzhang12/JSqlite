@@ -5,6 +5,10 @@ package com.baidu.javalite;
  * Date: 14-8-25
  */
 public class DBConnection implements Closeable, Validable {
+    static {
+        NativeRuntime.getInstance().load();
+    }
+
     private long handle;
 
     protected DBConnection(long handle) throws SqliteException {

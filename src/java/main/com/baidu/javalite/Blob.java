@@ -7,6 +7,10 @@ import java.io.OutputStream;
  * Created by clark on 14-9-1.
  */
 public class Blob implements Closeable, Validable {
+    static {
+        NativeRuntime.getInstance().load();
+    }
+
     private long handle;
     private final int flags;
 

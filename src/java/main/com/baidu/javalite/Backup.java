@@ -5,6 +5,10 @@ package com.baidu.javalite;
  * Date: 14-8-27
  */
 public class Backup implements Closeable, Validable {
+    static {
+        NativeRuntime.getInstance().load();
+    }
+
     private long handle;
 
     public static Backup create(DBConnection dst, String dstDbName, DBConnection src, String srcDbName) throws SqliteException {

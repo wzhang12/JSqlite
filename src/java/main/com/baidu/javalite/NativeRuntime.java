@@ -22,6 +22,10 @@ public class NativeRuntime {
         }
     }
 
+    /**
+     * 在 jar 包所在目录下查找动态链接库文件
+     * @return
+     */
     private boolean findNativeLibPath() {
         try {
             File jar = new File(NativeRuntime.class.getProtectionDomain().getCodeSource().getLocation().toURI());

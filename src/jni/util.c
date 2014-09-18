@@ -406,3 +406,22 @@ void callUpdateHookCallback(JNIEnv* env, jobject hook, jobject conn, int action,
 {
   (*env)->CallVoidMethod(env, hook, getUpdateHookCallbackId(env), conn, action, db, tb, rowid);
 }
+
+static jmethodID mid_authorizer_callback;
+
+static jmethodID getAuthorizerCallbackId(JNIEnv* env)
+{
+  if (mid_authorizer_callback == 0)
+  {
+    jclass cls = (*env)->FindClass(env, "com/baidu/javalite/Authorizer");
+    mid_authorizer_callback = (*env)->GetMethodID(env, cls, "xAuth", "(Lcom/baidu/javalite/DBConnection;ILjava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;)I");
+    (*env)->DeleteLocalRef(env, cls);
+  }
+  
+  return mid_authorizer_callback;
+}
+
+int callAuthorizerCallback(JNIEnv* env, jobject authorizer, jobject conn, int action, jstring s1, jstring s2, jstring s3, jstring s4)
+{
+  return (*env)->CallIntMethod(env, authorizer, getAuthorizerCallbackId(env), conn, action, s1, s2, s3, s4);
+}

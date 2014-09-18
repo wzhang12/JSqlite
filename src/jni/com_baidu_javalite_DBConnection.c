@@ -18,6 +18,7 @@ static jobject g_rollback_hook;
 static jobject g_trace_listener;
 static jobject g_profile_listener;
 static jobject g_update_hook;
+static jobject g_authorizer;
 
 static void _internal_free_all(JNIEnv *env)
 {
@@ -68,6 +69,13 @@ static void _internal_free_all(JNIEnv *env)
   {
     (*env)->DeleteGlobalRef(env, g_update_hook);
     g_update_hook = 0;
+  }
+
+  // 删除 conn 的 Authorizer 全局引用
+  if (g_authorizer != 0)
+  {
+    (*env)->DeleteGlobalRef(env, g_authorizer);
+    g_authorizer = 0;
   }
 }
 
@@ -711,5 +719,65 @@ void JNICALL Java_com_baidu_javalite_DBConnection_sqlite3_1update_1hook(JNIEnv *
   {
     g_update_hook = (*env)->NewGlobalRef(env, hook);
     sqlite3_update_hook(conn, _internal_update_hook, conn);
+  }
+}
+
+static int _internal_authorizer_callback(void* data, int action, const char* s1, const char* s2, const char* s3, const char* s4)
+{
+  if (g_authorizer == 0)
+  {
+    return SQLITE_OK;
+  }
+
+  sqlite3* conn = (sqlite3*) data;
+  JNIEnv* env = getEnv();
+
+  jobject jconn = newDBConnection(env, (jlong) conn);
+  jstring js1 = (*env)->NewStringUTF(env, s1);
+  jstring js2 = (*env)->NewStringUTF(env, s2);
+  jstring js3 = (*env)->NewStringUTF(env, s3);
+  jstring js4 = (*env)->NewStringUTF(env, s4);
+
+  int rc = callAuthorizerCallback(env, g_authorizer, jconn, action, js1, js2, js3, js4);
+
+  (*env)->DeleteLocalRef(env, jconn);
+  (*env)->DeleteLocalRef(env, js1);
+  (*env)->DeleteLocalRef(env, js2);
+  (*env)->DeleteLocalRef(env, js3);
+  (*env)->DeleteLocalRef(env, js4);
+
+  return rc;
+}
+
+void JNICALL Java_com_baidu_javalite_DBConnection_sqlite3_1set_1authorizer(JNIEnv *env, jclass cls, jlong handle, jobject authorizer)
+{
+  if (handle == 0)
+  {
+    throwSqliteException(env, "handle is NULL");
+    return;
+  }
+
+  sqlite3* conn = (sqlite3*) handle;
+
+  if (g_authorizer != 0)
+  {
+    (*env)->DeleteGlobalRef(env, g_authorizer);
+    g_authorizer = 0;
+  }
+
+  int rc;
+  if (authorizer == 0)
+  {
+    rc = sqlite3_set_authorizer(conn, 0, 0);
+  }
+  else
+  {
+    g_authorizer = (*env)->NewGlobalRef(env, authorizer);
+    rc = sqlite3_set_authorizer(conn, _internal_authorizer_callback, conn);
+  }
+
+  if (rc != SQLITE_OK)
+  {
+    throwSqliteException2(env, sqlite3_errcode(conn), sqlite3_errmsg(conn));
   }
 }

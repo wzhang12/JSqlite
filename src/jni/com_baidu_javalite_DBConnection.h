@@ -151,6 +151,14 @@ JNIEXPORT void JNICALL Java_com_baidu_javalite_DBConnection_sqlite3_1profile
 JNIEXPORT void JNICALL Java_com_baidu_javalite_DBConnection_sqlite3_1update_1hook
   (JNIEnv *, jclass, jlong, jobject);
 
+/*
+ * Class:     com_baidu_javalite_DBConnection
+ * Method:    sqlite3_set_authorizer
+ * Signature: (JLcom/baidu/javalite/Authorizer;)V
+ */
+JNIEXPORT void JNICALL Java_com_baidu_javalite_DBConnection_sqlite3_1set_1authorizer
+  (JNIEnv *, jclass, jlong, jobject);
+
 #ifdef __cplusplus
 }
 #endif

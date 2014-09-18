@@ -70,4 +70,6 @@ void callProfileListenerCallback(JNIEnv* env, jobject listener, jobject conn, js
 
 void callUpdateHookCallback(JNIEnv* env, jobject hook, jobject conn, int action, jstring db, jstring tb, jlong rowid);
 
+int callAuthorizerCallback(JNIEnv* env, jobject authorizer, jobject conn, int action, jstring s1, jstring s2, jstring s3, jstring s4);
+
 #endif /* UTIL_H_ */

@@ -41,12 +41,13 @@ jmethodID getRollbackHookCallback(JNIEnv* env);
 
 void callRollbackHookCallback(JNIEnv* env, jobject obj, jobject conn);
 
-typedef struct {
-	// 回调对象
-	jobject callback;
+typedef struct
+{
+  // 回调对象
+  jobject callback;
 
-	// app 对象
-	jobject app;
+  // app 对象
+  jobject app;
 } func_data;
 
 jobject newJavaliteValue(JNIEnv* env, jlong handle);
@@ -66,5 +67,7 @@ jobject newDBConnection(JNIEnv* env, jlong handle);
 void callTraceListenerCallback(JNIEnv* env, jobject listener, jobject conn, jstring msg);
 
 void callProfileListenerCallback(JNIEnv* env, jobject listener, jobject conn, jstring msg, jlong nano);
+
+void callUpdateHookCallback(JNIEnv* env, jobject hook, jobject conn, int action, jstring db, jstring tb, jlong rowid);
 
 #endif /* UTIL_H_ */

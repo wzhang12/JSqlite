@@ -102,6 +102,11 @@ public class DBConnection implements Closeable, Validable {
         sqlite3_rollback_hook(handle, hook);
     }
 
+    public void setUpdateHook(UpdateHook hook) throws SqliteException {
+        DBHelper.checkValidable(this);
+        sqlite3_update_hook(handle, hook);
+    }
+
     public Blob getReadWriteBlob(String dbName,
                                  String tbName,
                                  String colName,
@@ -185,4 +190,6 @@ public class DBConnection implements Closeable, Validable {
     private static native void sqlite3_trace(long conn, TraceListener listener) throws SqliteException;
 
     private static native void sqlite3_profile(long conn, ProfileListener listener) throws SqliteException;
+
+    private static native void sqlite3_update_hook(long conn, UpdateHook hook) throws SqliteException;
 }

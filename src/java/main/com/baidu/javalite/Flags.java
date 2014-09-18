@@ -125,4 +125,77 @@ public final class Flags {
     public static final int SQLITE_LIMIT_LIKE_PATTERN_LENGTH = 8;
     public static final int SQLITE_LIMIT_VARIABLE_NUMBER = 9;
     public static final int SQLITE_LIMIT_TRIGGER_DEPTH = 10;
+
+    /**
+     * <pre>
+     *      #define SQLITE_CREATE_INDEX          1
+            #define SQLITE_CREATE_TABLE          2
+            #define SQLITE_CREATE_TEMP_INDEX     3
+            #define SQLITE_CREATE_TEMP_TABLE     4
+            #define SQLITE_CREATE_TEMP_TRIGGER   5
+            #define SQLITE_CREATE_TEMP_VIEW      6
+            #define SQLITE_CREATE_TRIGGER        7
+            #define SQLITE_CREATE_VIEW           8
+            #define SQLITE_DELETE                9
+            #define SQLITE_DROP_INDEX           10
+            #define SQLITE_DROP_TABLE           11
+            #define SQLITE_DROP_TEMP_INDEX      12
+            #define SQLITE_DROP_TEMP_TABLE      13
+            #define SQLITE_DROP_TEMP_TRIGGER    14
+            #define SQLITE_DROP_TEMP_VIEW       15
+            #define SQLITE_DROP_TRIGGER         16
+            #define SQLITE_DROP_VIEW            17
+            #define SQLITE_INSERT               18
+            #define SQLITE_PRAGMA               19
+            #define SQLITE_READ                 20
+            #define SQLITE_SELECT               21
+            #define SQLITE_TRANSACTION          22
+            #define SQLITE_UPDATE               23
+            #define SQLITE_ATTACH               24
+            #define SQLITE_DETACH               25
+            #define SQLITE_ALTER_TABLE          26
+            #define SQLITE_REINDEX              27
+            #define SQLITE_ANALYZE              28
+            #define SQLITE_CREATE_VTABLE        29
+            #define SQLITE_DROP_VTABLE          30
+            #define SQLITE_FUNCTION             31
+            #define SQLITE_SAVEPOINT            32
+            #define SQLITE_COPY                  0
+            #define SQLITE_RECURSIVE            33
+     * </pre>
+     */
+    public static final int SQLITE_COPY = 0;
+    public static final int SQLITE_CREATE_INDEX = 1;
+    public static final int SQLITE_CREATE_TABLE = 2;
+    public static final int SQLITE_CREATE_TEMP_INDEX = 3;
+    public static final int SQLITE_CREATE_TEMP_TABLE = 4;
+    public static final int SQLITE_CREATE_TEMP_TRIGGER = 5;
+    public static final int SQLITE_CREATE_TEMP_VIEW = 6;
+    public static final int SQLITE_CREATE_TRIGGER = 7;
+    public static final int SQLITE_CREATE_VIEW = 8;
+    public static final int SQLITE_DELETE = 9;
+    public static final int SQLITE_DROP_INDEX = 10;
+    public static final int SQLITE_DROP_TABLE = 11;
+    public static final int SQLITE_DROP_TEMP_INDEX = 12;
+    public static final int SQLITE_DROP_TEMP_TABLE = 13;
+    public static final int SQLITE_DROP_TEMP_TRIGGER = 14;
+    public static final int SQLITE_DROP_TEMP_VIEW = 15;
+    public static final int SQLITE_DROP_TRIGGER = 16;
+    public static final int SQLITE_DROP_VIEW = 17;
+    public static final int SQLITE_INSERT = 18;
+    public static final int SQLITE_PRAGMA = 19;
+    public static final int SQLITE_READ = 20;
+    public static final int SQLITE_SELECT = 21;
+    public static final int SQLITE_TRANSACTION = 22;
+    public static final int SQLITE_UPDATE = 23;
+    public static final int SQLITE_ATTACH = 24;
+    public static final int SQLITE_DETACH = 25;
+    public static final int SQLITE_ALTER_TABLE = 26;
+    public static final int SQLITE_REINDEX = 27;
+    public static final int SQLITE_ANALYZE = 28;
+    public static final int SQLITE_CREATE_VTABLE = 29;
+    public static final int SQLITE_DROP_VTABLE = 30;
+    public static final int SQLITE_FUNCTION = 31;
+    public static final int SQLITE_SAVEPOINT = 32;
+    public static final int SQLITE_RECURSIVE = 33;
 }

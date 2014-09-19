@@ -409,7 +409,7 @@ static jmethodID getCollationCompareId(JNIEnv* env)
 {
     if (mid_collation_compare == 0) {
         jclass cls = (*env)->FindClass(env, "com/baidu/javalite/Collation");
-        mid_authorizer_callback = (*env)->GetMethodID(env, 
+        mid_collation_compare = (*env)->GetMethodID(env, 
                                                       cls, 
                                                       "xCompare", 
                                                       "(Lcom/baidu/javalite/DBConnection;[B[B)I");
@@ -431,7 +431,7 @@ static jmethodID getCollationDestroyId(JNIEnv* env)
 {
     if (mid_collation_destroy == 0) {
         jclass cls = (*env)->FindClass(env, "com/baidu/javalite/Collation");
-        mid_authorizer_callback = (*env)->GetMethodID(env,
+        mid_collation_destroy = (*env)->GetMethodID(env,
                                                       cls,
                                                       "xDestroy",
                                                       "(Lcom/baidu/javalite/DBConnection;)V");

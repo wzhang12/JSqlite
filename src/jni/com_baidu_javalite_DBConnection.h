@@ -159,6 +159,14 @@ JNIEXPORT void JNICALL Java_com_baidu_javalite_DBConnection_sqlite3_1update_1hoo
 JNIEXPORT void JNICALL Java_com_baidu_javalite_DBConnection_sqlite3_1set_1authorizer
   (JNIEnv *, jclass, jlong, jobject);
 
+/*
+ * Class:     com_baidu_javalite_DBConnection
+ * Method:    sqlite3_create_collation_v2
+ * Signature: (JLjava/lang/String;Lcom/baidu/javalite/Collation;)V
+ */
+JNIEXPORT void JNICALL Java_com_baidu_javalite_DBConnection_sqlite3_1create_1collation_1v2
+  (JNIEnv *, jclass, jlong, jstring, jobject);
+
 #ifdef __cplusplus
 }
 #endif

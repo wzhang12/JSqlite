@@ -162,6 +162,11 @@ public class DBConnection implements Closeable, Validable {
         sqlite3_set_authorizer(handle, authorizer);
     }
 
+    public void createCollation(String name, Collation collation) throws SqliteException {
+        DBHelper.checkValidable(this);
+        sqlite3_create_collation_v2(handle, name, collation);
+    }
+
     private static native long sqlite3_prepare_v2(long handle, String sql) throws SqliteException;
 
     private static native TableResult sqlite3_get_table(long handle, String sql) throws SqliteException;
@@ -199,4 +204,6 @@ public class DBConnection implements Closeable, Validable {
     private static native void sqlite3_update_hook(long conn, UpdateHook hook) throws SqliteException;
 
     private static native void sqlite3_set_authorizer(long conn, Authorizer authorizer) throws SqliteException;
+
+    private static native void sqlite3_create_collation_v2(long conn, String name, Collation collation) throws SqliteException;
 }

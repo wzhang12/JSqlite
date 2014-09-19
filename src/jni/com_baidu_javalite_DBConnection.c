@@ -19,6 +19,7 @@ static jobject g_trace_listener;
 static jobject g_profile_listener;
 static jobject g_update_hook;
 static jobject g_authorizer;
+static jobject g_collation;
 
 static void _internal_free_all(JNIEnv *env)
 {
@@ -68,6 +69,12 @@ static void _internal_free_all(JNIEnv *env)
     if (g_authorizer != 0) {
         (*env)->DeleteGlobalRef(env, g_authorizer);
         g_authorizer = 0;
+    }
+
+    // 删除 conn 的 collation 全局引用
+    if (g_collation != 0) {
+        (*env)->DeleteGlobalRef(env, g_collation);
+        g_collation = 0;
     }
 }
 
@@ -604,7 +611,8 @@ void JNICALL Java_com_baidu_javalite_DBConnection_sqlite3_1profile(JNIEnv *env,
     }
 }
 
-static void _internal_update_hook(void* data, int action, char const *db, char const *tb, sqlite3_int64 rowid)
+static void _internal_update_hook(void* data, int action, char const *db,
+    char const *tb, sqlite3_int64 rowid)
 {
     if (g_update_hook == 0) {
         return;
@@ -648,7 +656,8 @@ void JNICALL Java_com_baidu_javalite_DBConnection_sqlite3_1update_1hook(JNIEnv *
     }
 }
 
-static int _internal_authorizer_callback(void* data, int action, const char* s1, const char* s2, const char* s3, const char* s4)
+static int _internal_authorizer_callback(void* data, int action, const char* s1,
+    const char* s2, const char* s3, const char* s4)
 {
     if (g_authorizer == 0) {
         return SQLITE_OK;
@@ -658,23 +667,32 @@ static int _internal_authorizer_callback(void* data, int action, const char* s1,
     JNIEnv* env = getEnv();
 
     jobject jconn = newDBConnection(env, (jlong) conn);
-    jstring js1 = (*env)->NewStringUTF(env, s1);
-    jstring js2 = (*env)->NewStringUTF(env, s2);
-    jstring js3 = (*env)->NewStringUTF(env, s3);
-    jstring js4 = (*env)->NewStringUTF(env, s4);
+    jstring js1 = s1 == 0 ? 0 : (*env)->NewStringUTF(env, s1);
+    jstring js2 = s2 == 0 ? 0 : (*env)->NewStringUTF(env, s2);
+    jstring js3 = s3 == 0 ? 0 : (*env)->NewStringUTF(env, s3);
+    jstring js4 = s4 == 0 ? 0 : (*env)->NewStringUTF(env, s4);
 
     int rc = callAuthorizerCallback(env, g_authorizer, jconn, action, js1, js2, js3, js4);
 
     (*env)->DeleteLocalRef(env, jconn);
-    (*env)->DeleteLocalRef(env, js1);
-    (*env)->DeleteLocalRef(env, js2);
-    (*env)->DeleteLocalRef(env, js3);
-    (*env)->DeleteLocalRef(env, js4);
+    if (js1 != 0) {
+        (*env)->DeleteLocalRef(env, js1);
+    }
+    if (js2 != 0) {
+        (*env)->DeleteLocalRef(env, js2);
+    }
+    if (js3 != 0) {
+        (*env)->DeleteLocalRef(env, js3);
+    }
+    if (js4 != 0) {
+        (*env)->DeleteLocalRef(env, js4);
+    }
 
     return rc;
 }
 
-void JNICALL Java_com_baidu_javalite_DBConnection_sqlite3_1set_1authorizer(JNIEnv *env, jclass cls, jlong handle, jobject authorizer)
+void JNICALL Java_com_baidu_javalite_DBConnection_sqlite3_1set_1authorizer(
+    JNIEnv *env, jclass cls, jlong handle, jobject authorizer)
 {
     if (handle == 0) {
         throwSqliteException(env, "handle is NULL");
@@ -696,6 +714,92 @@ void JNICALL Java_com_baidu_javalite_DBConnection_sqlite3_1set_1authorizer(JNIEn
         g_authorizer = (*env)->NewGlobalRef(env, authorizer);
         rc = sqlite3_set_authorizer(conn, _internal_authorizer_callback, conn);
     }
+
+    if (rc != SQLITE_OK) {
+        throwSqliteException2(env, sqlite3_errcode(conn), sqlite3_errmsg(conn));
+    }
+}
+
+static int _internal_collation_compare(void* data, int countA, const void* bufA,
+    int countB, const void* bufB)
+{
+    if (g_collation == 0) {
+        return 0;
+    }
+
+    sqlite3* conn = (sqlite3*) data;
+    JNIEnv* env = getEnv();
+
+    jobject jconn = newDBConnection(env, (jlong) conn);
+    jbyteArray arrayA = (*env)->NewByteArray(env, countA >= 0 ? countA : 0);
+    jbyteArray arrayB = (*env)->NewByteArray(env, countB >= 0 ? countB : 0);
+
+    if (countA > 0) {
+        (*env)->SetByteArrayRegion(env, arrayA, 0, countA, (jbyte*) bufA);
+    }
+
+    if (countB > 0) {
+        (*env)->SetByteArrayRegion(env, arrayB, 0, countB, (jbyte*) bufB);
+    }
+
+    int rc = callCollationCompareCallback(env, g_collation, jconn, arrayA, arrayB);
+
+    (*env)->DeleteLocalRef(env, jconn);
+    (*env)->DeleteLocalRef(env, arrayA);
+    (*env)->DeleteLocalRef(env, arrayB);
+
+    return rc;
+}
+
+static void _internal_collation_destroy(void* data)
+{
+    if (g_collation == 0) {
+        return;
+    }
+
+    sqlite3* conn = (sqlite3*) data;
+    JNIEnv* env = getEnv();
+    jobject jconn = newDBConnection(env, (jlong) conn);
+
+    callCollationDestroyCallback(env, g_collation, jconn);
+
+    (*env)->DeleteLocalRef(env, jconn);
+}
+
+void JNICALL Java_com_baidu_javalite_DBConnection_sqlite3_1create_1collation_1v2(
+    JNIEnv *env, jclass cls, jlong handle, jstring name, jobject collation)
+{
+    if (handle == 0) {
+        throwSqliteException(env, "handle is NULL");
+        return;
+    }
+
+    if (name == 0) {
+        throwSqliteException(env, "name is NULL");
+        return;
+    }
+
+    sqlite3* conn = (sqlite3*) handle;
+
+    if (g_collation != 0) {
+        (*env)->DeleteGlobalRef(env, g_collation);
+        g_collation = 0;
+    }
+
+    const char* cname = (*env)->GetStringUTFChars(env, name, 0);
+    int rc;
+
+    if (collation == 0) {
+        rc = sqlite3_create_collation_v2(conn, cname, SQLITE_UTF8, 0, 0, 0);
+    }
+    else {
+        g_collation = (*env)->NewGlobalRef(env, collation);
+        rc = sqlite3_create_collation_v2(conn, cname, SQLITE_UTF8,
+                                         conn, _internal_collation_compare,
+                                         _internal_collation_destroy);
+    }
+
+    (*env)->ReleaseStringUTFChars(env, name, cname);
 
     if (rc != SQLITE_OK) {
         throwSqliteException2(env, sqlite3_errcode(conn), sqlite3_errmsg(conn));

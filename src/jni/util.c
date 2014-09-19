@@ -402,3 +402,46 @@ int callAuthorizerCallback(JNIEnv* env, jobject authorizer, jobject conn, int ac
 {
     return (*env)->CallIntMethod(env, authorizer, getAuthorizerCallbackId(env), conn, action, s1, s2, s3, s4);
 }
+
+static jmethodID mid_collation_compare;
+
+static jmethodID getCollationCompareId(JNIEnv* env)
+{
+    if (mid_collation_compare == 0) {
+        jclass cls = (*env)->FindClass(env, "com/baidu/javalite/Collation");
+        mid_authorizer_callback = (*env)->GetMethodID(env, 
+                                                      cls, 
+                                                      "xCompare", 
+                                                      "(Lcom/baidu/javalite/DBConnection;[B[B)I");
+        (*env)->DeleteLocalRef(env, cls);
+    }
+
+    return mid_collation_compare;
+}
+
+int callCollationCompareCallback(JNIEnv* env, jobject collation, jobject conn,
+    jbyteArray a, jbyteArray b)
+{
+    return (*env)->CallIntMethod(env, collation, getCollationCompareId(env), conn, a, b);
+}
+
+static jmethodID mid_collation_destroy;
+
+static jmethodID getCollationDestroyId(JNIEnv* env)
+{
+    if (mid_collation_destroy == 0) {
+        jclass cls = (*env)->FindClass(env, "com/baidu/javalite/Collation");
+        mid_authorizer_callback = (*env)->GetMethodID(env,
+                                                      cls,
+                                                      "xDestroy",
+                                                      "(Lcom/baidu/javalite/DBConnection;)V");
+        (*env)->DeleteLocalRef(env, cls);
+    }
+    
+    return mid_collation_destroy;
+}
+
+void callCollationDestroyCallback(JNIEnv* env, jobject collation, jobject conn)
+{
+    (*env)->CallVoidMethod(env, collation, getCollationDestroyId(env), conn);
+}

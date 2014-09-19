@@ -65,10 +65,18 @@ jobject newDBConnection(JNIEnv* env, jlong handle);
 
 void callTraceListenerCallback(JNIEnv* env, jobject listener, jobject conn, jstring msg);
 
-void callProfileListenerCallback(JNIEnv* env, jobject listener, jobject conn, jstring msg, jlong nano);
+void callProfileListenerCallback(JNIEnv* env, jobject listener, jobject conn, 
+        jstring msg, jlong nano);
 
-void callUpdateHookCallback(JNIEnv* env, jobject hook, jobject conn, int action, jstring db, jstring tb, jlong rowid);
+void callUpdateHookCallback(JNIEnv* env, jobject hook, jobject conn, int action, 
+        jstring db, jstring tb, jlong rowid);
 
-int callAuthorizerCallback(JNIEnv* env, jobject authorizer, jobject conn, int action, jstring s1, jstring s2, jstring s3, jstring s4);
+int callAuthorizerCallback(JNIEnv* env, jobject authorizer, jobject conn, 
+        int action, jstring s1, jstring s2, jstring s3, jstring s4);
+
+int callCollationCompareCallback(JNIEnv* env, jobject collation, jobject conn,
+        jbyteArray a, jbyteArray b);
+
+void callCollationDestroyCallback(JNIEnv* env, jobject collation, jobject conn);
 
 #endif /* UTIL_H_ */

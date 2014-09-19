@@ -10,132 +10,120 @@
 #include <sqlite3.h>
 
 jlong JNICALL Java_com_baidu_javalite_Blob_sqlite3_1blob_1open(JNIEnv *env,
-                                                               jclass cls, jlong connHandle, jstring dbName, jstring tableName,
-                                                               jstring columnName, jlong rowId, jint flags)
+    jclass cls, jlong connHandle, jstring dbName, jstring tableName,
+    jstring columnName, jlong rowId, jint flags)
 {
-  if (connHandle == 0)
-  {
-    throwSqliteException(env, "conn is NULL!");
-    return 0;
-  }
+    if (connHandle == 0) {
+        throwSqliteException(env, "conn is NULL!");
+        return 0;
+    }
 
-  sqlite3* conn = (sqlite3*) connHandle;
-  sqlite3_blob* blob = 0;
+    sqlite3* conn = (sqlite3*) connHandle;
+    sqlite3_blob* blob = 0;
 
-  const char* zDb = (*env)->GetStringUTFChars(env, dbName, 0);
-  const char* zTable = (*env)->GetStringUTFChars(env, tableName, 0);
-  const char* zColumn = (*env)->GetStringUTFChars(env, columnName, 0);
+    const char* zDb = (*env)->GetStringUTFChars(env, dbName, 0);
+    const char* zTable = (*env)->GetStringUTFChars(env, tableName, 0);
+    const char* zColumn = (*env)->GetStringUTFChars(env, columnName, 0);
 
-  int rc = sqlite3_blob_open(conn, zDb, zTable, zColumn, rowId, flags, &blob);
+    int rc = sqlite3_blob_open(conn, zDb, zTable, zColumn, rowId, flags, &blob);
 
-  (*env)->ReleaseStringUTFChars(env, dbName, zDb);
-  (*env)->ReleaseStringUTFChars(env, tableName, zTable);
-  (*env)->ReleaseStringUTFChars(env, columnName, zColumn);
+    (*env)->ReleaseStringUTFChars(env, dbName, zDb);
+    (*env)->ReleaseStringUTFChars(env, tableName, zTable);
+    (*env)->ReleaseStringUTFChars(env, columnName, zColumn);
 
-  if (rc != SQLITE_OK)
-  {
-    throwSqliteException2(env, sqlite3_errcode(conn), sqlite3_errmsg(conn));
-  }
+    if (rc != SQLITE_OK) {
+        throwSqliteException2(env, sqlite3_errcode(conn), sqlite3_errmsg(conn));
+    }
 
-  return (jlong) blob;
+    return (jlong) blob;
 }
 
 void JNICALL Java_com_baidu_javalite_Blob_sqlite3_1blob_1reopen(JNIEnv *env,
-                                                                jclass cls, jlong handle, jlong newRowId)
+    jclass cls, jlong handle, jlong newRowId)
 {
-  if (handle == 0)
-  {
-    throwSqliteException(env, "Handle is NULL!");
-    return;
-  }
+    if (handle == 0) {
+        throwSqliteException(env, "Handle is NULL!");
+        return;
+    }
 
-  sqlite3_blob* blob = (sqlite3_blob*) handle;
+    sqlite3_blob* blob = (sqlite3_blob*) handle;
 
-  int rc = sqlite3_blob_reopen(blob, newRowId);
+    int rc = sqlite3_blob_reopen(blob, newRowId);
 
-  if (rc != SQLITE_OK)
-  {
-    throwSqliteException2(env, rc, sqlite3_errstr(rc));
-  }
+    if (rc != SQLITE_OK) {
+        throwSqliteException2(env, rc, sqlite3_errstr(rc));
+    }
 }
 
 void JNICALL Java_com_baidu_javalite_Blob_sqlite3_1blob_1close(JNIEnv *env,
-                                                               jclass cls, jlong handle)
+    jclass cls, jlong handle)
 {
-  if (handle == 0)
-  {
-    throwSqliteException(env, "Handle is NULL!");
-    return;
-  }
+    if (handle == 0) {
+        throwSqliteException(env, "Handle is NULL!");
+        return;
+    }
 
-  sqlite3_blob* blob = (sqlite3_blob*) handle;
+    sqlite3_blob* blob = (sqlite3_blob*) handle;
 
-  int rc = sqlite3_blob_close(blob);
+    int rc = sqlite3_blob_close(blob);
 
-  if (rc != SQLITE_OK)
-  {
-    throwSqliteException2(env, rc, sqlite3_errstr(rc));
-  }
+    if (rc != SQLITE_OK) {
+        throwSqliteException2(env, rc, sqlite3_errstr(rc));
+    }
 }
 
 jint JNICALL Java_com_baidu_javalite_Blob_sqlite3_1blob_1bytes(JNIEnv *env,
-                                                               jclass cls, jlong handle)
+    jclass cls, jlong handle)
 {
-  if (handle == 0)
-  {
-    throwSqliteException(env, "Handle is NULL!");
-    return 0;
-  }
+    if (handle == 0) {
+        throwSqliteException(env, "Handle is NULL!");
+        return 0;
+    }
 
-  sqlite3_blob* blob = (sqlite3_blob*) handle;
+    sqlite3_blob* blob = (sqlite3_blob*) handle;
 
-  return sqlite3_blob_bytes(blob);
+    return sqlite3_blob_bytes(blob);
 }
 
 void JNICALL Java_com_baidu_javalite_Blob_sqlite3_1blob_1read(JNIEnv *env,
-                                                              jclass cls, jlong handle, jbyteArray buf, jint offset, jint len,
-                                                              jint nOffset)
+    jclass cls, jlong handle, jbyteArray buf, jint offset, jint len,
+    jint nOffset)
 {
-  if (handle == 0)
-  {
-    throwSqliteException(env, "Handle is NULL!");
-    return;
-  }
+    if (handle == 0) {
+        throwSqliteException(env, "Handle is NULL!");
+        return;
+    }
 
-  sqlite3_blob* blob = (sqlite3_blob*) handle;
-  void* cBuf = (*env)->GetByteArrayElements(env, buf, 0);
+    sqlite3_blob* blob = (sqlite3_blob*) handle;
+    void* cBuf = (*env)->GetByteArrayElements(env, buf, 0);
 
-  int rc = sqlite3_blob_read(blob, cBuf + offset, len, nOffset);
+    int rc = sqlite3_blob_read(blob, cBuf + offset, len, nOffset);
 
-  if (rc == SQLITE_OK)
-  {
-    (*env)->ReleaseByteArrayElements(env, buf, (jbyte*) cBuf, JNI_COMMIT); // 同步到 Java 数组中
-  }
-  else
-  {
-    (*env)->ReleaseByteArrayElements(env, buf, (jbyte*) cBuf, JNI_ABORT); // 没有修改 Java 数组
-    throwSqliteException2(env, rc, sqlite3_errstr(rc));
-  }
+    if (rc == SQLITE_OK) {
+        (*env)->ReleaseByteArrayElements(env, buf, (jbyte*) cBuf, JNI_COMMIT); // 同步到 Java 数组中
+    }
+    else {
+        (*env)->ReleaseByteArrayElements(env, buf, (jbyte*) cBuf, JNI_ABORT); // 没有修改 Java 数组
+        throwSqliteException2(env, rc, sqlite3_errstr(rc));
+    }
 }
 
 void JNICALL Java_com_baidu_javalite_Blob_sqlite3_1blob_1write(JNIEnv *env,
-                                                               jclass cls, jlong handle, jbyteArray buf, jint offset, jint len,
-                                                               jint nOffset)
+    jclass cls, jlong handle, jbyteArray buf, jint offset, jint len,
+    jint nOffset)
 {
-  if (handle == 0)
-  {
-    throwSqliteException(env, "Handle is NULL!");
-    return;
-  }
+    if (handle == 0) {
+        throwSqliteException(env, "Handle is NULL!");
+        return;
+    }
 
-  sqlite3_blob* blob = (sqlite3_blob*) handle;
-  void* cBuf = (*env)->GetByteArrayElements(env, buf, 0);
+    sqlite3_blob* blob = (sqlite3_blob*) handle;
+    void* cBuf = (*env)->GetByteArrayElements(env, buf, 0);
 
-  int rc = sqlite3_blob_write(blob, cBuf + offset, len, nOffset);
+    int rc = sqlite3_blob_write(blob, cBuf + offset, len, nOffset);
 
-  (*env)->ReleaseByteArrayElements(env, buf, (jbyte*) cBuf, JNI_ABORT); // 没有修改 Java 数组
-  if (rc != SQLITE_OK)
-  {
-    throwSqliteException2(env, rc, sqlite3_errstr(rc));
-  }
+    (*env)->ReleaseByteArrayElements(env, buf, (jbyte*) cBuf, JNI_ABORT); // 没有修改 Java 数组
+    if (rc != SQLITE_OK) {
+        throwSqliteException2(env, rc, sqlite3_errstr(rc));
+    }
 }

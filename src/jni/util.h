@@ -41,13 +41,12 @@ jmethodID getRollbackHookCallback(JNIEnv* env);
 
 void callRollbackHookCallback(JNIEnv* env, jobject obj, jobject conn);
 
-typedef struct
-{
-  // 回调对象
-  jobject callback;
+typedef struct {
+    // 回调对象
+    jobject callback;
 
-  // app 对象
-  jobject app;
+    // app 对象
+    jobject app;
 } func_data;
 
 jobject newJavaliteValue(JNIEnv* env, jlong handle);

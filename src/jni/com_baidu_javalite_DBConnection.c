@@ -98,11 +98,14 @@ void JNICALL Java_com_baidu_javalite_DBConnection_sqlite3_1close(JNIEnv *env,
 
     sqlite3* conn = (sqlite3*) handle;
 
-    // 清理所有的全局引用
-    _internal_free_all(env);
-
     int rc = sqlite3_close_v2(conn);
-    if (rc != SQLITE_OK)
+
+    if (rc == SQLITE_OK)
+    {
+        // 清理所有的全局引用
+        _internal_free_all(env);
+    }
+    else
     {
         throwSqliteException2(env, sqlite3_errcode(conn), sqlite3_errmsg(conn));
     }

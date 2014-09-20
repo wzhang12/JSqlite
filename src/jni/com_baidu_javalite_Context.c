@@ -10,9 +10,10 @@
 #include <sqlite3.h>
 
 jobject JNICALL Java_com_baidu_javalite_Context_sqlite3_1user_1data(JNIEnv *env,
-    jclass cls, jlong handle)
+        jclass cls, jlong handle)
 {
-    if (handle == 0) {
+    if (handle == 0)
+    {
         throwSqliteException(env, "Native handle is NULL!");
         return 0;
     }
@@ -20,7 +21,8 @@ jobject JNICALL Java_com_baidu_javalite_Context_sqlite3_1user_1data(JNIEnv *env,
     sqlite3_context* ctx = (sqlite3_context*) handle;
 
     func_data* data = (func_data*) sqlite3_user_data(ctx);
-    if (data) {
+    if (data)
+    {
         return data->app;
     }
 
@@ -28,9 +30,10 @@ jobject JNICALL Java_com_baidu_javalite_Context_sqlite3_1user_1data(JNIEnv *env,
 }
 
 jlong JNICALL Java_com_baidu_javalite_Context_sqlite3_1context_1db_1handle(
-    JNIEnv *env, jclass cls, jlong handle)
+        JNIEnv *env, jclass cls, jlong handle)
 {
-    if (handle == 0) {
+    if (handle == 0)
+    {
         throwSqliteException(env, "Native handle is NULL!");
         return 0;
     }
@@ -43,9 +46,10 @@ jlong JNICALL Java_com_baidu_javalite_Context_sqlite3_1context_1db_1handle(
 }
 
 void JNICALL Java_com_baidu_javalite_Context_sqlite3_1aggregate_1context__JLjava_lang_Object_2(
-    JNIEnv *env, jclass cls, jlong handle, jobject value)
+        JNIEnv *env, jclass cls, jlong handle, jobject value)
 {
-    if (handle == 0) {
+    if (handle == 0)
+    {
         throwSqliteException(env, "Native handle is NULL!");
         return;
     }
@@ -54,21 +58,24 @@ void JNICALL Java_com_baidu_javalite_Context_sqlite3_1aggregate_1context__JLjava
 
     void* rs = sqlite3_aggregate_context(ctx, 0);
 
-    if (rs != 0) {
+    if (rs != 0)
+    {
         throwSqliteException(env,
-                             "Function sqlite3_aggregate_context() already called!");
+                "Function sqlite3_aggregate_context() already called!");
         return;
     }
 
-    if (value == 0) {
+    if (value == 0)
+    {
         return;
     }
 
     rs = sqlite3_aggregate_context(ctx, sizeof (size_t));
 
-    if (rs == 0) {
+    if (rs == 0)
+    {
         throwSqliteException(env,
-                             "Fail to get buffer from sqlite3_aggregate_context()!");
+                "Fail to get buffer from sqlite3_aggregate_context()!");
         return;
     }
 
@@ -76,9 +83,10 @@ void JNICALL Java_com_baidu_javalite_Context_sqlite3_1aggregate_1context__JLjava
 }
 
 jobject JNICALL Java_com_baidu_javalite_Context_sqlite3_1aggregate_1context__J(
-    JNIEnv *env, jclass cls, jlong handle)
+        JNIEnv *env, jclass cls, jlong handle)
 {
-    if (handle == 0) {
+    if (handle == 0)
+    {
         throwSqliteException(env, "Native handle is NULL!");
         return 0;
     }
@@ -87,18 +95,21 @@ jobject JNICALL Java_com_baidu_javalite_Context_sqlite3_1aggregate_1context__J(
 
     void* rs = (jobject) sqlite3_aggregate_context(ctx, 0); // 返回的是指向 buffer 的指针
 
-    if (rs == 0) {
+    if (rs == 0)
+    {
         return 0;
     }
-    else {
+    else
+    {
         return *((jobject*) rs); // 返回 buffer 上存储的 Java 对象的引用地址
     }
 }
 
 void JNICALL Java_com_baidu_javalite_Context_sqlite3_1aggregate_1context_1free(
-    JNIEnv *env, jclass cls, jlong handle)
+        JNIEnv *env, jclass cls, jlong handle)
 {
-    if (handle == 0) {
+    if (handle == 0)
+    {
         throwSqliteException(env, "Native handle is NULL!");
         return;
     }
@@ -107,7 +118,8 @@ void JNICALL Java_com_baidu_javalite_Context_sqlite3_1aggregate_1context_1free(
 
     void* rs = (jobject) sqlite3_aggregate_context(ctx, 0); // 返回的是指向 buffer 的指针
 
-    if (rs != 0) {
+    if (rs != 0)
+    {
         jobject gctx = *((jobject*) rs);
         (*env)->DeleteGlobalRef(env, gctx); // 释放全局引用
         *((jobject*) rs) = 0;
@@ -115,9 +127,10 @@ void JNICALL Java_com_baidu_javalite_Context_sqlite3_1aggregate_1context_1free(
 }
 
 void JNICALL Java_com_baidu_javalite_Context_sqlite3_1result_1double(
-    JNIEnv *env, jclass cls, jlong handle, jdouble value)
+        JNIEnv *env, jclass cls, jlong handle, jdouble value)
 {
-    if (handle == 0) {
+    if (handle == 0)
+    {
         throwSqliteException(env, "Native handle is NULL!");
         return;
     }
@@ -127,9 +140,10 @@ void JNICALL Java_com_baidu_javalite_Context_sqlite3_1result_1double(
 }
 
 void JNICALL Java_com_baidu_javalite_Context_sqlite3_1result_1int(JNIEnv *env,
-    jclass cls, jlong handle, jint value)
+        jclass cls, jlong handle, jint value)
 {
-    if (handle == 0) {
+    if (handle == 0)
+    {
         throwSqliteException(env, "Native handle is NULL!");
         return;
     }
@@ -139,9 +153,10 @@ void JNICALL Java_com_baidu_javalite_Context_sqlite3_1result_1int(JNIEnv *env,
 }
 
 void JNICALL Java_com_baidu_javalite_Context_sqlite3_1result_1int64(JNIEnv *env,
-    jclass cls, jlong handle, jlong value)
+        jclass cls, jlong handle, jlong value)
 {
-    if (handle == 0) {
+    if (handle == 0)
+    {
         throwSqliteException(env, "Native handle is NULL!");
         return;
     }
@@ -151,9 +166,10 @@ void JNICALL Java_com_baidu_javalite_Context_sqlite3_1result_1int64(JNIEnv *env,
 }
 
 void JNICALL Java_com_baidu_javalite_Context_sqlite3_1result_1null(JNIEnv *env,
-    jclass cls, jlong handle)
+        jclass cls, jlong handle)
 {
-    if (handle == 0) {
+    if (handle == 0)
+    {
         throwSqliteException(env, "Native handle is NULL!");
         return;
     }
@@ -163,19 +179,22 @@ void JNICALL Java_com_baidu_javalite_Context_sqlite3_1result_1null(JNIEnv *env,
 }
 
 void JNICALL Java_com_baidu_javalite_Context_sqlite3_1result_1text(JNIEnv *env,
-    jclass cls, jlong handle, jstring value)
+        jclass cls, jlong handle, jstring value)
 {
-    if (handle == 0) {
+    if (handle == 0)
+    {
         throwSqliteException(env, "Native handle is NULL!");
         return;
     }
 
     sqlite3_context* ctx = (sqlite3_context*) handle;
 
-    if (value == 0) {
+    if (value == 0)
+    {
         sqlite3_result_null(ctx);
     }
-    else {
+    else
+    {
         const char* txt = (*env)->GetStringUTFChars(env, value, 0);
         sqlite3_result_text(ctx, txt, -1, SQLITE_TRANSIENT);
         (*env)->ReleaseStringUTFChars(env, value, txt);
@@ -183,19 +202,22 @@ void JNICALL Java_com_baidu_javalite_Context_sqlite3_1result_1text(JNIEnv *env,
 }
 
 void JNICALL Java_com_baidu_javalite_Context_sqlite3_1result_1blob(JNIEnv *env,
-    jclass cls, jlong handle, jbyteArray value)
+        jclass cls, jlong handle, jbyteArray value)
 {
-    if (handle == 0) {
+    if (handle == 0)
+    {
         throwSqliteException(env, "Native handle is NULL!");
         return;
     }
 
     sqlite3_context* ctx = (sqlite3_context*) handle;
 
-    if (value == 0) {
+    if (value == 0)
+    {
         sqlite3_result_null(ctx);
     }
-    else {
+    else
+    {
         jbyte* elems = (*env)->GetByteArrayElements(env, value, 0);
         int len = (*env)->GetArrayLength(env, value);
         sqlite3_result_blob(ctx, (const void*) elems, len, SQLITE_TRANSIENT);
@@ -204,9 +226,10 @@ void JNICALL Java_com_baidu_javalite_Context_sqlite3_1result_1blob(JNIEnv *env,
 }
 
 void JNICALL Java_com_baidu_javalite_Context_sqlite3_1result_1zeroblob(
-    JNIEnv *env, jclass cls, jlong handle, jint size)
+        JNIEnv *env, jclass cls, jlong handle, jint size)
 {
-    if (handle == 0) {
+    if (handle == 0)
+    {
         throwSqliteException(env, "Native handle is NULL!");
         return;
     }
@@ -216,14 +239,16 @@ void JNICALL Java_com_baidu_javalite_Context_sqlite3_1result_1zeroblob(
 }
 
 void JNICALL Java_com_baidu_javalite_Context_sqlite3_1result_1value(JNIEnv *env,
-    jclass cls, jlong handle, jlong valueHandle)
+        jclass cls, jlong handle, jlong valueHandle)
 {
-    if (handle == 0) {
+    if (handle == 0)
+    {
         throwSqliteException(env, "Native handle is NULL!");
         return;
     }
 
-    if (valueHandle == 0) {
+    if (valueHandle == 0)
+    {
         throwSqliteException(env, "Native sqlite3_value handle is NULL!");
         return;
     }
@@ -234,19 +259,22 @@ void JNICALL Java_com_baidu_javalite_Context_sqlite3_1result_1value(JNIEnv *env,
 }
 
 void JNICALL Java_com_baidu_javalite_Context_sqlite3_1result_1error(JNIEnv *env,
-    jclass cls, jlong handle, jstring msg, jint code)
+        jclass cls, jlong handle, jstring msg, jint code)
 {
-    if (handle == 0) {
+    if (handle == 0)
+    {
         throwSqliteException(env, "Native handle is NULL!");
         return;
     }
 
     sqlite3_context* ctx = (sqlite3_context*) handle;
 
-    if (msg == 0) {
+    if (msg == 0)
+    {
         sqlite3_result_error_code(ctx, code);
     }
-    else {
+    else
+    {
         const char* cmsg = (*env)->GetStringUTFChars(env, msg, 0);
         sqlite3_result_error(ctx, cmsg, code);
         (*env)->ReleaseStringUTFChars(env, msg, cmsg);
@@ -254,9 +282,10 @@ void JNICALL Java_com_baidu_javalite_Context_sqlite3_1result_1error(JNIEnv *env,
 }
 
 void JNICALL Java_com_baidu_javalite_Context_sqlite3_1result_1error_1toobig(
-    JNIEnv *env, jclass cls, jlong handle)
+        JNIEnv *env, jclass cls, jlong handle)
 {
-    if (handle == 0) {
+    if (handle == 0)
+    {
         throwSqliteException(env, "Native handle is NULL!");
         return;
     }
@@ -267,9 +296,10 @@ void JNICALL Java_com_baidu_javalite_Context_sqlite3_1result_1error_1toobig(
 }
 
 void JNICALL Java_com_baidu_javalite_Context_sqlite3_1result_1error_1nomem(
-    JNIEnv *env, jclass cls, jlong handle)
+        JNIEnv *env, jclass cls, jlong handle)
 {
-    if (handle == 0) {
+    if (handle == 0)
+    {
         throwSqliteException(env, "Native handle is NULL!");
         return;
     }
@@ -280,9 +310,10 @@ void JNICALL Java_com_baidu_javalite_Context_sqlite3_1result_1error_1nomem(
 }
 
 void JNICALL Java_com_baidu_javalite_Context_sqlite3_1result_1error_1code(
-    JNIEnv *env, jclass cls, jlong handle, jint code)
+        JNIEnv *env, jclass cls, jlong handle, jint code)
 {
-    if (handle == 0) {
+    if (handle == 0)
+    {
         throwSqliteException(env, "Native handle is NULL!");
         return;
     }

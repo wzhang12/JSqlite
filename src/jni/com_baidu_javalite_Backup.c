@@ -10,25 +10,29 @@
 #include <sqlite3.h>
 
 jlong JNICALL Java_com_baidu_javalite_Backup_sqlite3_1backup_1init(JNIEnv *env,
-    jclass cls, jlong dstHandle, jstring dstName, jlong srcHandle,
-    jstring srcName)
+        jclass cls, jlong dstHandle, jstring dstName, jlong srcHandle,
+        jstring srcName)
 {
-    if (dstHandle == 0) {
+    if (dstHandle == 0)
+    {
         throwSqliteException(env, "Destination database handle is NULL!");
         return 0;
     }
 
-    if (dstName == 0) {
+    if (dstName == 0)
+    {
         throwSqliteException(env, "Destination database name is NULL!");
         return 0;
     }
 
-    if (srcHandle == 0) {
+    if (srcHandle == 0)
+    {
         throwSqliteException(env, "Source database handle is NULL!");
         return 0;
     }
 
-    if (srcName == 0) {
+    if (srcName == 0)
+    {
         throwSqliteException(env, "Source database name is NULL!");
         return 0;
     }
@@ -40,9 +44,10 @@ jlong JNICALL Java_com_baidu_javalite_Backup_sqlite3_1backup_1init(JNIEnv *env,
     const char* cSrcName = (*env)->GetStringUTFChars(env, srcName, 0);
 
     sqlite3_backup* bu = sqlite3_backup_init(dst, cDstName, src,
-                                             cSrcName);
+            cSrcName);
 
-    if (bu == 0) {
+    if (bu == 0)
+    {
         throwSqliteException2(env, sqlite3_errcode(dst), sqlite3_errmsg(dst));
     }
 
@@ -53,9 +58,10 @@ jlong JNICALL Java_com_baidu_javalite_Backup_sqlite3_1backup_1init(JNIEnv *env,
 }
 
 jboolean JNICALL Java_com_baidu_javalite_Backup_sqlite3_1backup_1step(
-    JNIEnv *env, jclass cls, jlong handle, jint nPage)
+        JNIEnv *env, jclass cls, jlong handle, jint nPage)
 {
-    if (handle == 0) {
+    if (handle == 0)
+    {
         throwSqliteException(env, "Native handle is NULL!");
         return JNI_FALSE;
     }
@@ -64,22 +70,26 @@ jboolean JNICALL Java_com_baidu_javalite_Backup_sqlite3_1backup_1step(
 
     int rc = sqlite3_backup_step(bu, nPage);
 
-    if (rc == SQLITE_OK) {
+    if (rc == SQLITE_OK)
+    {
         return JNI_TRUE;
     }
-    else if (rc == SQLITE_DONE) {
+    else if (rc == SQLITE_DONE)
+    {
         return JNI_FALSE;
     }
-    else {
+    else
+    {
         throwSqliteException2(env, rc, sqlite3_errstr(rc));
         return JNI_FALSE;
     }
 }
 
 void JNICALL Java_com_baidu_javalite_Backup_sqlite3_1backup_1finish(JNIEnv *env,
-    jclass cls, jlong handle)
+        jclass cls, jlong handle)
 {
-    if (handle == 0) {
+    if (handle == 0)
+    {
         throwSqliteException(env, "Native handle is NULL!");
         return;
     }
@@ -88,15 +98,17 @@ void JNICALL Java_com_baidu_javalite_Backup_sqlite3_1backup_1finish(JNIEnv *env,
 
     int rc = sqlite3_backup_finish(bu);
 
-    if (rc != SQLITE_OK) {
+    if (rc != SQLITE_OK)
+    {
         throwSqliteException2(env, rc, sqlite3_errstr(rc));
     }
 }
 
 jint JNICALL Java_com_baidu_javalite_Backup_sqlite3_1backup_1remaining(
-    JNIEnv *env, jclass cls, jlong handle)
+        JNIEnv *env, jclass cls, jlong handle)
 {
-    if (handle == 0) {
+    if (handle == 0)
+    {
         throwSqliteException(env, "Native handle is NULL!");
         return 0;
     }
@@ -107,9 +119,10 @@ jint JNICALL Java_com_baidu_javalite_Backup_sqlite3_1backup_1remaining(
 }
 
 jint JNICALL Java_com_baidu_javalite_Backup_sqlite3_1backup_1pagecount(
-    JNIEnv *env, jclass cls, jlong handle)
+        JNIEnv *env, jclass cls, jlong handle)
 {
-    if (handle == 0) {
+    if (handle == 0)
+    {
         throwSqliteException(env, "Native handle is NULL!");
         return 0;
     }

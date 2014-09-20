@@ -12,9 +12,10 @@
 #include <stdlib.h>
 
 jbyteArray JNICALL Java_com_baidu_javalite_Value_sqlite3_1value_1blob(
-    JNIEnv *env, jclass cls, jlong handle)
+        JNIEnv *env, jclass cls, jlong handle)
 {
-    if (handle == 0) {
+    if (handle == 0)
+    {
         throwSqliteException(env, "handle is NULL");
         return 0;
     }
@@ -22,7 +23,8 @@ jbyteArray JNICALL Java_com_baidu_javalite_Value_sqlite3_1value_1blob(
     sqlite3_value* value = (sqlite3_value*) handle;
     int len = sqlite3_value_bytes(value);
 
-    if (len == 0) {
+    if (len == 0)
+    {
         return (*env)->NewByteArray(env, 0);
     }
 
@@ -34,9 +36,10 @@ jbyteArray JNICALL Java_com_baidu_javalite_Value_sqlite3_1value_1blob(
 }
 
 jdouble JNICALL Java_com_baidu_javalite_Value_sqlite3_1value_1double(
-    JNIEnv *env, jclass cls, jlong handle)
+        JNIEnv *env, jclass cls, jlong handle)
 {
-    if (handle == 0) {
+    if (handle == 0)
+    {
         throwSqliteException(env, "handle is NULL");
         return 0;
     }
@@ -46,9 +49,10 @@ jdouble JNICALL Java_com_baidu_javalite_Value_sqlite3_1value_1double(
 }
 
 jint JNICALL Java_com_baidu_javalite_Value_sqlite3_1value_1int(JNIEnv *env,
-    jclass cls, jlong handle)
+        jclass cls, jlong handle)
 {
-    if (handle == 0) {
+    if (handle == 0)
+    {
         throwSqliteException(env, "handle is NULL");
         return 0;
     }
@@ -58,9 +62,10 @@ jint JNICALL Java_com_baidu_javalite_Value_sqlite3_1value_1int(JNIEnv *env,
 }
 
 jlong JNICALL Java_com_baidu_javalite_Value_sqlite3_1value_1int64(JNIEnv *env,
-    jclass cls, jlong handle)
+        jclass cls, jlong handle)
 {
-    if (handle == 0) {
+    if (handle == 0)
+    {
         throwSqliteException(env, "handle is NULL");
         return 0;
     }
@@ -70,9 +75,10 @@ jlong JNICALL Java_com_baidu_javalite_Value_sqlite3_1value_1int64(JNIEnv *env,
 }
 
 jstring JNICALL Java_com_baidu_javalite_Value_sqlite3_1value_1text(JNIEnv *env,
-    jclass cls, jlong handle)
+        jclass cls, jlong handle)
 {
-    if (handle == 0) {
+    if (handle == 0)
+    {
         throwSqliteException(env, "handle is NULL");
         return 0;
     }
@@ -80,7 +86,8 @@ jstring JNICALL Java_com_baidu_javalite_Value_sqlite3_1value_1text(JNIEnv *env,
     sqlite3_value* value = (sqlite3_value*) handle;
     int len = sqlite3_value_bytes(value);
 
-    if (len == 0) {
+    if (len == 0)
+    {
         return (*env)->NewStringUTF(env, "");
     }
 
@@ -96,9 +103,10 @@ jstring JNICALL Java_com_baidu_javalite_Value_sqlite3_1value_1text(JNIEnv *env,
 }
 
 jint JNICALL Java_com_baidu_javalite_Value_sqlite3_1value_1type(JNIEnv *env,
-    jclass cls, jlong handle)
+        jclass cls, jlong handle)
 {
-    if (handle == 0) {
+    if (handle == 0)
+    {
         throwSqliteException(env, "handle is NULL");
         return 0;
     }
@@ -108,9 +116,10 @@ jint JNICALL Java_com_baidu_javalite_Value_sqlite3_1value_1type(JNIEnv *env,
 }
 
 jint JNICALL Java_com_baidu_javalite_Value_sqlite3_1value_1numeric_1type(
-    JNIEnv *env, jclass cls, jlong handle)
+        JNIEnv *env, jclass cls, jlong handle)
 {
-    if (handle == 0) {
+    if (handle == 0)
+    {
         throwSqliteException(env, "handle is NULL");
         return 0;
     }

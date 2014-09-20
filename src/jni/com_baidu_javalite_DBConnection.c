@@ -24,64 +24,74 @@ static jobject g_collation;
 static void _internal_free_all(JNIEnv *env)
 {
     // 删除 conn 的 exec 的回调函数的全局引用
-    if (g_exec_callback != 0) {
+    if (g_exec_callback != 0)
+    {
         (*env)->DeleteGlobalRef(env, g_exec_callback);
         g_exec_callback = 0;
     }
 
     // 删除 conn 的 Busyhandler 全局引用
-    if (g_busy_handler != 0) {
+    if (g_busy_handler != 0)
+    {
         (*env)->DeleteGlobalRef(env, g_busy_handler);
         g_busy_handler = 0;
     }
 
     // 删除 conn 的 CommitHook 全局引用
-    if (g_commit_hook != 0) {
+    if (g_commit_hook != 0)
+    {
         (*env)->DeleteGlobalRef(env, g_commit_hook);
         g_commit_hook = 0;
     }
 
     // 删除 conn 的 RollbackHook 全局引用
-    if (g_rollback_hook != 0) {
+    if (g_rollback_hook != 0)
+    {
         (*env)->DeleteGlobalRef(env, g_rollback_hook);
         g_rollback_hook = 0;
     }
 
     // 删除 conn 的 TraceListener 全局引用
-    if (g_trace_listener != 0) {
+    if (g_trace_listener != 0)
+    {
         (*env)->DeleteGlobalRef(env, g_trace_listener);
         g_trace_listener = 0;
     }
 
     // 删除 conn 的 ProfileListener 全局引用
-    if (g_profile_listener != 0) {
+    if (g_profile_listener != 0)
+    {
         (*env)->DeleteGlobalRef(env, g_profile_listener);
         g_profile_listener = 0;
     }
 
     // 删除 conn 的 UpdateHook 全局引用
-    if (g_update_hook != 0) {
+    if (g_update_hook != 0)
+    {
         (*env)->DeleteGlobalRef(env, g_update_hook);
         g_update_hook = 0;
     }
 
     // 删除 conn 的 Authorizer 全局引用
-    if (g_authorizer != 0) {
+    if (g_authorizer != 0)
+    {
         (*env)->DeleteGlobalRef(env, g_authorizer);
         g_authorizer = 0;
     }
 
     // 删除 conn 的 collation 全局引用
-    if (g_collation != 0) {
+    if (g_collation != 0)
+    {
         (*env)->DeleteGlobalRef(env, g_collation);
         g_collation = 0;
     }
 }
 
 void JNICALL Java_com_baidu_javalite_DBConnection_sqlite3_1close(JNIEnv *env,
-    jclass cls, jlong handle)
+        jclass cls, jlong handle)
 {
-    if (handle == 0) {
+    if (handle == 0)
+    {
         throwSqliteException(env, "handle is NULL");
         return;
     }
@@ -92,14 +102,16 @@ void JNICALL Java_com_baidu_javalite_DBConnection_sqlite3_1close(JNIEnv *env,
     _internal_free_all(env);
 
     int rc = sqlite3_close_v2(conn);
-    if (rc != SQLITE_OK) {
+    if (rc != SQLITE_OK)
+    {
         throwSqliteException2(env, sqlite3_errcode(conn), sqlite3_errmsg(conn));
     }
 }
 
 static int exec_callback(void* data, int ncols, char** values, char** headers)
 {
-    if (g_exec_callback == 0) {
+    if (g_exec_callback == 0)
+    {
         return 0;
     }
 
@@ -109,7 +121,7 @@ static int exec_callback(void* data, int ncols, char** values, char** headers)
     jmethodID callbackMid = getSqlExecCallback(env);
 
     int rc = (*env)->CallIntMethod(env, g_exec_callback, callbackMid, ncols, vs,
-                                   hs);
+            hs);
 
     (*env)->DeleteLocalRef(env, vs);
     (*env)->DeleteLocalRef(env, hs);
@@ -117,14 +129,16 @@ static int exec_callback(void* data, int ncols, char** values, char** headers)
 }
 
 void JNICALL Java_com_baidu_javalite_DBConnection_sqlite3_1exec(JNIEnv *env,
-    jclass cls, jlong handle, jstring sql, jobject callback)
+        jclass cls, jlong handle, jstring sql, jobject callback)
 {
-    if (handle == 0) {
+    if (handle == 0)
+    {
         throwSqliteException(env, "handle is NULL");
         return;
     }
 
-    if (sql == 0) {
+    if (sql == 0)
+    {
         throwSqliteException(env, "sql is NULL");
         return;
     }
@@ -133,30 +147,35 @@ void JNICALL Java_com_baidu_javalite_DBConnection_sqlite3_1exec(JNIEnv *env,
     const char* csql = (*env)->GetStringUTFChars(env, sql, 0);
     int rc;
 
-    if (g_exec_callback != 0) {
+    if (g_exec_callback != 0)
+    {
         (*env)->DeleteGlobalRef(env, g_exec_callback);
         g_exec_callback = 0;
     }
 
-    if (callback != 0) {
+    if (callback != 0)
+    {
         g_exec_callback = (*env)->NewGlobalRef(env, callback);
         rc = sqlite3_exec(conn, csql, exec_callback, 0, 0);
     }
-    else {
+    else
+    {
         rc = sqlite3_exec(conn, csql, 0, 0, 0);
     }
 
     (*env)->ReleaseStringUTFChars(env, sql, csql);
 
-    if (rc != SQLITE_OK) {
+    if (rc != SQLITE_OK)
+    {
         throwSqliteException2(env, sqlite3_errcode(conn), sqlite3_errmsg(conn));
     }
 }
 
 jint JNICALL Java_com_baidu_javalite_DBConnection_sqlite3_1changes(JNIEnv *env,
-    jclass cls, jlong handle)
+        jclass cls, jlong handle)
 {
-    if (handle == 0) {
+    if (handle == 0)
+    {
         throwSqliteException(env, "handle is NULL");
         return 0;
     }
@@ -166,9 +185,10 @@ jint JNICALL Java_com_baidu_javalite_DBConnection_sqlite3_1changes(JNIEnv *env,
 }
 
 jint JNICALL Java_com_baidu_javalite_DBConnection_sqlite3_1total_1changes(
-    JNIEnv *env, jclass cls, jlong handle)
+        JNIEnv *env, jclass cls, jlong handle)
 {
-    if (handle == 0) {
+    if (handle == 0)
+    {
         throwSqliteException(env, "handle is NULL");
         return 0;
     }
@@ -178,9 +198,10 @@ jint JNICALL Java_com_baidu_javalite_DBConnection_sqlite3_1total_1changes(
 }
 
 jlong JNICALL Java_com_baidu_javalite_DBConnection_sqlite3_1last_1insert_1rowid(
-    JNIEnv *env, jclass cls, jlong handle)
+        JNIEnv *env, jclass cls, jlong handle)
 {
-    if (handle == 0) {
+    if (handle == 0)
+    {
         throwSqliteException(env, "handle is NULL");
         return 0;
     }
@@ -189,14 +210,16 @@ jlong JNICALL Java_com_baidu_javalite_DBConnection_sqlite3_1last_1insert_1rowid(
 }
 
 jobject JNICALL Java_com_baidu_javalite_DBConnection_sqlite3_1get_1table(
-    JNIEnv *env, jclass cls, jlong handle, jstring sql)
+        JNIEnv *env, jclass cls, jlong handle, jstring sql)
 {
-    if (handle == 0) {
+    if (handle == 0)
+    {
         throwSqliteException(env, "handle is NULL");
         return 0;
     }
 
-    if (sql == 0) {
+    if (sql == 0)
+    {
         throwSqliteException(env, "sql is NULL");
         return 0;
     }
@@ -212,7 +235,8 @@ jobject JNICALL Java_com_baidu_javalite_DBConnection_sqlite3_1get_1table(
 
     (*env)->ReleaseStringUTFChars(env, sql, csql);
 
-    if (rc != SQLITE_OK) {
+    if (rc != SQLITE_OK)
+    {
         throwSqliteException2(env, sqlite3_errcode(conn), sqlite3_errmsg(conn));
         sqlite3_free_table(azResult);
         return 0;
@@ -225,14 +249,16 @@ jobject JNICALL Java_com_baidu_javalite_DBConnection_sqlite3_1get_1table(
 }
 
 jlong JNICALL Java_com_baidu_javalite_DBConnection_sqlite3_1prepare_1v2(
-    JNIEnv *env, jclass cls, jlong handle, jstring sql)
+        JNIEnv *env, jclass cls, jlong handle, jstring sql)
 {
-    if (handle == 0) {
+    if (handle == 0)
+    {
         throwSqliteException(env, "handle is NULL");
         return 0;
     }
 
-    if (sql == 0) {
+    if (sql == 0)
+    {
         throwSqliteException(env, "sql is NULL");
         return 0;
     }
@@ -245,7 +271,8 @@ jlong JNICALL Java_com_baidu_javalite_DBConnection_sqlite3_1prepare_1v2(
 
     (*env)->ReleaseStringUTFChars(env, sql, csql);
 
-    if (rc != SQLITE_OK) {
+    if (rc != SQLITE_OK)
+    {
         throwSqliteException2(env, sqlite3_errcode(conn), sqlite3_errmsg(conn));
         return 0;
     }
@@ -255,18 +282,21 @@ jlong JNICALL Java_com_baidu_javalite_DBConnection_sqlite3_1prepare_1v2(
 
 static int jni_busy_handler(void* data, int times)
 {
-    if (g_busy_handler == 0) {
+    if (g_busy_handler == 0)
+    {
         return 0;
     }
-    else {
+    else
+    {
         return callBusyHandlerCallback(getEnv(), g_busy_handler, times);
     }
 }
 
 void JNICALL Java_com_baidu_javalite_DBConnection_sqlite3_1busy_1handler(
-    JNIEnv *env, jclass cls, jlong handle, jobject jHandler)
+        JNIEnv *env, jclass cls, jlong handle, jobject jHandler)
 {
-    if (handle == 0) {
+    if (handle == 0)
+    {
         throwSqliteException(env, "handle is NULL");
         return;
     }
@@ -274,28 +304,33 @@ void JNICALL Java_com_baidu_javalite_DBConnection_sqlite3_1busy_1handler(
     sqlite3* conn = (sqlite3*) handle;
     int rc;
 
-    if (g_busy_handler != 0) {
+    if (g_busy_handler != 0)
+    {
         (*env)->DeleteGlobalRef(env, g_busy_handler);
         g_busy_handler = 0;
     }
 
-    if (jHandler == 0) {
+    if (jHandler == 0)
+    {
         rc = sqlite3_busy_handler(conn, 0, 0);
     }
-    else {
+    else
+    {
         g_busy_handler = (*env)->NewGlobalRef(env, jHandler);
         rc = sqlite3_busy_handler(conn, jni_busy_handler, 0);
     }
 
-    if (rc != SQLITE_OK) {
+    if (rc != SQLITE_OK)
+    {
         throwSqliteException2(env, sqlite3_errcode(conn), sqlite3_errmsg(conn));
     }
 }
 
 void JNICALL Java_com_baidu_javalite_DBConnection_sqlite3_1busy_1timeout(
-    JNIEnv *env, jclass cls, jlong handle, jint ms)
+        JNIEnv *env, jclass cls, jlong handle, jint ms)
 {
-    if (handle == 0) {
+    if (handle == 0)
+    {
         throwSqliteException(env, "handle is NULL");
         return;
     }
@@ -303,14 +338,16 @@ void JNICALL Java_com_baidu_javalite_DBConnection_sqlite3_1busy_1timeout(
     sqlite3* conn = (sqlite3*) handle;
     int rc = sqlite3_busy_timeout(conn, ms);
 
-    if (rc != SQLITE_OK) {
+    if (rc != SQLITE_OK)
+    {
         throwSqliteException2(env, sqlite3_errcode(conn), sqlite3_errmsg(conn));
     }
 }
 
 static int jni_commit_hook(void* conn)
 {
-    if (g_commit_hook == 0) {
+    if (g_commit_hook == 0)
+    {
         return 0;
     }
 
@@ -325,24 +362,28 @@ static int jni_commit_hook(void* conn)
 }
 
 void JNICALL Java_com_baidu_javalite_DBConnection_sqlite3_1commit_1hook(
-    JNIEnv *env, jclass cls, jlong handle, jobject hook)
+        JNIEnv *env, jclass cls, jlong handle, jobject hook)
 {
-    if (handle == 0) {
+    if (handle == 0)
+    {
         throwSqliteException(env, "handle is NULL");
         return;
     }
 
     sqlite3* conn = (sqlite3*) handle;
 
-    if (g_commit_hook != 0) {
+    if (g_commit_hook != 0)
+    {
         (*env)->DeleteGlobalRef(env, g_commit_hook);
         g_commit_hook = 0;
     }
 
-    if (hook == 0) {
+    if (hook == 0)
+    {
         sqlite3_commit_hook(conn, 0, 0);
     }
-    else {
+    else
+    {
         g_commit_hook = (*env)->NewGlobalRef(env, hook);
         sqlite3_commit_hook(conn, jni_commit_hook, conn);
     }
@@ -350,7 +391,8 @@ void JNICALL Java_com_baidu_javalite_DBConnection_sqlite3_1commit_1hook(
 
 static void jni_rollback_hook(void* conn)
 {
-    if (g_rollback_hook == 0) {
+    if (g_rollback_hook == 0)
+    {
         return;
     }
 
@@ -363,24 +405,28 @@ static void jni_rollback_hook(void* conn)
 }
 
 void JNICALL Java_com_baidu_javalite_DBConnection_sqlite3_1rollback_1hook(
-    JNIEnv *env, jclass cls, jlong handle, jobject hook)
+        JNIEnv *env, jclass cls, jlong handle, jobject hook)
 {
-    if (handle == 0) {
+    if (handle == 0)
+    {
         throwSqliteException(env, "handle is NULL");
         return;
     }
 
     sqlite3* conn = (sqlite3*) handle;
 
-    if (g_rollback_hook != 0) {
+    if (g_rollback_hook != 0)
+    {
         (*env)->DeleteGlobalRef(env, g_rollback_hook);
         g_rollback_hook = 0;
     }
 
-    if (hook == 0) {
+    if (hook == 0)
+    {
         sqlite3_rollback_hook(conn, 0, 0);
     }
-    else {
+    else
+    {
         g_rollback_hook = (*env)->NewGlobalRef(env, hook);
         sqlite3_rollback_hook(conn, jni_rollback_hook, conn);
     }
@@ -388,7 +434,8 @@ void JNICALL Java_com_baidu_javalite_DBConnection_sqlite3_1rollback_1hook(
 
 static void _function_destroy_callback(void* data)
 {
-    if (data == 0) {
+    if (data == 0)
+    {
         return;
     }
 
@@ -397,7 +444,8 @@ static void _function_destroy_callback(void* data)
 
     (*env)->DeleteGlobalRef(env, gData->callback);
 
-    if (gData->app) {
+    if (gData->app)
+    {
         (*env)->DeleteGlobalRef(env, gData->app);
     }
 
@@ -410,7 +458,7 @@ static void _xFunc_callback(sqlite3_context* ctx, int n, sqlite3_value** values)
     func_data* data = (func_data*) sqlite3_user_data(ctx);
     jobjectArray array = newJavaliteValueArray(env, n, values);
     callScalarFunctionFuncMethod(env, data->callback,
-                                 newJavaliteContext(env, (jlong) ctx), array);
+            newJavaliteContext(env, (jlong) ctx), array);
 }
 
 static void _xStep_callback(sqlite3_context* ctx, int n, sqlite3_value** values)
@@ -419,7 +467,7 @@ static void _xStep_callback(sqlite3_context* ctx, int n, sqlite3_value** values)
     func_data* data = (func_data*) sqlite3_user_data(ctx);
     jobjectArray array = newJavaliteValueArray(env, n, values);
     callAggregateFunctionStepMethod(env, data->callback,
-                                    newJavaliteContext(env, (jlong) ctx), array);
+            newJavaliteContext(env, (jlong) ctx), array);
 }
 
 static void _xFinal_callback(sqlite3_context* ctx)
@@ -427,19 +475,21 @@ static void _xFinal_callback(sqlite3_context* ctx)
     JNIEnv* env = getEnv();
     func_data* data = (func_data*) sqlite3_user_data(ctx);
     callAggregateFunctionFinalMethod(env, data->callback,
-                                     newJavaliteContext(env, (jlong) ctx));
+            newJavaliteContext(env, (jlong) ctx));
 }
 
 void JNICALL Java_com_baidu_javalite_DBConnection_sqlite3_1create_1function_1v2(
-    JNIEnv *env, jclass cls, jlong handle, jstring funcName, jint nArgs,
-    jobject app, jobject callbacks)
+        JNIEnv *env, jclass cls, jlong handle, jstring funcName, jint nArgs,
+        jobject app, jobject callbacks)
 {
-    if (handle == 0) {
+    if (handle == 0)
+    {
         throwSqliteException(env, "handle is NULL");
         return;
     }
 
-    if (funcName == 0) {
+    if (funcName == 0)
+    {
         throwSqliteException(env, "funcName is NULL");
         return;
     }
@@ -448,28 +498,32 @@ void JNICALL Java_com_baidu_javalite_DBConnection_sqlite3_1create_1function_1v2(
     const char* name = (*env)->GetStringUTFChars(env, funcName, 0);
     int rc;
 
-    if (callbacks == 0) { // 删除某个函数
+    if (callbacks == 0)
+    { // 删除某个函数
         rc = sqlite3_create_function_v2(conn, name, nArgs, SQLITE_UTF8, 0, 0, 0,
-                                        0, 0);
+                0, 0);
     }
-    else {
+    else
+    {
         func_data* data = (func_data*) malloc(sizeof (func_data)); // 在堆上分配内存
         data->callback = (*env)->NewGlobalRef(env, callbacks);
         data->app = app == 0 ? 0 : (*env)->NewGlobalRef(env, app);
 
         jclass aggregateFunctionClass = (*env)->FindClass(env,
-                                                          "com/baidu/javalite/AggregateFunction");
+                "com/baidu/javalite/AggregateFunction");
 
-        if ((*env)->IsInstanceOf(env, callbacks, aggregateFunctionClass)) {
+        if ((*env)->IsInstanceOf(env, callbacks, aggregateFunctionClass))
+        {
             // 是 AggregateFunction
             rc = sqlite3_create_function_v2(conn, name, nArgs, SQLITE_UTF8,
-                                            data, _xFunc_callback, _xStep_callback, _xFinal_callback,
-                                            _function_destroy_callback);
+                    data, _xFunc_callback, _xStep_callback, _xFinal_callback,
+                    _function_destroy_callback);
         }
-        else {
+        else
+        {
             // 是 ScalarFunction
             rc = sqlite3_create_function_v2(conn, name, nArgs, SQLITE_UTF8,
-                                            data, _xFunc_callback, 0, 0, _function_destroy_callback);
+                    data, _xFunc_callback, 0, 0, _function_destroy_callback);
         }
 
         (*env)->DeleteLocalRef(env, aggregateFunctionClass);
@@ -477,15 +531,17 @@ void JNICALL Java_com_baidu_javalite_DBConnection_sqlite3_1create_1function_1v2(
 
     (*env)->ReleaseStringUTFChars(env, funcName, name);
 
-    if (rc != SQLITE_OK) {
+    if (rc != SQLITE_OK)
+    {
         throwSqliteException2(env, sqlite3_errcode(conn), sqlite3_errmsg(conn));
     }
 }
 
 jint JNICALL Java_com_baidu_javalite_DBConnection_sqlite3_1db_1release_1memory(
-    JNIEnv *env, jclass cls, jlong handle)
+        JNIEnv *env, jclass cls, jlong handle)
 {
-    if (handle == 0) {
+    if (handle == 0)
+    {
         throwSqliteException(env, "handle is NULL");
         return 0;
     }
@@ -496,9 +552,10 @@ jint JNICALL Java_com_baidu_javalite_DBConnection_sqlite3_1db_1release_1memory(
 }
 
 jint JNICALL Java_com_baidu_javalite_DBConnection_sqlite3_1limit(JNIEnv *env,
-    jclass cls, jlong handle, jint id, jint newVal)
+        jclass cls, jlong handle, jint id, jint newVal)
 {
-    if (handle == 0) {
+    if (handle == 0)
+    {
         throwSqliteException(env, "handle is NULL");
         return 0;
     }
@@ -509,19 +566,22 @@ jint JNICALL Java_com_baidu_javalite_DBConnection_sqlite3_1limit(JNIEnv *env,
 }
 
 jlong JNICALL Java_com_baidu_javalite_DBConnection_sqlite3_1next_1stmt(
-    JNIEnv *env, jclass cls, jlong handle, jlong stmtHandle)
+        JNIEnv *env, jclass cls, jlong handle, jlong stmtHandle)
 {
-    if (handle == 0) {
+    if (handle == 0)
+    {
         throwSqliteException(env, "handle is NULL");
         return 0;
     }
 
     sqlite3* conn = (sqlite3*) handle;
 
-    if (stmtHandle == 0) {
+    if (stmtHandle == 0)
+    {
         return (jlong) sqlite3_next_stmt(conn, 0);
     }
-    else {
+    else
+    {
         sqlite3_stmt* stmt = (sqlite3_stmt*) stmtHandle;
         return (jlong) sqlite3_next_stmt(conn, stmt);
     }
@@ -529,7 +589,8 @@ jlong JNICALL Java_com_baidu_javalite_DBConnection_sqlite3_1next_1stmt(
 
 static void _internal_trace_callback(void* conn, const char* msg)
 {
-    if (g_trace_listener == 0) {
+    if (g_trace_listener == 0)
+    {
         return;
     }
 
@@ -545,33 +606,38 @@ static void _internal_trace_callback(void* conn, const char* msg)
 }
 
 void JNICALL Java_com_baidu_javalite_DBConnection_sqlite3_1trace(JNIEnv *env,
-    jclass cls, jlong handle, jobject listener)
+        jclass cls, jlong handle, jobject listener)
 {
-    if (handle == 0) {
+    if (handle == 0)
+    {
         throwSqliteException(env, "handle is NULL");
         return;
     }
 
     sqlite3* conn = (sqlite3*) handle;
 
-    if (g_trace_listener != 0) {
+    if (g_trace_listener != 0)
+    {
         (*env)->DeleteGlobalRef(env, g_trace_listener);
         g_trace_listener = 0;
     }
 
-    if (listener == 0) {
+    if (listener == 0)
+    {
         sqlite3_trace(conn, 0, 0);
     }
-    else {
+    else
+    {
         g_trace_listener = (*env)->NewGlobalRef(env, listener);
         sqlite3_trace(conn, _internal_trace_callback, conn);
     }
 }
 
 static void _internal_profile_callback(void* conn, const char* msg,
-    sqlite3_uint64 nanoseconds)
+        sqlite3_uint64 nanoseconds)
 {
-    if (g_profile_listener == 0) {
+    if (g_profile_listener == 0)
+    {
         return;
     }
 
@@ -581,40 +647,45 @@ static void _internal_profile_callback(void* conn, const char* msg,
     jstring jmsg = (*env)->NewStringUTF(env, msg == 0 ? "" : msg);
 
     callProfileListenerCallback(env, g_profile_listener, jconn, jmsg,
-                                (jlong) nanoseconds);
+            (jlong) nanoseconds);
 
     (*env)->DeleteLocalRef(env, jconn);
     (*env)->DeleteLocalRef(env, jmsg);
 }
 
 void JNICALL Java_com_baidu_javalite_DBConnection_sqlite3_1profile(JNIEnv *env,
-    jclass cls, jlong handle, jobject listener)
+        jclass cls, jlong handle, jobject listener)
 {
-    if (handle == 0) {
+    if (handle == 0)
+    {
         throwSqliteException(env, "handle is NULL");
         return;
     }
 
     sqlite3* conn = (sqlite3*) handle;
 
-    if (g_profile_listener != 0) {
+    if (g_profile_listener != 0)
+    {
         (*env)->DeleteGlobalRef(env, g_profile_listener);
         g_profile_listener = 0;
     }
 
-    if (listener == 0) {
+    if (listener == 0)
+    {
         sqlite3_profile(conn, 0, 0);
     }
-    else {
+    else
+    {
         g_profile_listener = (*env)->NewGlobalRef(env, listener);
         sqlite3_profile(conn, _internal_profile_callback, conn);
     }
 }
 
 static void _internal_update_hook(void* data, int action, char const *db,
-    char const *tb, sqlite3_int64 rowid)
+        char const *tb, sqlite3_int64 rowid)
 {
-    if (g_update_hook == 0) {
+    if (g_update_hook == 0)
+    {
         return;
     }
 
@@ -633,33 +704,38 @@ static void _internal_update_hook(void* data, int action, char const *db,
 }
 
 void JNICALL Java_com_baidu_javalite_DBConnection_sqlite3_1update_1hook(JNIEnv *env,
-    jclass cls, jlong handle, jobject hook)
+        jclass cls, jlong handle, jobject hook)
 {
-    if (handle == 0) {
+    if (handle == 0)
+    {
         throwSqliteException(env, "handle is NULL");
         return;
     }
 
     sqlite3* conn = (sqlite3*) handle;
 
-    if (g_update_hook != 0) {
+    if (g_update_hook != 0)
+    {
         (*env)->DeleteGlobalRef(env, g_update_hook);
         g_update_hook = 0;
     }
 
-    if (hook == 0) {
+    if (hook == 0)
+    {
         sqlite3_update_hook(conn, 0, 0);
     }
-    else {
+    else
+    {
         g_update_hook = (*env)->NewGlobalRef(env, hook);
         sqlite3_update_hook(conn, _internal_update_hook, conn);
     }
 }
 
 static int _internal_authorizer_callback(void* data, int action, const char* s1,
-    const char* s2, const char* s3, const char* s4)
+        const char* s2, const char* s3, const char* s4)
 {
-    if (g_authorizer == 0) {
+    if (g_authorizer == 0)
+    {
         return SQLITE_OK;
     }
 
@@ -675,16 +751,20 @@ static int _internal_authorizer_callback(void* data, int action, const char* s1,
     int rc = callAuthorizerCallback(env, g_authorizer, jconn, action, js1, js2, js3, js4);
 
     (*env)->DeleteLocalRef(env, jconn);
-    if (js1 != 0) {
+    if (js1 != 0)
+    {
         (*env)->DeleteLocalRef(env, js1);
     }
-    if (js2 != 0) {
+    if (js2 != 0)
+    {
         (*env)->DeleteLocalRef(env, js2);
     }
-    if (js3 != 0) {
+    if (js3 != 0)
+    {
         (*env)->DeleteLocalRef(env, js3);
     }
-    if (js4 != 0) {
+    if (js4 != 0)
+    {
         (*env)->DeleteLocalRef(env, js4);
     }
 
@@ -692,38 +772,44 @@ static int _internal_authorizer_callback(void* data, int action, const char* s1,
 }
 
 void JNICALL Java_com_baidu_javalite_DBConnection_sqlite3_1set_1authorizer(
-    JNIEnv *env, jclass cls, jlong handle, jobject authorizer)
+        JNIEnv *env, jclass cls, jlong handle, jobject authorizer)
 {
-    if (handle == 0) {
+    if (handle == 0)
+    {
         throwSqliteException(env, "handle is NULL");
         return;
     }
 
     sqlite3* conn = (sqlite3*) handle;
 
-    if (g_authorizer != 0) {
+    if (g_authorizer != 0)
+    {
         (*env)->DeleteGlobalRef(env, g_authorizer);
         g_authorizer = 0;
     }
 
     int rc;
-    if (authorizer == 0) {
+    if (authorizer == 0)
+    {
         rc = sqlite3_set_authorizer(conn, 0, 0);
     }
-    else {
+    else
+    {
         g_authorizer = (*env)->NewGlobalRef(env, authorizer);
         rc = sqlite3_set_authorizer(conn, _internal_authorizer_callback, conn);
     }
 
-    if (rc != SQLITE_OK) {
+    if (rc != SQLITE_OK)
+    {
         throwSqliteException2(env, sqlite3_errcode(conn), sqlite3_errmsg(conn));
     }
 }
 
 static int _internal_collation_compare(void* data, int countA, const void* bufA,
-    int countB, const void* bufB)
+        int countB, const void* bufB)
 {
-    if (g_collation == 0) {
+    if (g_collation == 0)
+    {
         return 0;
     }
 
@@ -734,11 +820,13 @@ static int _internal_collation_compare(void* data, int countA, const void* bufA,
     jbyteArray arrayA = (*env)->NewByteArray(env, countA >= 0 ? countA : 0);
     jbyteArray arrayB = (*env)->NewByteArray(env, countB >= 0 ? countB : 0);
 
-    if (countA > 0) {
+    if (countA > 0)
+    {
         (*env)->SetByteArrayRegion(env, arrayA, 0, countA, (jbyte*) bufA);
     }
 
-    if (countB > 0) {
+    if (countB > 0)
+    {
         (*env)->SetByteArrayRegion(env, arrayB, 0, countB, (jbyte*) bufB);
     }
 
@@ -753,7 +841,8 @@ static int _internal_collation_compare(void* data, int countA, const void* bufA,
 
 static void _internal_collation_destroy(void* data)
 {
-    if (g_collation == 0) {
+    if (g_collation == 0)
+    {
         return;
     }
 
@@ -767,21 +856,24 @@ static void _internal_collation_destroy(void* data)
 }
 
 void JNICALL Java_com_baidu_javalite_DBConnection_sqlite3_1create_1collation_1v2(
-    JNIEnv *env, jclass cls, jlong handle, jstring name, jobject collation)
+        JNIEnv *env, jclass cls, jlong handle, jstring name, jobject collation)
 {
-    if (handle == 0) {
+    if (handle == 0)
+    {
         throwSqliteException(env, "handle is NULL");
         return;
     }
 
-    if (name == 0) {
+    if (name == 0)
+    {
         throwSqliteException(env, "name is NULL");
         return;
     }
 
     sqlite3* conn = (sqlite3*) handle;
 
-    if (g_collation != 0) {
+    if (g_collation != 0)
+    {
         (*env)->DeleteGlobalRef(env, g_collation);
         g_collation = 0;
     }
@@ -789,19 +881,22 @@ void JNICALL Java_com_baidu_javalite_DBConnection_sqlite3_1create_1collation_1v2
     const char* cname = (*env)->GetStringUTFChars(env, name, 0);
     int rc;
 
-    if (collation == 0) {
+    if (collation == 0)
+    {
         rc = sqlite3_create_collation_v2(conn, cname, SQLITE_UTF8, 0, 0, 0);
     }
-    else {
+    else
+    {
         g_collation = (*env)->NewGlobalRef(env, collation);
         rc = sqlite3_create_collation_v2(conn, cname, SQLITE_UTF8,
-                                         conn, _internal_collation_compare,
-                                         _internal_collation_destroy);
+                conn, _internal_collation_compare,
+                _internal_collation_destroy);
     }
 
     (*env)->ReleaseStringUTFChars(env, name, cname);
 
-    if (rc != SQLITE_OK) {
+    if (rc != SQLITE_OK)
+    {
         throwSqliteException2(env, sqlite3_errcode(conn), sqlite3_errmsg(conn));
     }
 }

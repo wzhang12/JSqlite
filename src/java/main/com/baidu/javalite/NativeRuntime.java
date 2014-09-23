@@ -1,7 +1,6 @@
 package com.baidu.javalite;
 
 import java.io.File;
-import java.net.URISyntaxException;
 
 /**
  * Created by clark on 14-9-15.
@@ -28,12 +27,20 @@ public class NativeRuntime {
      */
     private boolean findNativeLibPath() {
         try {
-            File jar = new File(NativeRuntime.class.getProtectionDomain().getCodeSource().getLocation().toURI());
-            String parent = jar.getParent();
-            String libfileName = System.mapLibraryName(J_SQLITE_LIB_NAME);
-            System.load(new File(parent, libfileName).getAbsolutePath());
+            System.loadLibrary(J_SQLITE_LIB_NAME);
             return true;
-        } catch (URISyntaxException e) {
+        } catch (Throwable e) {
+            try {
+                File jar = new File(NativeRuntime.class.getProtectionDomain().getCodeSource().getLocation().toURI());
+                String parent = jar.getParent();
+                String libfileName = System.mapLibraryName(J_SQLITE_LIB_NAME);
+                File libFile = new File(parent, libfileName);
+                if (libFile.isFile()) {
+                    System.load(libFile.getAbsolutePath());
+                    return true;
+                }
+            } catch (Throwable tr) {
+            }
         }
 
         return false;

@@ -1,0 +1,16 @@
+Windows-x86-64
+===========================================
+NM=x86_64-w64-mingw32-nm
+CC=x86_64-w64-mingw32-gcc
+CCC=x86_64-w64-mingw32-g++
+CXX=x86_64-w64-mingw32-g++
+AS=x86_64-w64-mingw32-as
+
+
+Windows-x86
+===========================================
+NM=i686-w64-mingw32-nm
+CC=i686-w64-mingw32-gcc
+CCC=i686-w64-mingw32-g++
+CXX=i686-w64-mingw32-g++
+AS=i686-w64-mingw32-as

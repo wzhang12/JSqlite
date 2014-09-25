@@ -14,3 +14,12 @@ CC=i686-w64-mingw32-gcc
 CCC=i686-w64-mingw32-g++
 CXX=i686-w64-mingw32-g++
 AS=i686-w64-mingw32-as
+
+
+Windows-x86
+===========================================
+NM=i586-mingw32msvc-nm
+CC=i586-mingw32msvc-gcc
+CCC=i586-mingw32msvc-g++
+CXX=i586-mingw32msvc-g++
+AS=i586-mingw32msvc-as

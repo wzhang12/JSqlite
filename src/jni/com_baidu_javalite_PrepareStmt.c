@@ -313,7 +313,7 @@ jstring JNICALL Java_com_baidu_javalite_PrepareStmt_sqlite3_1column_1text(
     }
     else
     {
-        char* text = (char*) malloc(bytes + 1);
+        char* text = (char*) malloc(bytes + 1); // bytes 的大小无法在编译时确定
         memset(text, 0, bytes + 1);
         strncpy(text, (const char*) cn, bytes);
         jstring rs = (*env)->NewStringUTF(env, text);

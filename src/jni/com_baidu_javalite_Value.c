@@ -6,7 +6,7 @@
  */
 
 #include "com_baidu_javalite_Value.h"
-#include "sqlite3.h"
+#include <sqlite3.h>
 #include "util.h"
 #include <string.h>
 #include <stdlib.h>

@@ -568,213 +568,213 @@ void com_baidu_javalite_PrepareStmt_RegisterNatives(JNIEnv* env)
     int index = 0;
 
     {
-        JNINativeMethod method = methods[index++];
-        method.name = "sqlite3_sql";
-        method.signature = "(J)Ljava/lang/String;";
-        method.fnPtr = Java_sqlite3_sql;
+        JNINativeMethod* method = methods + (index++);
+        method->name = "sqlite3_sql";
+        method->signature = "(J)Ljava/lang/String;";
+        method->fnPtr = Java_sqlite3_sql;
     }
 
     {
-        JNINativeMethod method = methods[index++];
-        method.name = "sqlite3_stmt_readonly";
-        method.signature = "(J)Z";
-        method.fnPtr = Java_sqlite3_stmt_readonly;
+        JNINativeMethod* method = methods + (index++);
+        method->name = "sqlite3_stmt_readonly";
+        method->signature = "(J)Z";
+        method->fnPtr = Java_sqlite3_stmt_readonly;
     }
 
     {
-        JNINativeMethod method = methods[index++];
-        method.name = "sqlite3_stmt_busy";
-        method.signature = "(J)Z";
-        method.fnPtr = Java_sqlite3_stmt_busy;
+        JNINativeMethod* method = methods + (index++);
+        method->name = "sqlite3_stmt_busy";
+        method->signature = "(J)Z";
+        method->fnPtr = Java_sqlite3_stmt_busy;
     }
 
     {
-        JNINativeMethod method = methods[index++];
-        method.name = "sqlite3_bind_parameter_count";
-        method.signature = "(J)I";
-        method.fnPtr = Java_sqlite3_bind_parameter_count;
+        JNINativeMethod* method = methods + (index++);
+        method->name = "sqlite3_bind_parameter_count";
+        method->signature = "(J)I";
+        method->fnPtr = Java_sqlite3_bind_parameter_count;
     }
 
     {
-        JNINativeMethod method = methods[index++];
-        method.name = "sqlite3_bind_parameter_name";
-        method.signature = "(JI)Ljava/lang/String;";
-        method.fnPtr = Java_sqlite3_bind_parameter_name;
+        JNINativeMethod* method = methods + (index++);
+        method->name = "sqlite3_bind_parameter_name";
+        method->signature = "(JI)Ljava/lang/String;";
+        method->fnPtr = Java_sqlite3_bind_parameter_name;
     }
 
     {
-        JNINativeMethod method = methods[index++];
-        method.name = "sqlite3_bind_parameter_index";
-        method.signature = "(JLjava/lang/String;)I";
-        method.fnPtr = Java_sqlite3_bind_parameter_index;
+        JNINativeMethod* method = methods + (index++);
+        method->name = "sqlite3_bind_parameter_index";
+        method->signature = "(JLjava/lang/String;)I";
+        method->fnPtr = Java_sqlite3_bind_parameter_index;
     }
 
     {
-        JNINativeMethod method = methods[index++];
-        method.name = "sqlite3_clear_bindings";
-        method.signature = "(J)V";
-        method.fnPtr = Java_sqlite3_clear_bindings;
+        JNINativeMethod* method = methods + (index++);
+        method->name = "sqlite3_clear_bindings";
+        method->signature = "(J)V";
+        method->fnPtr = Java_sqlite3_clear_bindings;
     }
 
     {
-        JNINativeMethod method = methods[index++];
-        method.name = "sqlite3_bind_text";
-        method.signature = "(JILjava/lang/String;)V";
-        method.fnPtr = Java_sqlite3_bind_text;
+        JNINativeMethod* method = methods + (index++);
+        method->name = "sqlite3_bind_text";
+        method->signature = "(JILjava/lang/String;)V";
+        method->fnPtr = Java_sqlite3_bind_text;
     }
 
     {
-        JNINativeMethod method = methods[index++];
-        method.name = "sqlite3_bind_null";
-        method.signature = "(JI)V";
-        method.fnPtr = Java_sqlite3_bind_null;
+        JNINativeMethod* method = methods + (index++);
+        method->name = "sqlite3_bind_null";
+        method->signature = "(JI)V";
+        method->fnPtr = Java_sqlite3_bind_null;
     }
 
     {
-        JNINativeMethod method = methods[index++];
-        method.name = "sqlite3_bind_int64";
-        method.signature = "(JIJ)V";
-        method.fnPtr = Java_sqlite3_bind_int64;
+        JNINativeMethod* method = methods + (index++);
+        method->name = "sqlite3_bind_int64";
+        method->signature = "(JIJ)V";
+        method->fnPtr = Java_sqlite3_bind_int64;
     }
 
     {
-        JNINativeMethod method = methods[index++];
-        method.name = "sqlite3_bind_int";
-        method.signature = "(JII)V";
-        method.fnPtr = Java_sqlite3_bind_int;
+        JNINativeMethod* method = methods + (index++);
+        method->name = "sqlite3_bind_int";
+        method->signature = "(JII)V";
+        method->fnPtr = Java_sqlite3_bind_int;
     }
 
     {
-        JNINativeMethod method = methods[index++];
-        method.name = "sqlite3_bind_double";
-        method.signature = "(JID)V";
-        method.fnPtr = Java_sqlite3_bind_double;
+        JNINativeMethod* method = methods + (index++);
+        method->name = "sqlite3_bind_double";
+        method->signature = "(JID)V";
+        method->fnPtr = Java_sqlite3_bind_double;
     }
 
     {
-        JNINativeMethod method = methods[index++];
-        method.name = "sqlite3_bind_blob";
-        method.signature = "(JI[B)V";
-        method.fnPtr = Java_sqlite3_bind_blob;
+        JNINativeMethod* method = methods + (index++);
+        method->name = "sqlite3_bind_blob";
+        method->signature = "(JI[B)V";
+        method->fnPtr = Java_sqlite3_bind_blob;
     }
 
     {
-        JNINativeMethod method = methods[index++];
-        method.name = "sqlite3_column_type";
-        method.signature = "(JI)I";
-        method.fnPtr = Java_sqlite3_column_type;
+        JNINativeMethod* method = methods + (index++);
+        method->name = "sqlite3_column_type";
+        method->signature = "(JI)I";
+        method->fnPtr = Java_sqlite3_column_type;
     }
 
     {
-        JNINativeMethod method = methods[index++];
-        method.name = "sqlite3_column_text";
-        method.signature = "(JI)Ljava/lang/String;";
-        method.fnPtr = Java_sqlite3_column_text;
+        JNINativeMethod* method = methods + (index++);
+        method->name = "sqlite3_column_text";
+        method->signature = "(JI)Ljava/lang/String;";
+        method->fnPtr = Java_sqlite3_column_text;
     }
 
     {
-        JNINativeMethod method = methods[index++];
-        method.name = "sqlite3_column_int64";
-        method.signature = "(JI)J";
-        method.fnPtr = Java_sqlite3_column_int64;
+        JNINativeMethod* method = methods + (index++);
+        method->name = "sqlite3_column_int64";
+        method->signature = "(JI)J";
+        method->fnPtr = Java_sqlite3_column_int64;
     }
 
     {
-        JNINativeMethod method = methods[index++];
-        method.name = "sqlite3_column_int";
-        method.signature = "(JI)I";
-        method.fnPtr = Java_sqlite3_column_int;
+        JNINativeMethod* method = methods + (index++);
+        method->name = "sqlite3_column_int";
+        method->signature = "(JI)I";
+        method->fnPtr = Java_sqlite3_column_int;
     }
 
     {
-        JNINativeMethod method = methods[index++];
-        method.name = "sqlite3_column_double";
-        method.signature = "(JI)D";
-        method.fnPtr = Java_sqlite3_column_double;
+        JNINativeMethod* method = methods + (index++);
+        method->name = "sqlite3_column_double";
+        method->signature = "(JI)D";
+        method->fnPtr = Java_sqlite3_column_double;
     }
 
     {
-        JNINativeMethod method = methods[index++];
-        method.name = "sqlite3_column_blob";
-        method.signature = "(JI)[B";
-        method.fnPtr = Java_sqlite3_column_blob;
+        JNINativeMethod* method = methods + (index++);
+        method->name = "sqlite3_column_blob";
+        method->signature = "(JI)[B";
+        method->fnPtr = Java_sqlite3_column_blob;
     }
 
     {
-        JNINativeMethod method = methods[index++];
-        method.name = "sqlite3_data_count";
-        method.signature = "(J)I";
-        method.fnPtr = Java_sqlite3_data_count;
+        JNINativeMethod* method = methods + (index++);
+        method->name = "sqlite3_data_count";
+        method->signature = "(J)I";
+        method->fnPtr = Java_sqlite3_data_count;
     }
 
     {
-        JNINativeMethod method = methods[index++];
-        method.name = "sqlite3_column_decltype";
-        method.signature = "(JI)Ljava/lang/String;";
-        method.fnPtr = Java_sqlite3_column_decltype;
+        JNINativeMethod* method = methods + (index++);
+        method->name = "sqlite3_column_decltype";
+        method->signature = "(JI)Ljava/lang/String;";
+        method->fnPtr = Java_sqlite3_column_decltype;
     }
 
     {
-        JNINativeMethod method = methods[index++];
-        method.name = "sqlite3_column_origin_name";
-        method.signature = "(JI)Ljava/lang/String;";
-        method.fnPtr = Java_sqlite3_column_origin_name;
+        JNINativeMethod* method = methods + (index++);
+        method->name = "sqlite3_column_origin_name";
+        method->signature = "(JI)Ljava/lang/String;";
+        method->fnPtr = Java_sqlite3_column_origin_name;
     }
 
     {
-        JNINativeMethod method = methods[index++];
-        method.name = "sqlite3_column_table_name";
-        method.signature = "(JI)Ljava/lang/String;";
-        method.fnPtr = Java_sqlite3_column_table_name;
+        JNINativeMethod* method = methods + (index++);
+        method->name = "sqlite3_column_table_name";
+        method->signature = "(JI)Ljava/lang/String;";
+        method->fnPtr = Java_sqlite3_column_table_name;
     }
 
     {
-        JNINativeMethod method = methods[index++];
-        method.name = "sqlite3_column_database_name";
-        method.signature = "(JI)Ljava/lang/String;";
-        method.fnPtr = Java_sqlite3_column_database_name;
+        JNINativeMethod* method = methods + (index++);
+        method->name = "sqlite3_column_database_name";
+        method->signature = "(JI)Ljava/lang/String;";
+        method->fnPtr = Java_sqlite3_column_database_name;
     }
 
     {
-        JNINativeMethod method = methods[index++];
-        method.name = "sqlite3_column_name";
-        method.signature = "(JI)Ljava/lang/String;";
-        method.fnPtr = Java_sqlite3_column_name;
+        JNINativeMethod* method = methods + (index++);
+        method->name = "sqlite3_column_name";
+        method->signature = "(JI)Ljava/lang/String;";
+        method->fnPtr = Java_sqlite3_column_name;
     }
 
     {
-        JNINativeMethod method = methods[index++];
-        method.name = "sqlite3_column_count";
-        method.signature = "(J)I";
-        method.fnPtr = Java_sqlite3_column_count;
+        JNINativeMethod* method = methods + (index++);
+        method->name = "sqlite3_column_count";
+        method->signature = "(J)I";
+        method->fnPtr = Java_sqlite3_column_count;
     }
 
     {
-        JNINativeMethod method = methods[index++];
-        method.name = "sqlite3_step";
-        method.signature = "(J)Z";
-        method.fnPtr = Java_sqlite3_step;
+        JNINativeMethod* method = methods + (index++);
+        method->name = "sqlite3_step";
+        method->signature = "(J)Z";
+        method->fnPtr = Java_sqlite3_step;
     }
 
     {
-        JNINativeMethod method = methods[index++];
-        method.name = "sqlite3_finalize";
-        method.signature = "(J)V";
-        method.fnPtr = Java_sqlite3_finalize;
+        JNINativeMethod* method = methods + (index++);
+        method->name = "sqlite3_finalize";
+        method->signature = "(J)V";
+        method->fnPtr = Java_sqlite3_finalize;
     }
 
     {
-        JNINativeMethod method = methods[index++];
-        method.name = "sqlite3_reset";
-        method.signature = "(J)V";
-        method.fnPtr = Java_sqlite3_reset;
+        JNINativeMethod* method = methods + (index++);
+        method->name = "sqlite3_reset";
+        method->signature = "(J)V";
+        method->fnPtr = Java_sqlite3_reset;
     }
 
     {
-        JNINativeMethod method = methods[index++];
-        method.name = "sqlite3_bind_zeroblob";
-        method.signature = "(JII)V";
-        method.fnPtr = Java_sqlite3_bind_zeroblob;
+        JNINativeMethod* method = methods + (index++);
+        method->name = "sqlite3_bind_zeroblob";
+        method->signature = "(JII)V";
+        method->fnPtr = Java_sqlite3_bind_zeroblob;
     }
 
     (*env)->RegisterNatives(env, cls, methods, index);

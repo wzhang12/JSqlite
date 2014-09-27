@@ -811,143 +811,143 @@ void com_baidu_javalite_DBConnection_RegisterNatives(JNIEnv* env)
     int index = 0;
 
     {
-        JNINativeMethod method = methods[index++];
-        method.name = "sqlite3_prepare_v2";
-        method.signature = "(JLjava/lang/String;)J";
-        method.fnPtr = Java_sqlite3_prepare_v2;
+        JNINativeMethod* method = methods + (index++);
+        method->name = "sqlite3_prepare_v2";
+        method->signature = "(JLjava/lang/String;)J";
+        method->fnPtr = Java_sqlite3_prepare_v2;
     }
 
     {
-        JNINativeMethod method = methods[index++];
-        method.name = "sqlite3_get_table";
-        method.signature = "(JLjava/lang/String;)Lcom/baidu/javalite/TableResult;";
-        method.fnPtr = Java_sqlite3_get_table;
+        JNINativeMethod* method = methods + (index++);
+        method->name = "sqlite3_get_table";
+        method->signature = "(JLjava/lang/String;)Lcom/baidu/javalite/TableResult;";
+        method->fnPtr = Java_sqlite3_get_table;
     }
 
     {
-        JNINativeMethod method = methods[index++];
-        method.name = "sqlite3_last_insert_rowid";
-        method.signature = "(J)J";
-        method.fnPtr = Java_sqlite3_last_insert_rowid;
+        JNINativeMethod* method = methods + (index++);
+        method->name = "sqlite3_last_insert_rowid";
+        method->signature = "(J)J";
+        method->fnPtr = Java_sqlite3_last_insert_rowid;
     }
 
     {
-        JNINativeMethod method = methods[index++];
-        method.name = "sqlite3_changes";
-        method.signature = "(J)I";
-        method.fnPtr = Java_sqlite3_changes;
+        JNINativeMethod* method = methods + (index++);
+        method->name = "sqlite3_changes";
+        method->signature = "(J)I";
+        method->fnPtr = Java_sqlite3_changes;
     }
 
     {
-        JNINativeMethod method = methods[index++];
-        method.name = "sqlite3_total_changes";
-        method.signature = "(J)I";
-        method.fnPtr = Java_sqlite3_total_changes;
+        JNINativeMethod* method = methods + (index++);
+        method->name = "sqlite3_total_changes";
+        method->signature = "(J)I";
+        method->fnPtr = Java_sqlite3_total_changes;
     }
 
     {
-        JNINativeMethod method = methods[index++];
-        method.name = "sqlite3_exec";
-        method.signature = "(JLjava/lang/String;Lcom/baidu/javalite/SqlExecCallback;)V";
-        method.fnPtr = Java_sqlite3_exec;
+        JNINativeMethod* method = methods + (index++);
+        method->name = "sqlite3_exec";
+        method->signature = "(JLjava/lang/String;Lcom/baidu/javalite/SqlExecCallback;)V";
+        method->fnPtr = Java_sqlite3_exec;
     }
 
     {
-        JNINativeMethod method = methods[index++];
-        method.name = "sqlite3_close";
-        method.signature = "(J)V";
-        method.fnPtr = Java_sqlite3_close;
+        JNINativeMethod* method = methods + (index++);
+        method->name = "sqlite3_close";
+        method->signature = "(J)V";
+        method->fnPtr = Java_sqlite3_close;
     }
 
     {
-        JNINativeMethod method = methods[index++];
-        method.name = "sqlite3_busy_handler";
-        method.signature = "(JLcom/baidu/javalite/BusyHandler;)V";
-        method.fnPtr = Java_sqlite3_busy_handler;
+        JNINativeMethod* method = methods + (index++);
+        method->name = "sqlite3_busy_handler";
+        method->signature = "(JLcom/baidu/javalite/BusyHandler;)V";
+        method->fnPtr = Java_sqlite3_busy_handler;
     }
 
     {
-        JNINativeMethod method = methods[index++];
-        method.name = "sqlite3_busy_timeout";
-        method.signature = "(JI)V";
-        method.fnPtr = Java_sqlite3_busy_timeout;
+        JNINativeMethod* method = methods + (index++);
+        method->name = "sqlite3_busy_timeout";
+        method->signature = "(JI)V";
+        method->fnPtr = Java_sqlite3_busy_timeout;
     }
 
     {
-        JNINativeMethod method = methods[index++];
-        method.name = "sqlite3_commit_hook";
-        method.signature = "(JLcom/baidu/javalite/CommitHook;)V";
-        method.fnPtr = Java_sqlite3_commit_hook;
+        JNINativeMethod* method = methods + (index++);
+        method->name = "sqlite3_commit_hook";
+        method->signature = "(JLcom/baidu/javalite/CommitHook;)V";
+        method->fnPtr = Java_sqlite3_commit_hook;
     }
 
     {
-        JNINativeMethod method = methods[index++];
-        method.name = "sqlite3_rollback_hook";
-        method.signature = "(JLcom/baidu/javalite/RollbackHook;)V";
-        method.fnPtr = Java_sqlite3_rollback_hook;
+        JNINativeMethod* method = methods + (index++);
+        method->name = "sqlite3_rollback_hook";
+        method->signature = "(JLcom/baidu/javalite/RollbackHook;)V";
+        method->fnPtr = Java_sqlite3_rollback_hook;
     }
 
     {
-        JNINativeMethod method = methods[index++];
-        method.name = "sqlite3_create_function_v2";
-        method.signature = "(JLjava/lang/String;ILjava/lang/Object;Lcom/baidu/javalite/ScalarFunction;)V";
-        method.fnPtr = Java_sqlite3_create_function_v2;
+        JNINativeMethod* method = methods + (index++);
+        method->name = "sqlite3_create_function_v2";
+        method->signature = "(JLjava/lang/String;ILjava/lang/Object;Lcom/baidu/javalite/ScalarFunction;)V";
+        method->fnPtr = Java_sqlite3_create_function_v2;
     }
 
     {
-        JNINativeMethod method = methods[index++];
-        method.name = "sqlite3_db_release_memory";
-        method.signature = "(J)I";
-        method.fnPtr = Java_sqlite3_db_release_memory;
+        JNINativeMethod* method = methods + (index++);
+        method->name = "sqlite3_db_release_memory";
+        method->signature = "(J)I";
+        method->fnPtr = Java_sqlite3_db_release_memory;
     }
 
     {
-        JNINativeMethod method = methods[index++];
-        method.name = "sqlite3_limit";
-        method.signature = "(JII)I";
-        method.fnPtr = Java_sqlite3_limit;
+        JNINativeMethod* method = methods + (index++);
+        method->name = "sqlite3_limit";
+        method->signature = "(JII)I";
+        method->fnPtr = Java_sqlite3_limit;
     }
 
     {
-        JNINativeMethod method = methods[index++];
-        method.name = "sqlite3_next_stmt";
-        method.signature = "(JJ)J";
-        method.fnPtr = Java_sqlite3_next_stmt;
+        JNINativeMethod* method = methods + (index++);
+        method->name = "sqlite3_next_stmt";
+        method->signature = "(JJ)J";
+        method->fnPtr = Java_sqlite3_next_stmt;
     }
 
     {
-        JNINativeMethod method = methods[index++];
-        method.name = "sqlite3_trace";
-        method.signature = "(JLcom/baidu/javalite/TraceListener;)V";
-        method.fnPtr = Java_sqlite3_trace;
+        JNINativeMethod* method = methods + (index++);
+        method->name = "sqlite3_trace";
+        method->signature = "(JLcom/baidu/javalite/TraceListener;)V";
+        method->fnPtr = Java_sqlite3_trace;
     }
 
     {
-        JNINativeMethod method = methods[index++];
-        method.name = "sqlite3_profile";
-        method.signature = "(JLcom/baidu/javalite/ProfileListener;)V";
-        method.fnPtr = Java_sqlite3_profile;
+        JNINativeMethod* method = methods + (index++);
+        method->name = "sqlite3_profile";
+        method->signature = "(JLcom/baidu/javalite/ProfileListener;)V";
+        method->fnPtr = Java_sqlite3_profile;
     }
 
     {
-        JNINativeMethod method = methods[index++];
-        method.name = "sqlite3_update_hook";
-        method.signature = "(JLcom/baidu/javalite/UpdateHook;)V";
-        method.fnPtr = Java_sqlite3_update_hook;
+        JNINativeMethod* method = methods + (index++);
+        method->name = "sqlite3_update_hook";
+        method->signature = "(JLcom/baidu/javalite/UpdateHook;)V";
+        method->fnPtr = Java_sqlite3_update_hook;
     }
 
     {
-        JNINativeMethod method = methods[index++];
-        method.name = "sqlite3_set_authorizer";
-        method.signature = "(JLcom/baidu/javalite/Authorizer;)V";
-        method.fnPtr = Java_sqlite3_set_authorizer;
+        JNINativeMethod* method = methods + (index++);
+        method->name = "sqlite3_set_authorizer";
+        method->signature = "(JLcom/baidu/javalite/Authorizer;)V";
+        method->fnPtr = Java_sqlite3_set_authorizer;
     }
 
     {
-        JNINativeMethod method = methods[index++];
-        method.name = "sqlite3_create_collation_v2";
-        method.signature = "(JLjava/lang/String;Lcom/baidu/javalite/Collation;)V";
-        method.fnPtr = Java_sqlite3_create_collation_v2;
+        JNINativeMethod* method = methods + (index++);
+        method->name = "sqlite3_create_collation_v2";
+        method->signature = "(JLjava/lang/String;Lcom/baidu/javalite/Collation;)V";
+        method->fnPtr = Java_sqlite3_create_collation_v2;
     }
 
     (*env)->RegisterNatives(env, cls, methods, index);

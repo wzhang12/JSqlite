@@ -119,52 +119,52 @@ void com_baidu_javalite_Value_RegisterNatives(JNIEnv* env)
     int index = 0;
 
     {
-        JNINativeMethod method = methods[index++];
-        method.name = "sqlite3_value_blob";
-        method.signature = "(J)[B";
-        method.fnPtr = Java_sqlite3_value_blob;
+        JNINativeMethod* method = methods + (index++);
+        method->name = "sqlite3_value_blob";
+        method->signature = "(J)[B";
+        method->fnPtr = Java_sqlite3_value_blob;
     }
 
     {
-        JNINativeMethod method = methods[index++];
-        method.name = "sqlite3_value_double";
-        method.signature = "(J)D";
-        method.fnPtr = Java_sqlite3_value_double;
+        JNINativeMethod* method = methods + (index++);
+        method->name = "sqlite3_value_double";
+        method->signature = "(J)D";
+        method->fnPtr = Java_sqlite3_value_double;
     }
 
     {
-        JNINativeMethod method = methods[index++];
-        method.name = "sqlite3_value_int";
-        method.signature = "(J)I";
-        method.fnPtr = Java_sqlite3_value_int;
+        JNINativeMethod* method = methods + (index++);
+        method->name = "sqlite3_value_int";
+        method->signature = "(J)I";
+        method->fnPtr = Java_sqlite3_value_int;
     }
 
     {
-        JNINativeMethod method = methods[index++];
-        method.name = "sqlite3_value_int64";
-        method.signature = "(J)J";
-        method.fnPtr = Java_sqlite3_value_int64;
+        JNINativeMethod* method = methods + (index++);
+        method->name = "sqlite3_value_int64";
+        method->signature = "(J)J";
+        method->fnPtr = Java_sqlite3_value_int64;
     }
 
     {
-        JNINativeMethod method = methods[index++];
-        method.name = "sqlite3_value_text";
-        method.signature = "(J)Ljava/lang/String;";
-        method.fnPtr = Java_sqlite3_value_text;
+        JNINativeMethod* method = methods + (index++);
+        method->name = "sqlite3_value_text";
+        method->signature = "(J)Ljava/lang/String;";
+        method->fnPtr = Java_sqlite3_value_text;
     }
 
     {
-        JNINativeMethod method = methods[index++];
-        method.name = "sqlite3_value_type";
-        method.signature = "(J)I";
-        method.fnPtr = Java_sqlite3_value_type;
+        JNINativeMethod* method = methods + (index++);
+        method->name = "sqlite3_value_type";
+        method->signature = "(J)I";
+        method->fnPtr = Java_sqlite3_value_type;
     }
 
     {
-        JNINativeMethod method = methods[index++];
-        method.name = "sqlite3_value_numeric_type";
-        method.signature = "(J)I";
-        method.fnPtr = Java_sqlite3_value_numeric_type;
+        JNINativeMethod* method = methods + (index++);
+        method->name = "sqlite3_value_numeric_type";
+        method->signature = "(J)I";
+        method->fnPtr = Java_sqlite3_value_numeric_type;
     }
 
     (*env)->RegisterNatives(env, cls, methods, index);

@@ -127,66 +127,66 @@ void com_baidu_javalite_Database_RegisterNatives(JNIEnv* env)
     int index = 0;
 
     {
-        JNINativeMethod method = methods[index++];
-        method.name = "sqlite3_open_v2";
-        method.signature = "(Ljava/lang/String;ILjava/lang/String;)J";
-        method.fnPtr = Java_sqlite3_open_v2;
+        JNINativeMethod* method = methods + (index++);
+        method->name = "sqlite3_open_v2";
+        method->signature = "(Ljava/lang/String;ILjava/lang/String;)J";
+        method->fnPtr = Java_sqlite3_open_v2;
     }
 
     {
-        JNINativeMethod method = methods[index++];
-        method.name = "sqlite3_threadsafe";
-        method.signature = "()Z";
-        method.fnPtr = Java_sqlite3_threadsafe;
+        JNINativeMethod* method = methods + (index++);
+        method->name = "sqlite3_threadsafe";
+        method->signature = "()Z";
+        method->fnPtr = Java_sqlite3_threadsafe;
     }
 
     {
-        JNINativeMethod method = methods[index++];
-        method.name = "sqlite3_threadmode_config";
-        method.signature = "(I)V";
-        method.fnPtr = Java_sqlite3_threadmode_config;
+        JNINativeMethod* method = methods + (index++);
+        method->name = "sqlite3_threadmode_config";
+        method->signature = "(I)V";
+        method->fnPtr = Java_sqlite3_threadmode_config;
     }
 
     {
-        JNINativeMethod method = methods[index++];
-        method.name = "sqlite3_initialize";
-        method.signature = "()V";
-        method.fnPtr = Java_sqlite3_initialize;
+        JNINativeMethod* method = methods + (index++);
+        method->name = "sqlite3_initialize";
+        method->signature = "()V";
+        method->fnPtr = Java_sqlite3_initialize;
     }
 
     {
-        JNINativeMethod method = methods[index++];
-        method.name = "sqlite3_shutdown";
-        method.signature = "()V";
-        method.fnPtr = Java_sqlite3_shutdown;
+        JNINativeMethod* method = methods + (index++);
+        method->name = "sqlite3_shutdown";
+        method->signature = "()V";
+        method->fnPtr = Java_sqlite3_shutdown;
     }
 
     {
-        JNINativeMethod method = methods[index++];
-        method.name = "sqlite3_libversion";
-        method.signature = "()Ljava/lang/String;";
-        method.fnPtr = Java_sqlite3_libversion;
+        JNINativeMethod* method = methods + (index++);
+        method->name = "sqlite3_libversion";
+        method->signature = "()Ljava/lang/String;";
+        method->fnPtr = Java_sqlite3_libversion;
     }
 
     {
-        JNINativeMethod method = methods[index++];
-        method.name = "sqlite3_sourceid";
-        method.signature = "()Ljava/lang/String;";
-        method.fnPtr = Java_sqlite3_sourceid;
+        JNINativeMethod* method = methods + (index++);
+        method->name = "sqlite3_sourceid";
+        method->signature = "()Ljava/lang/String;";
+        method->fnPtr = Java_sqlite3_sourceid;
     }
 
     {
-        JNINativeMethod method = methods[index++];
-        method.name = "sqlite3_libversion_number";
-        method.signature = "()I";
-        method.fnPtr = Java_sqlite3_libversion_number;
+        JNINativeMethod* method = methods + (index++);
+        method->name = "sqlite3_libversion_number";
+        method->signature = "()I";
+        method->fnPtr = Java_sqlite3_libversion_number;
     }
 
     {
-        JNINativeMethod method = methods[index++];
-        method.name = "sqlite3_complete";
-        method.signature = "(Ljava/lang/String;)Z";
-        method.fnPtr = Java_sqlite3_complete;
+        JNINativeMethod* method = methods + (index++);
+        method->name = "sqlite3_complete";
+        method->signature = "(Ljava/lang/String;)Z";
+        method->fnPtr = Java_sqlite3_complete;
     }
 
     (*env)->RegisterNatives(env, cls, methods, index);

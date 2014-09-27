@@ -132,45 +132,45 @@ void com_baidu_javalite_Blob_RegisterNatives(JNIEnv* env)
     int index = 0;
 
     {
-        JNINativeMethod method = methods[index++];
-        method.name = "sqlite3_blob_open";
-        method.signature = "(JLjava/lang/String;Ljava/lang/String;Ljava/lang/String;JI)J";
-        method.fnPtr = Java_sqlite3_blob_open;
+        JNINativeMethod* method = methods + (index++);
+        method->name = "sqlite3_blob_open";
+        method->signature = "(JLjava/lang/String;Ljava/lang/String;Ljava/lang/String;JI)J";
+        method->fnPtr = Java_sqlite3_blob_open;
     }
 
     {
-        JNINativeMethod method = methods[index++];
-        method.name = "sqlite3_blob_reopen";
-        method.signature = "(JJ)V";
-        method.fnPtr = Java_sqlite3_blob_reopen;
+        JNINativeMethod* method = methods + (index++);
+        method->name = "sqlite3_blob_reopen";
+        method->signature = "(JJ)V";
+        method->fnPtr = Java_sqlite3_blob_reopen;
     }
 
     {
-        JNINativeMethod method = methods[index++];
-        method.name = "sqlite3_blob_close";
-        method.signature = "(J)V";
-        method.fnPtr = Java_sqlite3_blob_close;
+        JNINativeMethod* method = methods + (index++);
+        method->name = "sqlite3_blob_close";
+        method->signature = "(J)V";
+        method->fnPtr = Java_sqlite3_blob_close;
     }
 
     {
-        JNINativeMethod method = methods[index++];
-        method.name = "sqlite3_blob_bytes";
-        method.signature = "(J)I";
-        method.fnPtr = Java_sqlite3_blob_bytes;
+        JNINativeMethod* method = methods + (index++);
+        method->name = "sqlite3_blob_bytes";
+        method->signature = "(J)I";
+        method->fnPtr = Java_sqlite3_blob_bytes;
     }
 
     {
-        JNINativeMethod method = methods[index++];
-        method.name = "sqlite3_blob_read";
-        method.signature = "(J[BIII)V";
-        method.fnPtr = Java_sqlite3_blob_read;
+        JNINativeMethod* method = methods + (index++);
+        method->name = "sqlite3_blob_read";
+        method->signature = "(J[BIII)V";
+        method->fnPtr = Java_sqlite3_blob_read;
     }
 
     {
-        JNINativeMethod method = methods[index++];
-        method.name = "sqlite3_blob_write";
-        method.signature = "(J[BIII)V";
-        method.fnPtr = Java_sqlite3_blob_write;
+        JNINativeMethod* method = methods + (index++);
+        method->name = "sqlite3_blob_write";
+        method->signature = "(J[BIII)V";
+        method->fnPtr = Java_sqlite3_blob_write;
     }
 
     (*env)->RegisterNatives(env, cls, methods, index);

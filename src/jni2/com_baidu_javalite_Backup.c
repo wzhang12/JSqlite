@@ -1,6 +1,8 @@
 #include <jni.h>
 #include "util.h"
 #include <sqlite3.h>
+#include <stdio.h>
+#include <bits/stdio2.h>
 
 static jlong Java_sqlite3_backup_init
 (JNIEnv *env, jclass cls, jlong dstHandle, jstring dstName, jlong srcHandle,
@@ -119,38 +121,38 @@ void com_baidu_javalite_Backup_RegisterNatives(JNIEnv* env)
     int index = 0;
 
     {
-        JNINativeMethod method = methods[index++];
-        method.name = "sqlite3_backup_init";
-        method.signature = "(JLjava/lang/String;JLjava/lang/String;)J";
-        method.fnPtr = Java_sqlite3_backup_init;
+        JNINativeMethod* method = methods + (index++);
+        method->name = "sqlite3_backup_init";
+        method->signature = "(JLjava/lang/String;JLjava/lang/String;)J";
+        method->fnPtr = Java_sqlite3_backup_init;
     }
 
     {
-        JNINativeMethod method = methods[index++];
-        method.name = "sqlite3_backup_step";
-        method.signature = "(JI)Z";
-        method.fnPtr = Java_sqlite3_backup_step;
+        JNINativeMethod* method = methods + (index++);
+        method->name = "sqlite3_backup_step";
+        method->signature = "(JI)Z";
+        method->fnPtr = Java_sqlite3_backup_step;
     }
 
     {
-        JNINativeMethod method = methods[index++];
-        method.name = "sqlite3_backup_finish";
-        method.signature = "(J)V";
-        method.fnPtr = Java_sqlite3_backup_finish;
+        JNINativeMethod* method = methods + (index++);
+        method->name = "sqlite3_backup_finish";
+        method->signature = "(J)V";
+        method->fnPtr = Java_sqlite3_backup_finish;
     }
 
     {
-        JNINativeMethod method = methods[index++];
-        method.name = "sqlite3_backup_remaining";
-        method.signature = "(J)I";
-        method.fnPtr = Java_sqlite3_backup_remaining;
+        JNINativeMethod* method = methods + (index++);
+        method->name = "sqlite3_backup_remaining";
+        method->signature = "(J)I";
+        method->fnPtr = Java_sqlite3_backup_remaining;
     }
 
     {
-        JNINativeMethod method = methods[index++];
-        method.name = "sqlite3_backup_pagecount";
-        method.signature = "(J)I";
-        method.fnPtr = Java_sqlite3_backup_pagecount;
+        JNINativeMethod* method = methods + (index++);
+        method->name = "sqlite3_backup_pagecount";
+        method->signature = "(J)I";
+        method->fnPtr = Java_sqlite3_backup_pagecount;
     }
 
     (*env)->RegisterNatives(env, cls, methods, index);

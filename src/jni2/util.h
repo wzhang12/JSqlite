@@ -41,12 +41,13 @@ jmethodID getRollbackHookCallback(JNIEnv* env);
 
 void callRollbackHookCallback(JNIEnv* env, jobject obj, jobject conn);
 
-typedef struct {
-    // 回调对象
-    jobject callback;
+typedef struct
+{
+  // 回调对象
+  jobject callback;
 
-    // app 对象
-    jobject app;
+  // app 对象
+  jobject app;
 } func_data;
 
 jobject newJavaliteValue(JNIEnv* env, jlong handle);
@@ -66,16 +67,16 @@ jobject newDBConnection(JNIEnv* env, jlong handle);
 void callTraceListenerCallback(JNIEnv* env, jobject listener, jobject conn, jstring msg);
 
 void callProfileListenerCallback(JNIEnv* env, jobject listener, jobject conn,
-        jstring msg, jlong nano);
+                                 jstring msg, jlong nano);
 
 void callUpdateHookCallback(JNIEnv* env, jobject hook, jobject conn, int action,
-        jstring db, jstring tb, jlong rowid);
+                            jstring db, jstring tb, jlong rowid);
 
 int callAuthorizerCallback(JNIEnv* env, jobject authorizer, jobject conn,
-        int action, jstring s1, jstring s2, jstring s3, jstring s4);
+                           int action, jstring s1, jstring s2, jstring s3, jstring s4);
 
 int callCollationCompareCallback(JNIEnv* env, jobject collation, jobject conn,
-        jbyteArray a, jbyteArray b);
+                                 jbyteArray a, jbyteArray b);
 
 void callCollationDestroyCallback(JNIEnv* env, jobject collation, jobject conn);
 

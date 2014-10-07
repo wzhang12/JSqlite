@@ -1,23 +1,29 @@
 package com.baidu.javalite;
 
 import java.io.File;
+import java.util.LinkedList;
+import java.util.List;
 
 /**
  * Created by clark on 14-9-15.
  */
-public class NativeRuntime {
+public class NativeRuntime implements NativeLoadPolicy {
 
     public static final String J_SQLITE_LIB_NAME = "JSqlite";
     private boolean inited;  // init with false
 
-    private NativeRuntime() {}
+    private List<NativeLoadPolicy> nativeLoadPolicies = new LinkedList<>();
 
-    public void load() {
+    private NativeRuntime() {
+        nativeLoadPolicies.add(new CommonLoadPolicy());
+        nativeLoadPolicies.add(new JarDirLoadPolicy());
+        nativeLoadPolicies.add(new LibDirLoadPolicy());
+        nativeLoadPolicies.add(new ParentLibDirLoadPolicy());
+    }
+
+    public synchronized void load() {
         if (!inited) {
-            if (!findNativeLibPath()) {
-                System.loadLibrary(J_SQLITE_LIB_NAME);
-            }
-            inited = true;
+            inited = findNativeLibPath();
         }
     }
 
@@ -25,21 +31,10 @@ public class NativeRuntime {
      * 在 jar 包所在目录下查找动态链接库文件
      * @return
      */
-    private boolean findNativeLibPath() {
-        try {
-            System.loadLibrary(J_SQLITE_LIB_NAME);
-            return true;
-        } catch (Throwable e) {
-            try {
-                File jar = new File(NativeRuntime.class.getProtectionDomain().getCodeSource().getLocation().toURI());
-                String parent = jar.getParent();
-                String libfileName = System.mapLibraryName(J_SQLITE_LIB_NAME);
-                File libFile = new File(parent, libfileName);
-                if (libFile.isFile()) {
-                    System.load(libFile.getAbsolutePath());
-                    return true;
-                }
-            } catch (Throwable tr) {
+    public boolean findNativeLibPath() {
+        for (NativeLoadPolicy policy : nativeLoadPolicies) {
+            if (policy.findNativeLibPath()) {
+                return true;
             }
         }
 
@@ -54,4 +49,74 @@ public class NativeRuntime {
         return Holder.NATIVE_RUNTIME;
     }
 
+}
+
+interface NativeLoadPolicy {
+    boolean findNativeLibPath();
+}
+
+class CommonLoadPolicy implements NativeLoadPolicy {
+    @Override
+    public boolean findNativeLibPath() {
+        try {
+            System.loadLibrary(NativeRuntime.J_SQLITE_LIB_NAME);
+            return true;
+        } catch (Throwable e) {
+            return false;
+        }
+    }
+}
+
+class JarDirLoadPolicy implements NativeLoadPolicy {
+    @Override
+    public boolean findNativeLibPath() {
+        try {
+            File jar = new File(JarDirLoadPolicy.class.getProtectionDomain().getCodeSource().getLocation().toURI());
+            String parent = jar.getParent();
+            String libfileName = System.mapLibraryName(NativeRuntime.J_SQLITE_LIB_NAME);
+            File libFile = new File(parent, libfileName);
+            if (libFile.isFile()) {
+                System.load(libFile.getAbsolutePath());
+                return true;
+            }
+        } catch (Throwable e) {
+        }
+        return false;
+    }
+}
+
+class LibDirLoadPolicy implements NativeLoadPolicy {
+    @Override
+    public boolean findNativeLibPath() {
+        try {
+            File jar = new File(JarDirLoadPolicy.class.getProtectionDomain().getCodeSource().getLocation().toURI());
+            String parent = jar.getParent();
+            String libfileName = System.mapLibraryName(NativeRuntime.J_SQLITE_LIB_NAME);
+            File libFile = new File(new File(parent, "libs"), libfileName);
+            if (libFile.isFile()) {
+                System.load(libFile.getAbsolutePath());
+                return true;
+            }
+        } catch (Throwable e) {
+        }
+        return false;
+    }
+}
+
+class ParentLibDirLoadPolicy implements NativeLoadPolicy {
+    @Override
+    public boolean findNativeLibPath() {
+        try {
+            File jar = new File(JarDirLoadPolicy.class.getProtectionDomain().getCodeSource().getLocation().toURI());
+            String parent = jar.getParentFile().getParent();
+            String libfileName = System.mapLibraryName(NativeRuntime.J_SQLITE_LIB_NAME);
+            File libFile = new File(new File(parent, "libs"), libfileName);
+            if (libFile.isFile()) {
+                System.load(libFile.getAbsolutePath());
+                return true;
+            }
+        } catch (Throwable e) {
+        }
+        return false;
+    }
 }

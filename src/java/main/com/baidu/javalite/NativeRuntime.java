@@ -17,8 +17,10 @@ public class NativeRuntime implements NativeLoadPolicy {
     private NativeRuntime() {
         nativeLoadPolicies.add(new CommonLoadPolicy());
         nativeLoadPolicies.add(new JarDirLoadPolicy());
-        nativeLoadPolicies.add(new LibDirLoadPolicy());
-        nativeLoadPolicies.add(new ParentLibDirLoadPolicy());
+        nativeLoadPolicies.add(new LibDirLoadPolicy("libs"));
+        nativeLoadPolicies.add(new LibDirLoadPolicy("lib"));
+        nativeLoadPolicies.add(new ParentLibDirLoadPolicy("libs"));
+        nativeLoadPolicies.add(new ParentLibDirLoadPolicy("lib"));
     }
 
     public synchronized void load() {
@@ -86,13 +88,19 @@ class JarDirLoadPolicy implements NativeLoadPolicy {
 }
 
 class LibDirLoadPolicy implements NativeLoadPolicy {
+    private String dirName;
+
+    LibDirLoadPolicy(String dirName) {
+        this.dirName = dirName;
+    }
+
     @Override
     public boolean findNativeLibPath() {
         try {
             File jar = new File(JarDirLoadPolicy.class.getProtectionDomain().getCodeSource().getLocation().toURI());
             String parent = jar.getParent();
             String libfileName = System.mapLibraryName(NativeRuntime.J_SQLITE_LIB_NAME);
-            File libFile = new File(new File(parent, "libs"), libfileName);
+            File libFile = new File(new File(parent, dirName), libfileName);
             if (libFile.isFile()) {
                 System.load(libFile.getAbsolutePath());
                 return true;
@@ -104,13 +112,19 @@ class LibDirLoadPolicy implements NativeLoadPolicy {
 }
 
 class ParentLibDirLoadPolicy implements NativeLoadPolicy {
+    private String dirName;
+
+    ParentLibDirLoadPolicy(String dirName) {
+        this.dirName = dirName;
+    }
+
     @Override
     public boolean findNativeLibPath() {
         try {
             File jar = new File(JarDirLoadPolicy.class.getProtectionDomain().getCodeSource().getLocation().toURI());
             String parent = jar.getParentFile().getParent();
             String libfileName = System.mapLibraryName(NativeRuntime.J_SQLITE_LIB_NAME);
-            File libFile = new File(new File(parent, "libs"), libfileName);
+            File libFile = new File(new File(parent, dirName), libfileName);
             if (libFile.isFile()) {
                 System.load(libFile.getAbsolutePath());
                 return true;

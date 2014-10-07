@@ -1,4 +1,3 @@
-#include <jni.h>
 #include "util.h"
 #include <sqlite3.h>
 

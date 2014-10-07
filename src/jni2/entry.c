@@ -1,13 +1,12 @@
-#include <jni.h>
 #include "util.h"
 
-void com_baidu_javalite_Backup_RegisterNatives(JNIEnv* env);
-void com_baidu_javalite_Blob_RegisterNatives(JNIEnv* env);
-void com_baidu_javalite_Context_RegisterNatives(JNIEnv* env);
-void com_baidu_javalite_DBConnection_RegisterNatives(JNIEnv* env);
-void com_baidu_javalite_Database_RegisterNatives(JNIEnv* env);
-void com_baidu_javalite_PrepareStmt_RegisterNatives(JNIEnv* env);
-void com_baidu_javalite_Value_RegisterNatives(JNIEnv* env);
+BAIDU_API void com_baidu_javalite_Backup_RegisterNatives(JNIEnv* env);
+BAIDU_API void com_baidu_javalite_Blob_RegisterNatives(JNIEnv* env);
+BAIDU_API void com_baidu_javalite_Context_RegisterNatives(JNIEnv* env);
+BAIDU_API void com_baidu_javalite_DBConnection_RegisterNatives(JNIEnv* env);
+BAIDU_API void com_baidu_javalite_Database_RegisterNatives(JNIEnv* env);
+BAIDU_API void com_baidu_javalite_PrepareStmt_RegisterNatives(JNIEnv* env);
+BAIDU_API void com_baidu_javalite_Value_RegisterNatives(JNIEnv* env);
 
 jint JNI_OnLoad(JavaVM *vm, void *reserved)
 {

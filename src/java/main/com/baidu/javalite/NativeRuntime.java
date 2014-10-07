@@ -12,11 +12,12 @@ public class NativeRuntime implements NativeLoadPolicy {
     public static final String J_SQLITE_LIB_NAME = "JSqlite";
     private boolean inited;  // init with false
 
-    private List<NativeLoadPolicy> nativeLoadPolicies = new LinkedList<>();
+    private List<NativeLoadPolicy> nativeLoadPolicies = new LinkedList<NativeLoadPolicy>();
 
     private NativeRuntime() {
         nativeLoadPolicies.add(new CommonLoadPolicy());
         nativeLoadPolicies.add(new JarDirLoadPolicy());
+        nativeLoadPolicies.add(new JarParentLoadPolicy());
         nativeLoadPolicies.add(new LibDirLoadPolicy("libs"));
         nativeLoadPolicies.add(new LibDirLoadPolicy("lib"));
         nativeLoadPolicies.add(new ParentLibDirLoadPolicy("libs"));
@@ -75,6 +76,24 @@ class JarDirLoadPolicy implements NativeLoadPolicy {
         try {
             File jar = new File(JarDirLoadPolicy.class.getProtectionDomain().getCodeSource().getLocation().toURI());
             String parent = jar.getParent();
+            String libfileName = System.mapLibraryName(NativeRuntime.J_SQLITE_LIB_NAME);
+            File libFile = new File(parent, libfileName);
+            if (libFile.isFile()) {
+                System.load(libFile.getAbsolutePath());
+                return true;
+            }
+        } catch (Throwable e) {
+        }
+        return false;
+    }
+}
+
+class JarParentLoadPolicy implements NativeLoadPolicy {
+    @Override
+    public boolean findNativeLibPath() {
+        try {
+            File jar = new File(JarDirLoadPolicy.class.getProtectionDomain().getCodeSource().getLocation().toURI());
+            String parent = jar.getParentFile().getParent();
             String libfileName = System.mapLibraryName(NativeRuntime.J_SQLITE_LIB_NAME);
             File libFile = new File(parent, libfileName);
             if (libFile.isFile()) {

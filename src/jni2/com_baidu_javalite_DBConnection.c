@@ -92,7 +92,7 @@ static int exec_callback(void* data, int ncols, char** values, char** headers)
   jmethodID callbackMid = getSqlExecCallback(env);
 
   int rc = (*env)->CallIntMethod(env, g_exec_callback, callbackMid, ncols, vs,
-                                 hs);
+          hs);
 
   (*env)->DeleteLocalRef(env, vs);
   (*env)->DeleteLocalRef(env, hs);
@@ -168,7 +168,7 @@ static void _xFunc_callback(sqlite3_context* ctx, int n, sqlite3_value** values)
   func_data* data = (func_data*) sqlite3_user_data(ctx);
   jobjectArray array = newJavaliteValueArray(env, n, values);
   callScalarFunctionFuncMethod(env, data->callback,
-                               newJavaliteContext(env, (jlong) ctx), array);
+          newJavaliteContext(env, (jlong) ctx), array);
 }
 
 static void _xStep_callback(sqlite3_context* ctx, int n, sqlite3_value** values)
@@ -177,7 +177,7 @@ static void _xStep_callback(sqlite3_context* ctx, int n, sqlite3_value** values)
   func_data* data = (func_data*) sqlite3_user_data(ctx);
   jobjectArray array = newJavaliteValueArray(env, n, values);
   callAggregateFunctionStepMethod(env, data->callback,
-                                  newJavaliteContext(env, (jlong) ctx), array);
+          newJavaliteContext(env, (jlong) ctx), array);
 }
 
 static void _xFinal_callback(sqlite3_context* ctx)
@@ -185,7 +185,7 @@ static void _xFinal_callback(sqlite3_context* ctx)
   JNIEnv* env = getEnv();
   func_data* data = (func_data*) sqlite3_user_data(ctx);
   callAggregateFunctionFinalMethod(env, data->callback,
-                                   newJavaliteContext(env, (jlong) ctx));
+          newJavaliteContext(env, (jlong) ctx));
 }
 
 static void _internal_trace_callback(void* conn, const char* msg)
@@ -207,7 +207,7 @@ static void _internal_trace_callback(void* conn, const char* msg)
 }
 
 static void _internal_profile_callback(void* conn, const char* msg,
-                                       sqlite3_uint64 nanoseconds)
+        sqlite3_uint64 nanoseconds)
 {
   if (g_profile_listener == 0)
   {
@@ -220,14 +220,14 @@ static void _internal_profile_callback(void* conn, const char* msg,
   jstring jmsg = (*env)->NewStringUTF(env, msg == 0 ? "" : msg);
 
   callProfileListenerCallback(env, g_profile_listener, jconn, jmsg,
-                              (jlong) nanoseconds);
+          (jlong) nanoseconds);
 
   (*env)->DeleteLocalRef(env, jconn);
   (*env)->DeleteLocalRef(env, jmsg);
 }
 
 static void _internal_update_hook(void* data, int action, char const *db,
-                                  char const *tb, sqlite3_int64 rowid)
+        char const *tb, sqlite3_int64 rowid)
 {
   if (g_update_hook == 0)
   {
@@ -249,7 +249,7 @@ static void _internal_update_hook(void* data, int action, char const *db,
 }
 
 static int _internal_authorizer_callback(void* data, int action, const char* s1,
-                                         const char* s2, const char* s3, const char* s4)
+        const char* s2, const char* s3, const char* s4)
 {
   if (g_authorizer == 0)
   {
@@ -289,7 +289,7 @@ static int _internal_authorizer_callback(void* data, int action, const char* s1,
 }
 
 static int _internal_collation_compare(void* data, int countA, const void* bufA,
-                                       int countB, const void* bufB)
+        int countB, const void* bufB)
 {
   if (g_collation == 0)
   {
@@ -643,7 +643,7 @@ static void Java_sqlite3_create_function_v2
   if (callbacks == 0)
   { // 删除某个函数
     rc = sqlite3_create_function_v2(conn, name, nArgs, SQLITE_UTF8, 0, 0, 0,
-                                    0, 0);
+            0, 0);
   } else
   {
     func_data* data = (func_data*) malloc(sizeof (func_data)); // 在堆上分配内存
@@ -651,19 +651,19 @@ static void Java_sqlite3_create_function_v2
     data->app = app == 0 ? 0 : (*env)->NewGlobalRef(env, app);
 
     jclass aggregateFunctionClass = (*env)->FindClass(env,
-                                                      "com/baidu/javalite/AggregateFunction");
+            "com/baidu/javalite/AggregateFunction");
 
     if ((*env)->IsInstanceOf(env, callbacks, aggregateFunctionClass))
     {
       // 是 AggregateFunction
       rc = sqlite3_create_function_v2(conn, name, nArgs, SQLITE_UTF8,
-                                      data, _xFunc_callback, _xStep_callback, _xFinal_callback,
-                                      _function_destroy_callback);
+              data, _xFunc_callback, _xStep_callback, _xFinal_callback,
+              _function_destroy_callback);
     } else
     {
       // 是 ScalarFunction
       rc = sqlite3_create_function_v2(conn, name, nArgs, SQLITE_UTF8,
-                                      data, _xFunc_callback, 0, 0, _function_destroy_callback);
+              data, _xFunc_callback, 0, 0, _function_destroy_callback);
     }
 
     (*env)->DeleteLocalRef(env, aggregateFunctionClass);
@@ -873,8 +873,8 @@ static void Java_sqlite3_create_collation_v2
   {
     g_collation = (*env)->NewGlobalRef(env, collation);
     rc = sqlite3_create_collation_v2(conn, cname, SQLITE_UTF8,
-                                     conn, _internal_collation_compare,
-                                     _internal_collation_destroy);
+            conn, _internal_collation_compare,
+            _internal_collation_destroy);
   }
 
   (*env)->ReleaseStringUTFChars(env, name, cname);

@@ -67,16 +67,16 @@ BAIDU_API jobject newDBConnection(JNIEnv* env, jlong handle);
 BAIDU_API void callTraceListenerCallback(JNIEnv* env, jobject listener, jobject conn, jstring msg);
 
 BAIDU_API void callProfileListenerCallback(JNIEnv* env, jobject listener, jobject conn,
-                                 jstring msg, jlong nano);
+        jstring msg, jlong nano);
 
 BAIDU_API void callUpdateHookCallback(JNIEnv* env, jobject hook, jobject conn, int action,
-                            jstring db, jstring tb, jlong rowid);
+        jstring db, jstring tb, jlong rowid);
 
 BAIDU_API int callAuthorizerCallback(JNIEnv* env, jobject authorizer, jobject conn,
-                           int action, jstring s1, jstring s2, jstring s3, jstring s4);
+        int action, jstring s1, jstring s2, jstring s3, jstring s4);
 
 BAIDU_API int callCollationCompareCallback(JNIEnv* env, jobject collation, jobject conn,
-                                 jbyteArray a, jbyteArray b);
+        jbyteArray a, jbyteArray b);
 
 BAIDU_API void callCollationDestroyCallback(JNIEnv* env, jobject collation, jobject conn);
 

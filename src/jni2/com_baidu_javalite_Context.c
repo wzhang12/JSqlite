@@ -53,7 +53,7 @@ static void Java_sqlite3_aggregate_context
   if (rs != 0)
   {
     throwSqliteException(env,
-                         "Function sqlite3_aggregate_context() already called!");
+            "Function sqlite3_aggregate_context() already called!");
     return;
   }
 
@@ -67,7 +67,7 @@ static void Java_sqlite3_aggregate_context
   if (rs == 0)
   {
     throwSqliteException(env,
-                         "Fail to get buffer from sqlite3_aggregate_context()!");
+            "Fail to get buffer from sqlite3_aggregate_context()!");
     return;
   }
 

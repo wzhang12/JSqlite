@@ -7,9 +7,9 @@ static jmethodID getMidSqliteExceptionInit(JNIEnv* env)
   if (mid_SqliteExceptionInit == 0)
   {
     jclass excls = (*env)->FindClass(env,
-                                     "com/baidu/javalite/SqliteException");
+            "com/baidu/javalite/SqliteException");
     mid_SqliteExceptionInit = (*env)->GetMethodID(env, excls, "<init>",
-                                                  "(Ljava/lang/String;I)V");
+            "(Ljava/lang/String;I)V");
     (*env)->DeleteLocalRef(env, excls);
   }
   return mid_SqliteExceptionInit;
@@ -63,9 +63,9 @@ jmethodID getSqlExecCallback(JNIEnv* env)
   if (mid_getSqlExecCallback == 0)
   {
     jclass cls = (*env)->FindClass(env,
-                                   "com/baidu/javalite/SqlExecCallback");
+            "com/baidu/javalite/SqlExecCallback");
     mid_getSqlExecCallback = (*env)->GetMethodID(env, cls, "callback",
-                                                 "(I[Ljava/lang/String;[Ljava/lang/String;)I");
+            "(I[Ljava/lang/String;[Ljava/lang/String;)I");
     (*env)->DeleteLocalRef(env, cls);
   }
   return mid_getSqlExecCallback;
@@ -109,7 +109,7 @@ jmethodID getTableResultInit(JNIEnv* env)
   {
     jclass cls = (*env)->FindClass(env, "com/baidu/javalite/TableResult");
     mid_TableResultInit = (*env)->GetMethodID(env, cls, "<init>",
-                                              "([Ljava/lang/String;II)V");
+            "([Ljava/lang/String;II)V");
     (*env)->DeleteLocalRef(env, cls);
   }
 
@@ -121,7 +121,7 @@ jobject newTableResult(JNIEnv* env, char** result, int row, int col)
   jobjectArray jresult = createStringArray(env, result, row * col);
   jclass cls = (*env)->FindClass(env, "com/baidu/javalite/TableResult");
   jobject rs = (*env)->NewObject(env, cls, getTableResultInit(env), jresult,
-                                 row, col);
+          row, col);
 
   (*env)->DeleteLocalRef(env, jresult);
   (*env)->DeleteLocalRef(env, cls);
@@ -136,7 +136,7 @@ jmethodID getBusyHandlerCallback(JNIEnv* env)
   {
     jclass cls = (*env)->FindClass(env, "com/baidu/javalite/BusyHandler");
     mid_BusyHandlerCallback = (*env)->GetMethodID(env, cls, "handle",
-                                                  "(I)I");
+            "(I)I");
     (*env)->DeleteLocalRef(env, cls);
   }
 
@@ -156,7 +156,7 @@ jmethodID getCommitHookCallback(JNIEnv* env)
   {
     jclass cls = (*env)->FindClass(env, "com/baidu/javalite/CommitHook");
     mid_CommitHookCallback = (*env)->GetMethodID(env, cls, "callback",
-                                                 "(Lcom/baidu/javalite/DBConnection;)I");
+            "(Lcom/baidu/javalite/DBConnection;)I");
     (*env)->DeleteLocalRef(env, cls);
   }
 
@@ -176,7 +176,7 @@ jmethodID getRollbackHookCallback(JNIEnv* env)
   {
     jclass cls = (*env)->FindClass(env, "com/baidu/javalite/RollbackHook");
     mid_RollbackHookCallback = (*env)->GetMethodID(env, cls, "callback",
-                                                   "(Lcom/baidu/javalite/DBConnection;)V");
+            "(Lcom/baidu/javalite/DBConnection;)V");
     (*env)->DeleteLocalRef(env, cls);
   }
 
@@ -224,7 +224,7 @@ jobjectArray newJavaliteValueArray(JNIEnv* env, int n, sqlite3_value** values)
   for (int i = 0; i < n; ++i)
   {
     (*env)->SetObjectArrayElement(env, rs, i,
-                                  newJavaliteValue(env, (jlong) values[i]));
+            newJavaliteValue(env, (jlong) values[i]));
   }
   (*env)->DeleteLocalRef(env, cls);
   return rs;
@@ -237,9 +237,9 @@ static jmethodID getScalarFunctionFuncMid(JNIEnv* env)
   if (mid_ScalarFunction_func == 0)
   {
     jclass cls = (*env)->FindClass(env,
-                                   "com/baidu/javalite/ScalarFunction");
+            "com/baidu/javalite/ScalarFunction");
     mid_ScalarFunction_func = (*env)->GetMethodID(env, cls, "xFunc",
-                                                  "(Lcom/baidu/javalite/Context;[Lcom/baidu/javalite/Value;)V");
+            "(Lcom/baidu/javalite/Context;[Lcom/baidu/javalite/Value;)V");
     (*env)->DeleteLocalRef(env, cls);
   }
 
@@ -247,10 +247,10 @@ static jmethodID getScalarFunctionFuncMid(JNIEnv* env)
 }
 
 void callScalarFunctionFuncMethod(JNIEnv* env, jobject target, jobject ctx,
-                                  jobjectArray values)
+        jobjectArray values)
 {
   (*env)->CallVoidMethod(env, target, getScalarFunctionFuncMid(env), ctx,
-                         values);
+          values);
 }
 
 static jmethodID mid_AggregateFunction_step;
@@ -260,9 +260,9 @@ static jmethodID getAggregateFunctionStepId(JNIEnv* env)
   if (mid_ScalarFunction_func == 0)
   {
     jclass cls = (*env)->FindClass(env,
-                                   "com/baidu/javalite/AggregateFunction");
+            "com/baidu/javalite/AggregateFunction");
     mid_AggregateFunction_step = (*env)->GetMethodID(env, cls, "xStep",
-                                                     "(Lcom/baidu/javalite/Context;[Lcom/baidu/javalite/Value;)V");
+            "(Lcom/baidu/javalite/Context;[Lcom/baidu/javalite/Value;)V");
     (*env)->DeleteLocalRef(env, cls);
   }
 
@@ -270,10 +270,10 @@ static jmethodID getAggregateFunctionStepId(JNIEnv* env)
 }
 
 void callAggregateFunctionStepMethod(JNIEnv* env, jobject target, jobject ctx,
-                                     jobjectArray values)
+        jobjectArray values)
 {
   (*env)->CallVoidMethod(env, target, getAggregateFunctionStepId(env), ctx,
-                         values);
+          values);
 }
 
 static jmethodID mid_AggregateFunction_final;
@@ -283,9 +283,9 @@ static jmethodID getAggregateFunctionFinalId(JNIEnv* env)
   if (mid_ScalarFunction_func == 0)
   {
     jclass cls = (*env)->FindClass(env,
-                                   "com/baidu/javalite/AggregateFunction");
+            "com/baidu/javalite/AggregateFunction");
     mid_AggregateFunction_final = (*env)->GetMethodID(env, cls, "xFinal",
-                                                      "(Lcom/baidu/javalite/Context;)V");
+            "(Lcom/baidu/javalite/Context;)V");
     (*env)->DeleteLocalRef(env, cls);
   }
 
@@ -337,7 +337,7 @@ jobject newDBConnection(JNIEnv* env, jlong handle)
 {
   jclass cls = (*env)->FindClass(env, "com/baidu/javalite/DBConnection");
   jobject rs = (*env)->NewObject(env, cls, getDBConnectionInitId(env),
-                                 handle);
+          handle);
   (*env)->DeleteLocalRef(env, cls);
   return rs;
 }
@@ -350,7 +350,7 @@ static jmethodID getTraceListenerCallbackId(JNIEnv* env)
   {
     jclass cls = (*env)->FindClass(env, "com/baidu/javalite/TraceListener");
     mid_TraceListener_callback = (*env)->GetMethodID(env, cls, "trace",
-                                                     "(Lcom/baidu/javalite/DBConnection;Ljava/lang/String;)V");
+            "(Lcom/baidu/javalite/DBConnection;Ljava/lang/String;)V");
     (*env)->DeleteLocalRef(env, cls);
   }
 
@@ -358,10 +358,10 @@ static jmethodID getTraceListenerCallbackId(JNIEnv* env)
 }
 
 void callTraceListenerCallback(JNIEnv* env, jobject listener, jobject conn,
-                               jstring msg)
+        jstring msg)
 {
   (*env)->CallVoidMethod(env, listener, getTraceListenerCallbackId(env), conn,
-                         msg);
+          msg);
 }
 
 static jmethodID mid_ProfileListener_callback;
@@ -372,7 +372,7 @@ static jmethodID getProfileListenerCallbackId(JNIEnv* env)
   {
     jclass cls = (*env)->FindClass(env, "com/baidu/javalite/ProfileListener");
     mid_ProfileListener_callback = (*env)->GetMethodID(env, cls, "profile",
-                                                       "(Lcom/baidu/javalite/DBConnection;Ljava/lang/String;J)V");
+            "(Lcom/baidu/javalite/DBConnection;Ljava/lang/String;J)V");
     (*env)->DeleteLocalRef(env, cls);
   }
 
@@ -380,10 +380,10 @@ static jmethodID getProfileListenerCallbackId(JNIEnv* env)
 }
 
 void callProfileListenerCallback(JNIEnv* env, jobject listener, jobject conn,
-                                 jstring msg, jlong nano)
+        jstring msg, jlong nano)
 {
   (*env)->CallVoidMethod(env, listener, getProfileListenerCallbackId(env),
-                         conn, msg, nano);
+          conn, msg, nano);
 }
 
 static jmethodID mid_UpdateHook_callback;
@@ -432,9 +432,9 @@ static jmethodID getCollationCompareId(JNIEnv* env)
   {
     jclass cls = (*env)->FindClass(env, "com/baidu/javalite/Collation");
     mid_collation_compare = (*env)->GetMethodID(env,
-                                                cls,
-                                                "xCompare",
-                                                "(Lcom/baidu/javalite/DBConnection;[B[B)I");
+            cls,
+            "xCompare",
+            "(Lcom/baidu/javalite/DBConnection;[B[B)I");
     (*env)->DeleteLocalRef(env, cls);
   }
 
@@ -442,7 +442,7 @@ static jmethodID getCollationCompareId(JNIEnv* env)
 }
 
 int callCollationCompareCallback(JNIEnv* env, jobject collation, jobject conn,
-                                 jbyteArray a, jbyteArray b)
+        jbyteArray a, jbyteArray b)
 {
   return (*env)->CallIntMethod(env, collation, getCollationCompareId(env), conn, a, b);
 }
@@ -455,9 +455,9 @@ static jmethodID getCollationDestroyId(JNIEnv* env)
   {
     jclass cls = (*env)->FindClass(env, "com/baidu/javalite/Collation");
     mid_collation_destroy = (*env)->GetMethodID(env,
-                                                cls,
-                                                "xDestroy",
-                                                "(Lcom/baidu/javalite/DBConnection;)V");
+            cls,
+            "xDestroy",
+            "(Lcom/baidu/javalite/DBConnection;)V");
     (*env)->DeleteLocalRef(env, cls);
   }
 

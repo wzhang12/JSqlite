@@ -24,7 +24,7 @@ static jlong Java_sqlite3_open_v2
   if (rc != SQLITE_OK)
   {
     throwSqliteException2(env, sqlite3_errcode(handle),
-                          sqlite3_errmsg(handle));
+            sqlite3_errmsg(handle));
     sqlite3_close(handle);
     handle = 0;
   }

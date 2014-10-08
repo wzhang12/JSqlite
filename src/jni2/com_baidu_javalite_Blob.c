@@ -3,7 +3,7 @@
 
 static jlong Java_sqlite3_blob_open
 (JNIEnv *env, jclass cls, jlong connHandle, jstring dbName, jstring tableName,
- jstring columnName, jlong rowId, jint flags)
+        jstring columnName, jlong rowId, jint flags)
 {
   if (connHandle == 0)
   {
@@ -53,7 +53,7 @@ static void Java_sqlite3_blob_reopen
 
 static void Java_sqlite3_blob_close
 (JNIEnv *env,
- jclass cls, jlong handle)
+        jclass cls, jlong handle)
 {
   if (handle == 0)
   {
@@ -73,7 +73,7 @@ static void Java_sqlite3_blob_close
 
 static jint Java_sqlite3_blob_bytes
 (JNIEnv *env,
- jclass cls, jlong handle)
+        jclass cls, jlong handle)
 {
   if (handle == 0)
   {
@@ -88,8 +88,8 @@ static jint Java_sqlite3_blob_bytes
 
 static void Java_sqlite3_blob_read
 (JNIEnv *env,
- jclass cls, jlong handle, jbyteArray buf, jint offset, jint len,
- jint nOffset)
+        jclass cls, jlong handle, jbyteArray buf, jint offset, jint len,
+        jint nOffset)
 {
   if (handle == 0)
   {
@@ -114,8 +114,8 @@ static void Java_sqlite3_blob_read
 
 static void Java_sqlite3_blob_write
 (JNIEnv *env,
- jclass cls, jlong handle, jbyteArray buf, jint offset, jint len,
- jint nOffset)
+        jclass cls, jlong handle, jbyteArray buf, jint offset, jint len,
+        jint nOffset)
 {
   if (handle == 0)
   {

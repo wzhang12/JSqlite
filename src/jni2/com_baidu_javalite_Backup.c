@@ -4,7 +4,7 @@
 
 static jlong Java_sqlite3_backup_init
 (JNIEnv *env, jclass cls, jlong dstHandle, jstring dstName, jlong srcHandle,
- jstring srcName)
+        jstring srcName)
 {
   if (dstHandle == 0)
   {
@@ -37,7 +37,7 @@ static jlong Java_sqlite3_backup_init
   const char* cSrcName = (*env)->GetStringUTFChars(env, srcName, 0);
 
   sqlite3_backup* bu = sqlite3_backup_init(dst, cDstName, src,
-                                           cSrcName);
+          cSrcName);
 
   if (bu == 0)
   {

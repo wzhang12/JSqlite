@@ -268,7 +268,7 @@ static void Java_sqlite3_bind_blob
   (*env)->GetByteArrayRegion(env, value, 0, len, (jbyte*) buf);
 
   int rc = sqlite3_bind_blob(stmt, column, (void*) buf, len,
-                             SQLITE_TRANSIENT);
+          SQLITE_TRANSIENT);
 
   if (rc != SQLITE_OK)
   {

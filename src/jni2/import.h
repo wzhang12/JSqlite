@@ -15,8 +15,8 @@ extern "C"
 
 #include <jni.h>
 
-//#undef JNIEXPORT
-//#define JNIEXPORT __attribute__ ((visibility("default")))
+  //#undef JNIEXPORT
+  //#define JNIEXPORT __attribute__ ((visibility("default")))
 
 #ifndef BAIDU_API
 #define BAIDU_API

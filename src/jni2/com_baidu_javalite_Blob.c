@@ -102,12 +102,9 @@ static void Java_sqlite3_blob_read
 
   int rc = sqlite3_blob_read(blob, cBuf + offset, len, nOffset);
 
-  if (rc == SQLITE_OK)
+  (*env)->ReleaseByteArrayElements(env, buf, (jbyte*) cBuf, 0);
+  if (rc != SQLITE_OK)
   {
-    (*env)->ReleaseByteArrayElements(env, buf, (jbyte*) cBuf, JNI_COMMIT); // 同步到 Java 数组中
-  } else
-  {
-    (*env)->ReleaseByteArrayElements(env, buf, (jbyte*) cBuf, JNI_ABORT); // 没有修改 Java 数组
     throwSqliteException2(env, rc, sqlite3_errstr(rc));
   }
 }

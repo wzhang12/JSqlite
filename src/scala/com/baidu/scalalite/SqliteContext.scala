@@ -1,6 +1,6 @@
 package com.baidu.scalalite
 
-import com.baidu.javalite.{Value, Context}
+import com.baidu.javalite.{Context, Value}
 
 /**
  * Created by clark on 14-11-12.

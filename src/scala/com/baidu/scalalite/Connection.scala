@@ -1,6 +1,6 @@
 package com.baidu.scalalite
 
-import com.baidu.javalite.{Context, Authorizer, ProfileListener, TraceListener, Collation, AggregateFunction, ScalarFunction, Value, UpdateHook, RollbackHook, BusyHandler, CommitHook, DBConnection, SqlExecCallback}
+import com.baidu.javalite.{AggregateFunction, Authorizer, BusyHandler, Collation, CommitHook, Context, DBConnection, ProfileListener, RollbackHook, ScalarFunction, SqlExecCallback, TraceListener, UpdateHook, Value}
 
 /**
  * Created by clark on 14-11-12.

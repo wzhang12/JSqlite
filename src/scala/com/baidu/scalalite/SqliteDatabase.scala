@@ -2,7 +2,7 @@ package com.baidu.scalalite
 
 import java.io.File
 
-import com.baidu.javalite.{Database}
+import com.baidu.javalite.Database
 
 /**
  * Created by clark on 14-11-12.

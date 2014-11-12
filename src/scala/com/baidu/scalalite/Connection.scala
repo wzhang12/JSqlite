@@ -5,7 +5,7 @@ import com.baidu.javalite.{Context, Authorizer, ProfileListener, TraceListener, 
 /**
  * Created by clark on 14-11-12.
  */
-class Connection protected[scalalite](private[this] val conn: DBConnection) {
+class Connection protected[scalalite](protected[scalalite] val conn: DBConnection) {
   @inline def exec(sql: String)(cb: (Int, Array[String], Array[String]) => Int) =
     conn.exec(sql,
       if (cb == null) null

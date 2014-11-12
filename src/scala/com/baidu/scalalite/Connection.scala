@@ -1,6 +1,6 @@
 package com.baidu.scalalite
 
-import com.baidu.javalite.{Authorizer, ProfileListener, TraceListener, Collation, AggregateFunction, ScalarFunction, Value, Context, UpdateHook, RollbackHook, BusyHandler, CommitHook, DBConnection, DBHelper, PrepareStmt, SqlExecCallback}
+import com.baidu.javalite.{Authorizer, ProfileListener, TraceListener, Collation, AggregateFunction, ScalarFunction, Value, Context, UpdateHook, RollbackHook, BusyHandler, CommitHook, DBConnection, DBHelper, SqlExecCallback}
 
 /**
  * Created by clark on 14-11-12.
@@ -16,6 +16,17 @@ class Connection protected[scalalite](private[this] val conn: DBConnection) {
 
   @inline def exec(sql: String) = conn.exec(sql)
 
+  @inline def transaction(op: (Connection) => Unit): Unit = {
+    val transaction = conn.newTransaction()
+    transaction.begin()
+    try {
+      op(this)
+      transaction.commit()
+    } catch {
+      case _ => transaction.rollback()
+    }
+  }
+
   @inline def getRowChanges = conn.getRowChanges
 
   @inline def getTotalRowChanges = conn.getTotalRowChanges
@@ -24,14 +35,12 @@ class Connection protected[scalalite](private[this] val conn: DBConnection) {
 
   @inline def getTable(sql: String) = conn.getTable(sql)
 
-  @inline def prepare(sql: String)(op: (PrepareStmt) => Unit): Unit = {
+  @inline def prepare(sql: String)(op: (Statement) => Unit): Unit = {
     if (op != null) {
       val stmt = conn.prepare(sql)
-      try op(stmt) finally DBHelper.closeQuietly(stmt)
+      try op(new Statement(stmt)) finally DBHelper.closeQuietly(stmt)
     }
   }
-
-  @inline def newTransaction = conn.newTransaction()
 
   @inline def setBusyHandler(handler: (Int) => Int) =
     conn.setBusyHandler(
@@ -103,7 +112,7 @@ class Connection protected[scalalite](private[this] val conn: DBConnection) {
 
   @inline def limit(id: Int, newVal: Int) = conn.limit(id, newVal)
 
-  @inline def nextStmt(old: PrepareStmt) = conn.nextStmt(old)
+  @inline def nextStmt(old: Statement) = new Statement(conn.nextStmt(old.stmt))
 
   @inline def setOnTraceListener(lsn: (Connection, String) => Unit) =
     conn.setOnTraceListener(

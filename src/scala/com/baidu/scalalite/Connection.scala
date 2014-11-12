@@ -1,6 +1,6 @@
 package com.baidu.scalalite
 
-import com.baidu.javalite.{Authorizer, ProfileListener, TraceListener, Collation, AggregateFunction, ScalarFunction, Value, Context, UpdateHook, RollbackHook, BusyHandler, CommitHook, DBConnection, DBHelper, SqlExecCallback}
+import com.baidu.javalite.{Context, Authorizer, ProfileListener, TraceListener, Collation, AggregateFunction, ScalarFunction, Value, UpdateHook, RollbackHook, BusyHandler, CommitHook, DBConnection, DBHelper, SqlExecCallback}
 
 /**
  * Created by clark on 14-11-12.
@@ -79,23 +79,23 @@ class Connection protected[scalalite](private[this] val conn: DBConnection) {
   @inline def getReadOnlyBlob(dbName: String, tbName: String, colName: String, rowId: Long) =
     conn.getReadOnlyBlob(dbName, tbName, colName, rowId)
 
-  @inline def createFunction(funcName: String, nArgs: Int, app: Any)(func: (Context, Array[Value]) => Unit) =
+  @inline def createFunction(funcName: String, nArgs: Int, app: Any)(func: (SqliteContext, Array[Value]) => Unit) =
     conn.createFunction(funcName, nArgs, app,
       if (func == null) null
       else new ScalarFunction {
-        override def xFunc(context: Context, values: Array[Value]): Unit = func(context, values)
+        override def xFunc(context: Context, values: Array[Value]): Unit = func(new SqliteContext(context), values)
       })
 
   @inline def createAggregate(funcName: String, nArgs: Int, app: Any)
-                             (func: (Context, Array[Value]) => Unit)
-                             (step: (Context, Array[Value]) => Unit)
-                             (finl: (Context) => Unit) =
+                             (func: (SqliteContext, Array[Value]) => Unit)
+                             (step: (SqliteContext, Array[Value]) => Unit)
+                             (finl: (SqliteContext) => Unit) =
     conn.createFunction(funcName, nArgs, app, new AggregateFunction {
-      override def xFinal(context: Context): Unit = if (finl != null) finl(context)
+      override def xFinal(context: Context): Unit = if (finl != null) finl(new SqliteContext(context))
 
-      override def xStep(context: Context, values: Array[Value]): Unit = if (step != null) step(context, values)
+      override def xStep(context: Context, values: Array[Value]): Unit = if (step != null) step(new SqliteContext(context), values)
 
-      override def xFunc(context: Context, values: Array[Value]): Unit = if (func != null) func(context, values)
+      override def xFunc(context: Context, values: Array[Value]): Unit = if (func != null) func(new SqliteContext(context), values)
     })
 
   @inline def createCollation(name: String)

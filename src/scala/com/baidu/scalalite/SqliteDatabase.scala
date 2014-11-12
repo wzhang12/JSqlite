@@ -2,7 +2,7 @@ package com.baidu.scalalite
 
 import java.io.File
 
-import com.baidu.javalite.{DBHelper, Database}
+import com.baidu.javalite.{Database}
 
 /**
  * Created by clark on 14-11-12.
@@ -15,14 +15,14 @@ class SqliteDatabase private(file: File) {
   def open(op: (Connection) => Unit): Unit = {
     if (op != null) {
       val conn = db.open()
-      try op(new Connection(conn)) finally DBHelper.closeQuietly(conn)
+      try op(new Connection(conn)) finally closeQuietly(conn)
     }
   }
 
   def open(flags: Int)(op: (Connection) => Unit): Unit = {
     if (op != null) {
       val conn = db.open(flags)
-      try op(new Connection(conn)) finally DBHelper.closeQuietly(conn)
+      try op(new Connection(conn)) finally closeQuietly(conn)
     }
   }
 }

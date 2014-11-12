@@ -1,6 +1,6 @@
 package com.baidu.scalalite
 
-import com.baidu.javalite.{Context, Authorizer, ProfileListener, TraceListener, Collation, AggregateFunction, ScalarFunction, Value, UpdateHook, RollbackHook, BusyHandler, CommitHook, DBConnection, DBHelper, SqlExecCallback}
+import com.baidu.javalite.{Context, Authorizer, ProfileListener, TraceListener, Collation, AggregateFunction, ScalarFunction, Value, UpdateHook, RollbackHook, BusyHandler, CommitHook, DBConnection, SqlExecCallback}
 
 /**
  * Created by clark on 14-11-12.
@@ -38,7 +38,7 @@ class Connection protected[scalalite](private[this] val conn: DBConnection) {
   @inline def prepare(sql: String)(op: (Statement) => Unit): Unit = {
     if (op != null) {
       val stmt = conn.prepare(sql)
-      try op(new Statement(stmt)) finally DBHelper.closeQuietly(stmt)
+      try op(new Statement(stmt)) finally closeQuietly(stmt)
     }
   }
 
